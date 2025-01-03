@@ -19,45 +19,45 @@ const AboutScreen = () => {
       source={require('../../assets/image/bg/bg.png')}
       style={styles.container}>
       <SafeAreaView style={styles.content}>
-        <View style={styles.header}>
-          <HomeIcon />
-        </View>
+        <HomeIcon />
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>About Game</Text>
 
             <Text style={styles.description}>
-            Crowns Sequence Mastery challenges your focus and attention to detail.
-          </Text>
-
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Game Overview:</Text>
-            <Text style={styles.sectionText}>
-              Watch as crowns light up in a specific order, and repeat the sequence
-              by tapping them in the correct pattern. With each round, the sequence
-              grows longer and more complex, pushing your ability to stay sharp and
-              precise.
+              Crowns Sequence Mastery challenges your focus and attention to
+              detail.
             </Text>
-          </View>
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Hints & Rewards:</Text>
-            <Text style={styles.sectionText}>
-              If the pattern fades from view, hints are available to replay the
-              sequence – but only a few times per game. Successfully repeating
-              patterns earns points that unlock new crown sets and backgrounds,
-              allowing you to customize the experience as you progress.
-            </Text>
-          </View>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Game Overview:</Text>
+              <Text style={styles.sectionText}>
+                Watch as crowns light up in a specific order, and repeat the
+                sequence by tapping them in the correct pattern. With each
+                round, the sequence grows longer and more complex, pushing your
+                ability to stay sharp and precise.
+              </Text>
+            </View>
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Challenge:</Text>
-            <Text style={styles.sectionText}>
-              The crowns are waiting, ready to test your skills. Can you follow
-              the light and rise to mastery?
-            </Text>
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Hints & Rewards:</Text>
+              <Text style={styles.sectionText}>
+                If the pattern fades from view, hints are available to replay
+                the sequence – but only a few times per game. Successfully
+                repeating patterns earns points that unlock new crown sets and
+                backgrounds, allowing you to customize the experience as you
+                progress.
+              </Text>
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Challenge:</Text>
+              <Text style={styles.sectionText}>
+                The crowns are waiting, ready to test your skills. Can you
+                follow the light and rise to mastery?
+              </Text>
+            </View>
           </View>
-        </View>
 
           {/* <CustomButton
             title="Back to Menu"

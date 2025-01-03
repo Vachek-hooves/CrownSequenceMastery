@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity,Image} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 
@@ -31,6 +31,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 30,
+    marginTop: 30,
   },
   homeButtonShadow: {
     shadowColor: '#FCF8EA',
