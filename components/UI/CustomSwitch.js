@@ -8,7 +8,7 @@ const CustomSwitch = ({value, onValueChange}) => {
       onValueChange={onValueChange}
       trackColor={{
         false: 'rgba(128, 128, 128, 0.3)',
-        true: '#FCF8EA',
+        true: '#FFC600',
       }}
       thumbColor={value ? '#000' : '#FCF8EA'}
       ios_backgroundColor="rgba(128, 128, 128, 0.3)"
