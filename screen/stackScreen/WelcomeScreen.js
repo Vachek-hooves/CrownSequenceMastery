@@ -53,7 +53,7 @@ const WelcomeScreen = ({navigation}) => {
 
         <TouchableOpacity
           style={styles.nextButton}
-          onPress={() => navigation.navigate('MainScreen')}>
+          onPress={() => navigation.navigate('NameScreen')}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </ScrollView>
