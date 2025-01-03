@@ -7,13 +7,30 @@ import {
   SafeAreaView,
   ImageBackground,
   Image,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NameScreen = ({navigation}) => {
   const [nickname, setNickname] = useState('');
+  const isValidNickname = nickname.trim().length > 2;
+
+  const saveNickname = async () => {
+    try {
+      if (!isValidNickname) {
+        Alert.alert('Error', 'Nickname must be at least 3 characters');
+        return;
+      }
+
+      await AsyncStorage.setItem('userNickname', nickname.trim());
+      navigation.navigate('MainScreen');
+    } catch (error) {
+      console.error('Error saving nickname:', error);
+      Alert.alert('Error', 'Failed to save nickname. Please try again.');
+    }
+  };
 
   return (
     <ImageBackground
@@ -35,7 +52,7 @@ const NameScreen = ({navigation}) => {
               />
             </TouchableOpacity>
           </LinearGradient>
-          
+
           <Text style={styles.title}>Nickname</Text>
         </View>
 
@@ -50,14 +67,29 @@ const NameScreen = ({navigation}) => {
             placeholderTextColor="rgba(252, 248, 234, 0.5)"
             value={nickname}
             onChangeText={setNickname}
+            maxLength={30}
           />
         </View>
 
-        <TouchableOpacity
-          style={styles.startButton}
-          onPress={() => navigation.navigate('TabNavigation')}>
-          <Text style={styles.startButtonText}>Start</Text>
-        </TouchableOpacity>
+        {isValidNickname ? (
+          <LinearGradient
+            colors={['#FFEA9E', '#FCF8EA']}
+            style={[styles.startButton, styles.startButtonShadow]}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}>
+            <TouchableOpacity onPress={saveNickname}>
+              <Text style={styles.startButtonTextActive}>Start</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        ) : (
+          <TouchableOpacity
+            style={styles.startButton}
+            onPress={() =>
+              Alert.alert('Error', 'Nickname must be at least 3 characters')
+            }>
+            <Text style={styles.startButtonText}>Start</Text>
+          </TouchableOpacity>
+        )}
       </SafeAreaView>
     </ImageBackground>
   );
@@ -109,20 +141,22 @@ const styles = StyleSheet.create({
     height: 24,
   },
   title: {
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: 'bold',
     color: '#FCF8EA',
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
     textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 10,
+    paddingLeft:'10%'
+    
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 24,
     color: '#FCF8EA',
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
     textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 8,
-    marginVertical: 10,
+    marginVertical: 20,
   },
   inputContainer: {
     marginTop: 40,
@@ -130,9 +164,10 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'rgba(128, 128, 128, 0.3)',
     borderRadius: 25,
-    padding: 15,
-    fontSize: 16,
+    paddingVertical: 18,
+    fontSize:20,
     color: '#FCF8EA',
+    paddingHorizontal:20
   },
   startButton: {
     position: 'absolute',
@@ -140,13 +175,31 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     backgroundColor: 'rgba(128, 128, 128, 0.3)',
-    padding: 15,
+    // padding: 15,
     borderRadius: 25,
+  },
+  startButtonShadow: {
+    shadowColor: '#FCF8EA',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 5,
   },
   startButtonText: {
     textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
     color: '#FCF8EA',
+    padding: 15,
+  },
+  startButtonTextActive: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000', // Dark text for better contrast on light gradient
+    padding: 15,
   },
 });
