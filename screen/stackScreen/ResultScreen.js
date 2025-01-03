@@ -1,14 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import MainLayout from '../../components/layout/MainLayout';
 
 const ResultScreen = () => {
-  return (
-    <View>
-      <Text>ResultScreen</Text>
-    </View>
-  )
-}
+  return <MainLayout></MainLayout>;
+};
 
-export default ResultScreen
+export default ResultScreen;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

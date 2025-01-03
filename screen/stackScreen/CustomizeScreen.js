@@ -1,14 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import MainLayout from '../../components/layout/MainLayout';
 
 const CustomizeScreen = () => {
-  return (
-    <View>
-      <Text>CustomizeScreen</Text>
-    </View>
-  )
-}
+  return <MainLayout></MainLayout>;
+};
 
-export default CustomizeScreen
+export default CustomizeScreen;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

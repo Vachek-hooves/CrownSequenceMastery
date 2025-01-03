@@ -46,7 +46,7 @@ const MainScreen = ({navigation}) => {
               variant="primary"
             />
             <CustomButton
-              title="Score"
+              title="Result"
               onPress={() => navigation.navigate('ResultScreen')}
             />
             <CustomButton
