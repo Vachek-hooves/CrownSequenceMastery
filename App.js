@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {ContextProvider} from './store/context';
-import {WelcomeScreen} from './screen/stackScreen';
+import {MainScreen, WelcomeScreen} from './screen/stackScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +16,7 @@ function App() {
             animationDuration: 1000,
           }}>
           <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+          <Stack.Screen name="MainScreen" component={MainScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </ContextProvider>
