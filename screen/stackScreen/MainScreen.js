@@ -23,8 +23,7 @@ const MainScreen = ({navigation}) => {
         <View style={styles.header}>
           <View style={styles.scoreContainer}>
             <Text style={styles.scoreText}>0</Text>
-
-            <LampIcon />
+            <CrownIcon />
           </View>
         </View>
 

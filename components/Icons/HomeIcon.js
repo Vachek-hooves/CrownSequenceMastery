@@ -1,7 +1,9 @@
 import {StyleSheet, Text, View, TouchableOpacity,Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {useNavigation} from '@react-navigation/native';
 
 const HomeIcon = () => {
+  const navigation = useNavigation();
   return (
     <LinearGradient
       colors={['#FFEA9E', '#FCF8EA']}
@@ -10,7 +12,7 @@ const HomeIcon = () => {
       end={{x: 1, y: 1}}>
       <TouchableOpacity
         style={styles.homeButton}
-        onPress={() => navigation.goBack()}>
+        onPress={() => navigation.navigate('MainScreen')}>
         <Image
           source={require('../../assets/image/icons/homeIcon.png')}
           style={styles.homeIcon}

@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const CrownIcon = () => {
   return (
     <LinearGradient
-      colors={['#FFEA9E' + 90, '#FCF8EA' + 80]}
+      colors={['rgba(0,0,0,1)', '#FCF8EA' + 40]}
       style={[styles.homeButtonGradient, styles.homeButtonShadow]}
       start={{x: 0, y: 0}}
       end={{x: 1, y: 1}}>
