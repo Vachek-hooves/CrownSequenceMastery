@@ -47,7 +47,7 @@ const MainScreen = ({navigation}) => {
             />
             <CustomButton
               title="Score"
-              onPress={() => navigation.navigate('ScoreScreen')}
+              onPress={() => navigation.navigate('ResultScreen')}
             />
             <CustomButton
               title="About"
