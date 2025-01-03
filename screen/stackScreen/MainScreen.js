@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ImageBackground,
   Image,
+  ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../../components/UI/CustomButton';
@@ -25,48 +26,43 @@ const MainScreen = ({navigation}) => {
 
             <LampIcon />
           </View>
-          {/* <LinearGradient
-            colors={['#FFEA9E', '#FCF8EA']}
-            style={[styles.helpButton, styles.buttonShadow]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}>
-            <Text style={styles.helpText}>ℹ️</Text>
-          </LinearGradient> */}
         </View>
 
-        {/* Crown Image and Title */}
-        <View style={styles.titleContainer}>
-          <Image
-            source={require('../../assets/image/logo/crown2.png')}
-            style={styles.mainCrown}
-          />
-          <Text style={styles.title}>Crowns Sequence{'\n'}Mastery</Text>
-        </View>
+        <ScrollView>
+          {/* Crown Image and Title */}
+          <View style={styles.titleContainer}>
+            <Image
+              source={require('../../assets/image/logo/crown2.png')}
+              style={styles.mainCrown}
+            />
+            <Text style={styles.title}>Crowns Sequence{'\n'}Mastery</Text>
+          </View>
 
-        {/* Navigation Buttons */}
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            title="Play"
-            onPress={() => navigation.navigate('GameScreen')}
-            variant="primary"
-          />
-          <CustomButton
-            title="Score"
-            onPress={() => navigation.navigate('ScoreScreen')}
-          />
-          <CustomButton
-            title="About"
-            onPress={() => navigation.navigate('AboutScreen')}
-          />
-          <CustomButton
-            title="Customize Challenge"
-            onPress={() => navigation.navigate('CustomizeScreen')}
-          />
-          <CustomButton
-            title="Settings"
-            onPress={() => navigation.navigate('SettingsScreen')}
-          />
-        </View>
+          {/* Navigation Buttons */}
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              title="Play"
+              onPress={() => navigation.navigate('CrownGameScreen')}
+              variant="primary"
+            />
+            <CustomButton
+              title="Score"
+              onPress={() => navigation.navigate('ScoreScreen')}
+            />
+            <CustomButton
+              title="About"
+              onPress={() => navigation.navigate('AboutScreen')}
+            />
+            <CustomButton
+              title="Customize Challenge"
+              onPress={() => navigation.navigate('CustomizeScreen')}
+            />
+            <CustomButton
+              title="Settings"
+              onPress={() => navigation.navigate('SettingsScreen')}
+            />
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </ImageBackground>
   );
@@ -126,8 +122,8 @@ const styles = StyleSheet.create({
     marginVertical: 40,
   },
   mainCrown: {
-    width: 120,
-    height: 120,
+    width: 200,
+    height: 200,
     marginBottom: 20,
   },
   title: {
