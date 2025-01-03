@@ -13,6 +13,7 @@ import React, {useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {launchImageLibrary} from 'react-native-image-picker';
+import HomeIcon from '../../components/Icons/HomeIcon';
 
 const NameScreen = ({navigation}) => {
   const [nickname, setNickname] = useState('');
@@ -28,7 +29,7 @@ const NameScreen = ({navigation}) => {
     try {
       const savedNickname = await AsyncStorage.getItem('userNickname');
       const savedImage = await AsyncStorage.getItem('userImage');
-      
+
       if (savedNickname) {
         setNickname(savedNickname);
         setIsExistingUser(true);
@@ -65,7 +66,7 @@ const NameScreen = ({navigation}) => {
         Alert.alert('Error', 'Nickname must be at least 3 characters');
         return;
       }
-      
+
       await AsyncStorage.setItem('userNickname', nickname.trim());
       navigation.navigate('MainScreen');
     } catch (error) {
@@ -108,21 +109,8 @@ const NameScreen = ({navigation}) => {
       style={styles.container}>
       <SafeAreaView style={styles.content}>
         <View style={styles.headerRow}>
-          <LinearGradient
-            colors={['#FFEA9E', '#FCF8EA']}
-            style={[styles.homeButtonGradient, styles.homeButtonShadow]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}>
-            <TouchableOpacity
-              style={styles.homeButton}
-              onPress={() => navigation.goBack()}>
-              <Image
-                source={require('../../assets/image/icons/homeIcon.png')}
-                style={styles.homeIcon}
-              />
-            </TouchableOpacity>
-          </LinearGradient>
-          
+        
+          <HomeIcon />
           <Text style={styles.title}>Nickname</Text>
         </View>
 
@@ -174,7 +162,9 @@ const NameScreen = ({navigation}) => {
         ) : (
           <TouchableOpacity
             style={styles.startButton}
-            onPress={() => Alert.alert('Error', 'Nickname must be at least 3 characters')}>
+            onPress={() =>
+              Alert.alert('Error', 'Nickname must be at least 3 characters')
+            }>
             <Text style={styles.startButtonText}>Start</Text>
           </TouchableOpacity>
         )}
@@ -199,33 +189,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 20,
   },
-  homeButtonGradient: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  homeButtonShadow: {
-    shadowColor: '#FCF8EA',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 10,
-    elevation: 5, // for Android
-  },
-  homeButton: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  homeIcon: {
-    width: 24,
-    height: 24,
-  },
   title: {
     fontSize: 36,
     fontWeight: 'bold',
@@ -233,8 +196,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
     textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 10,
-    paddingLeft:'10%'
-    
+    paddingLeft: '10%',
   },
   subtitle: {
     fontSize: 24,
@@ -251,9 +213,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(128, 128, 128, 0.3)',
     borderRadius: 25,
     paddingVertical: 18,
-    fontSize:20,
+    fontSize: 20,
     color: '#FCF8EA',
-    paddingHorizontal:20
+    paddingHorizontal: 20,
   },
   startButton: {
     position: 'absolute',
@@ -263,7 +225,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(128, 128, 128, 0.3)',
     // padding: 15,
     borderRadius: 25,
-    marginBottom:'10%'
+    marginBottom: '10%',
   },
   startButtonShadow: {
     shadowColor: '#FCF8EA',

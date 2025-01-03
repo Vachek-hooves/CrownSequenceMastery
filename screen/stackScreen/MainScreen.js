@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../../components/UI/CustomButton';
+import CrownIcon from '../../components/Icons/CrownIcon';
+import LampIcon from '../../components/Icons/LampIcon';
 
 const MainScreen = ({navigation}) => {
   return (
@@ -20,18 +22,16 @@ const MainScreen = ({navigation}) => {
         <View style={styles.header}>
           <View style={styles.scoreContainer}>
             <Text style={styles.scoreText}>0</Text>
-            <Image
-              source={require('../../assets/image/logo/crown2.png')}
-              style={styles.crownIcon}
-            />
+
+            <LampIcon />
           </View>
-          <LinearGradient
+          {/* <LinearGradient
             colors={['#FFEA9E', '#FCF8EA']}
             style={[styles.helpButton, styles.buttonShadow]}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}>
             <Text style={styles.helpText}>ℹ️</Text>
-          </LinearGradient>
+          </LinearGradient> */}
         </View>
 
         {/* Crown Image and Title */}
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   scoreContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 30,
   },
   scoreText: {
     color: '#FCF8EA',
