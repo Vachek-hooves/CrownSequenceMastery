@@ -145,12 +145,14 @@ const CrownGameScreen = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={useHint} disabled={isPlaying}>
-          <LinearGradient
-            colors={['#FFEA9E', '#FCF8EA']}
-            style={[styles.iconButton, styles.buttonShadow]}>
-            <Text style={styles.hintCount}>{hintsLeft}</Text>
-            <HintIcon />
-          </LinearGradient>
+          <View style={styles.iconCircle}>
+            <LinearGradient
+              colors={['#FFEA9E', '#FCF8EA']}
+              style={[styles.iconButton, styles.buttonShadow]}>
+              <Text style={styles.hintCount}>{hintsLeft}</Text>
+              <HintIcon />
+            </LinearGradient>
+          </View>
         </TouchableOpacity>
 
         <Text style={styles.score}>{score}</Text>
@@ -166,14 +168,16 @@ const CrownGameScreen = ({navigation}) => {
               ]
             );
           }}>
-          <LinearGradient
-            colors={['#FFEA9E', '#FCF8EA']}
-            style={[styles.iconButton, styles.buttonShadow]}>
-            <Image
-              source={require('../../assets/image/icons/homeIcon.png')}
-              style={styles.icon}
-            />
-          </LinearGradient>
+          <View style={styles.iconCircle}>
+            <LinearGradient
+              colors={['#FFEA9E', '#FCF8EA']}
+              style={[styles.iconButton, styles.buttonShadow]}>
+              <Image
+                source={require('../../assets/image/icons/homeIcon.png')}
+                style={styles.icon}
+              />
+            </LinearGradient>
+          </View>
         </TouchableOpacity>
       </View>
 
@@ -186,15 +190,15 @@ const CrownGameScreen = ({navigation}) => {
         </View>
       ) : (
         <View style={styles.gameContainer}>
-          {CROWNS[0].crowns.map((crown, index) => (
+          {/* Top Crown */}
+          <View style={styles.topCrownContainer}>
             <Animated.View
-              key={index}
               style={[
                 styles.crownContainer,
-                activeIndex === index && styles.activeCrownContainer,
+                activeIndex === 0 && styles.activeCrownContainer,
                 {
                   transform: [{
-                    scale: glowAnimations[index].interpolate({
+                    scale: glowAnimations[0].interpolate({
                       inputRange: [0, 1],
                       outputRange: [1, 1.2],
                     }),
@@ -202,20 +206,85 @@ const CrownGameScreen = ({navigation}) => {
                 },
               ]}>
               <TouchableOpacity
-                onPress={() => handleCrownPress(index)}
+                onPress={() => handleCrownPress(0)}
                 disabled={isPlaying}
                 style={[
                   styles.crownButton,
-                  activeIndex === index && styles.activeCrownButton,
+                  activeIndex === 0 && styles.activeCrownButton,
                 ]}>
                 <Image 
-                  source={crown} 
+                  source={CROWNS[0].crowns[0]} 
                   style={styles.crown}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
             </Animated.View>
-          ))}
+          </View>
+
+          {/* Middle Crowns */}
+          <View style={styles.middleCrownsContainer}>
+            {[1, 2].map((index) => (
+              <Animated.View
+                key={index}
+                style={[
+                  styles.crownContainer,
+                  activeIndex === index && styles.activeCrownContainer,
+                  {
+                    transform: [{
+                      scale: glowAnimations[index].interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 1.2],
+                      }),
+                    }],
+                  },
+                ]}>
+                <TouchableOpacity
+                  onPress={() => handleCrownPress(index)}
+                  disabled={isPlaying}
+                  style={[
+                    styles.crownButton,
+                    activeIndex === index && styles.activeCrownButton,
+                  ]}>
+                  <Image 
+                    source={CROWNS[0].crowns[index]} 
+                    style={styles.crown}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+            ))}
+          </View>
+
+          {/* Bottom Crown */}
+          <View style={styles.bottomCrownContainer}>
+            <Animated.View
+              style={[
+                styles.crownContainer,
+                activeIndex === 3 && styles.activeCrownContainer,
+                {
+                  transform: [{
+                    scale: glowAnimations[3].interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 1.2],
+                    }),
+                  }],
+                },
+              ]}>
+              <TouchableOpacity
+                onPress={() => handleCrownPress(3)}
+                disabled={isPlaying}
+                style={[
+                  styles.crownButton,
+                  activeIndex === 3 && styles.activeCrownButton,
+                ]}>
+                <Image 
+                  source={CROWNS[0].crowns[3]} 
+                  style={styles.crown}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
         </View>
       )}
     </View>
@@ -234,10 +303,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 40,
   },
+  iconCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: 'rgba(252, 248, 234, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   iconButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -272,18 +349,30 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 20,
+  },
+  topCrownContainer: {
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  middleCrownsContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 20,
-    padding: 20,
+    justifyContent: 'space-around',
+    width: '100%',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  bottomCrownContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   crownContainer: {
-    width: '40%',
-    aspectRatio: 1,
+    width: 120,
+    height: 120,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
-    overflow: 'hidden',
+    borderRadius: 60,
   },
   activeCrownContainer: {
     backgroundColor: '#FCF8EA',
@@ -299,8 +388,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FCF8EA',
   },
   crown: {
-    width: '90%',
-    height: '90%',
+    width: '100%',
+    height: '100%',
     resizeMode: 'contain',
   },
   startContainer: {
