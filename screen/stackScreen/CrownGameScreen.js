@@ -20,25 +20,39 @@ const CrownGameScreen = ({navigation}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [score, setScore] = useState(0);
   const [hintsLeft, setHintsLeft] = useState(3);
-  const [activeCrown, setActiveCrown] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+
   const [glowAnimations] = useState(
     CROWNS[0].crowns.map(() => new Animated.Value(0)),
   );
 
   // Initialize game
   useEffect(() => {
-    startNewRound();
+    startNewGame();
   }, []);
+
+  // Start new game
+  const startNewGame = () => {
+    setSequence([]);
+    setUserSequence([]);
+    setScore(0);
+    setHintsLeft(3);
+    setIsGameStarted(true);
+    startNewRound();
+  };
 
   // Generate new sequence
   const generateSequence = useCallback(() => {
     const newStep = Math.floor(Math.random() * 4);
-    setSequence(prev => [...prev, newStep]);
-  }, []);
+    return [...sequence, newStep];
+  }, [sequence]);
 
   // Play crown animation
-  const animateCrown = useCallback(
-    (index, duration = 500) => {
+  const animateCrown = useCallback((index, duration = 500) => {
+    setActiveIndex(index);
+    
+    return new Promise(resolve => {
       Animated.sequence([
         Animated.timing(glowAnimations[index], {
           toValue: 1,
@@ -50,58 +64,60 @@ const CrownGameScreen = ({navigation}) => {
           duration: duration,
           useNativeDriver: true,
         }),
-      ]).start();
+      ]).start(() => {
+        setActiveIndex(null);
+        resolve();
+      });
 
       if (isGameSoundEnable) {
         // Play sound effect here
       }
-    },
-    [glowAnimations, isGameSoundEnable],
-  );
+    });
+  }, [glowAnimations, isGameSoundEnable]);
 
   // Play sequence
-  const playSequence = useCallback(async () => {
+  const playSequence = useCallback(async (newSequence) => {
     setIsPlaying(true);
-    for (let i = 0; i < sequence.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      animateCrown(sequence[i]);
+    
+    // Clear any existing timeout
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Play each crown in sequence
+    for (let i = 0; i < newSequence.length; i++) {
+      await animateCrown(newSequence[i], 500);
+      await new Promise(resolve => setTimeout(resolve, 300)); // Gap between animations
     }
+    
     setIsPlaying(false);
-  }, [sequence, animateCrown]);
+  }, [animateCrown]);
 
   // Start new round
-  const startNewRound = useCallback(() => {
+  const startNewRound = useCallback(async () => {
+    const newSequence = generateSequence();
+    setSequence(newSequence);
     setUserSequence([]);
-    generateSequence();
-    setTimeout(() => {
-      playSequence();
-    }, 1000);
+    await playSequence(newSequence);
   }, [generateSequence, playSequence]);
 
   // Handle crown press
-  const handleCrownPress = index => {
+  const handleCrownPress = async (index) => {
     if (isPlaying) return;
 
-    animateCrown(index, 300);
+    await animateCrown(index, 300);
     const newUserSequence = [...userSequence, index];
     setUserSequence(newUserSequence);
 
     // Check if the move was correct
-    if (
-      newUserSequence[newUserSequence.length - 1] !==
-      sequence[newUserSequence.length - 1]
-    ) {
+    if (newUserSequence[newUserSequence.length - 1] !== sequence[newUserSequence.length - 1]) {
       Alert.alert('Game Over', `Final Score: ${score}`, [
         {
           text: 'Try Again',
-          onPress: () => {
-            setScore(0);
-            setSequence([]);
-            setHintsLeft(3);
-            startNewRound();
-          },
+          onPress: startNewGame,
         },
-        {text: 'Main Menu', onPress: () => navigation.navigate('MainScreen')},
+        {
+          text: 'Main Menu',
+          onPress: () => navigation.navigate('MainScreen'),
+        },
       ]);
       return;
     }
@@ -109,36 +125,47 @@ const CrownGameScreen = ({navigation}) => {
     // Check if sequence is complete
     if (newUserSequence.length === sequence.length) {
       setScore(prev => prev + sequence.length);
-      setTimeout(startNewRound, 500);
+      setTimeout(() => {
+        startNewRound();
+      }, 1000);
     }
   };
 
   // Use hint
-  const useHint = () => {
+  const useHint = async () => {
     if (hintsLeft > 0 && !isPlaying) {
       setHintsLeft(prev => prev - 1);
-      playSequence();
+      await playSequence(sequence);
+    } else if (hintsLeft === 0) {
+      Alert.alert('No Hints Left', 'You have used all your hints!');
     }
   };
-
-  // Debug log to check CROWNS data
-  console.log('Crown images:', CROWNS[0].crowns.map(crown => crown));
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={useHint}>
+        <TouchableOpacity onPress={useHint} disabled={isPlaying}>
           <LinearGradient
             colors={['#FFEA9E', '#FCF8EA']}
             style={[styles.iconButton, styles.buttonShadow]}>
             <Text style={styles.hintCount}>{hintsLeft}</Text>
+            <HintIcon />
           </LinearGradient>
         </TouchableOpacity>
-        <HintIcon useHint={useHint} />
 
         <Text style={styles.score}>{score}</Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('MainScreen')}>
+        <TouchableOpacity 
+          onPress={() => {
+            Alert.alert(
+              'Leave Game',
+              'Are you sure you want to exit? Your progress will be lost.',
+              [
+                {text: 'Cancel', style: 'cancel'},
+                {text: 'Exit', onPress: () => navigation.navigate('MainScreen')},
+              ]
+            );
+          }}>
           <LinearGradient
             colors={['#FFEA9E', '#FCF8EA']}
             style={[styles.iconButton, styles.buttonShadow]}>
@@ -149,40 +176,48 @@ const CrownGameScreen = ({navigation}) => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-      <Text style={{color: 'white'}}>Crown </Text>
 
-      <View style={styles.gameContainer}>
-        {CROWNS[0].crowns.map((crown, index) => (
-          <Animated.View
-            key={index}
-            style={[
-              styles.crownContainer,
-              {
-                transform: [{
-                  scale: glowAnimations[index].interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [1, 1.2],
-                  }),
-                }],
-                opacity: glowAnimations[index].interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [1, 0.7],
-                }),
-              },
-            ]}>
-            <TouchableOpacity
-              onPress={() => handleCrownPress(index)}
-              disabled={isPlaying}
-              style={styles.crownButton}>
-              <Image 
-                source={crown} 
-                style={styles.crown}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </Animated.View>
-        ))}
-      </View>
+      {!isGameStarted ? (
+        <View style={styles.startContainer}>
+          <Text style={styles.startText}>Watch the sequence and repeat it!</Text>
+          <TouchableOpacity onPress={startNewGame} style={styles.startButton}>
+            <Text style={styles.startButtonText}>Start Game</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.gameContainer}>
+          {CROWNS[0].crowns.map((crown, index) => (
+            <Animated.View
+              key={index}
+              style={[
+                styles.crownContainer,
+                activeIndex === index && styles.activeCrownContainer,
+                {
+                  transform: [{
+                    scale: glowAnimations[index].interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 1.2],
+                    }),
+                  }],
+                },
+              ]}>
+              <TouchableOpacity
+                onPress={() => handleCrownPress(index)}
+                disabled={isPlaying}
+                style={[
+                  styles.crownButton,
+                  activeIndex === index && styles.activeCrownButton,
+                ]}>
+                <Image 
+                  source={crown} 
+                  style={styles.crown}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </Animated.View>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -247,18 +282,52 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  activeCrownContainer: {
+    backgroundColor: '#FCF8EA',
   },
   crownButton: {
     width: '100%',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
+  },
+  activeCrownButton: {
+    backgroundColor: '#FCF8EA',
   },
   crown: {
     width: '90%',
     height: '90%',
     resizeMode: 'contain',
+  },
+  startContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  startText: {
+    color: '#FCF8EA',
+    fontSize: 24,
+    textAlign: 'center',
+    marginBottom: 30,
+    textShadowColor: 'rgba(252, 248, 234, 0.5)',
+    textShadowOffset: {width: 0, height: 0},
+    textShadowRadius: 10,
+  },
+  startButton: {
+    backgroundColor: '#FCF8EA',
+    padding: 15,
+    borderRadius: 25,
+    width: 200,
+  },
+  startButtonText: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
