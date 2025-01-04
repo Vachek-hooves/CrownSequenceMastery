@@ -9,8 +9,10 @@ const CrownIcon = () => {
       start={{x: 0, y: 0}}
       end={{x: 1, y: 1}}>
       <TouchableOpacity
+        disabled
         style={styles.homeButton}
-        onPress={() => navigation.goBack()}>
+        // onPress={() => navigation.goBack()}
+      >
         <Image
           source={require('../../assets/image/icons/crownIcon.png')}
           style={styles.homeIcon}
