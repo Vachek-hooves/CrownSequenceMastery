@@ -12,6 +12,7 @@ import {
   playBackgroundMusic,
 } from '../../components/Sound/SetUp';
 import {useAppContext} from '../../store/context';
+import ReturnIcon from '../../components/Icons/ReturnIcon';
 
 const SettingsScreen = () => {
   const {
@@ -57,6 +58,7 @@ const SettingsScreen = () => {
             />
           </View>
         </View>
+        <ReturnIcon />
       </SafeAreaView>
     </ImageBackground>
   );
