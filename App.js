@@ -10,32 +10,102 @@ import {
   SettingsScreen,
   WelcomeScreen,
 } from './screen/stackScreen';
+import {useState, useEffect} from 'react';
 import CrownGameScreen from './screen/stackScreen/CrownGameScreen';
+
+import {
+  pauseBackgroundMusic,
+  playBackgroundMusic,
+  setupPlayer,
+} from './components/Sound/SetUp';
+import {AppState} from 'react-native';
+import {useAppContext} from './store/context';
 
 const Stack = createNativeStackNavigator();
 
-function App() {
+// const App = () => {
+//   const {isMusicEnable} = useAppContext();
+//   console.log(isMusicEnable);
+//   const [isPlayMusic, setIsPlayMusic] = useState(false);
+
+//   useEffect(() => {
+//     const subscription = AppState.addEventListener('change', nextAppState => {
+//       if (nextAppState === 'active' && isPlayMusic && isMusicEnable) {
+//         playBackgroundMusic();
+//       } else if (nextAppState === 'inactive' || nextAppState === 'background') {
+//         pauseBackgroundMusic();
+//       }
+//     });
+
+//     const initMusic = async () => {
+//       await setupPlayer();
+//       if (isMusicEnable) {
+//         await playBackgroundMusic();
+//         setIsPlayMusic(true);
+//       }
+//     };
+//     initMusic();
+
+//     return () => {
+//       subscription.remove();
+//       pauseBackgroundMusic();
+//     };
+//   }, [isMusicEnable]);
+
+const AppNavigator = () => {
+  const {isMusicEnable} = useAppContext();
+  const [isPlayMusic, setIsPlayMusic] = useState(false);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (nextAppState === 'active' && isPlayMusic && isMusicEnable) {
+        playBackgroundMusic();
+      } else if (nextAppState === 'inactive' || nextAppState === 'background') {
+        pauseBackgroundMusic();
+      }
+    });
+
+    const initMusic = async () => {
+      await setupPlayer();
+      if (isMusicEnable) {
+        await playBackgroundMusic();
+        setIsPlayMusic(true);
+      }
+    };
+    initMusic();
+
+    return () => {
+      subscription.remove();
+      pauseBackgroundMusic();
+    };
+  }, [isMusicEnable]);
+
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        animation: 'fade_from_bottom',
+        animationDuration: 1000,
+      }}>
+      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="NameScreen" component={NameScreen} />
+      <Stack.Screen name="MainScreen" component={MainScreen} />
+      <Stack.Screen name="CrownGameScreen" component={CrownGameScreen} />
+      <Stack.Screen name="ResultScreen" component={ResultScreen} />
+      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+      <Stack.Screen name="CustomizeScreen" component={CustomizeScreen} />
+      <Stack.Screen name="AboutScreen" component={AboutScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const App = () => {
   return (
     <ContextProvider>
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            animation: 'fade_from_bottom',
-            animationDuration: 1000,
-          }}>
-          <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
-          <Stack.Screen name="NameScreen" component={NameScreen} />
-          <Stack.Screen name="MainScreen" component={MainScreen} />
-          <Stack.Screen name="CrownGameScreen" component={CrownGameScreen} />
-          <Stack.Screen name="ResultScreen" component={ResultScreen} />
-          <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
-          <Stack.Screen name="CustomizeScreen" component={CustomizeScreen} />
-          <Stack.Screen name="AboutScreen" component={AboutScreen} />
-        </Stack.Navigator>
+        <AppNavigator />
       </NavigationContainer>
     </ContextProvider>
   );
-}
-
+};
 export default App;

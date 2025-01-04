@@ -3,7 +3,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AppContext = createContext({});
 export const ContextProvider = ({children}) => {
-  const value = {};
+  const [isMusicEnable, setIsMusicEnable] = useState(true);
+  const [isGameSoundEnable, setIsGameSoundEnable] = useState(true);
+
+  const value = {
+    isMusicEnable,
+    setIsMusicEnable,
+    isGameSoundEnable,
+    setIsGameSoundEnable,
+  };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 

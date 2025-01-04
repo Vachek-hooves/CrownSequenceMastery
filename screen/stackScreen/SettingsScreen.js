@@ -6,48 +6,32 @@ import {
   SafeAreaView,
   ImageBackground,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomSwitch from '../../components/UI/CustomSwitch';
+import {
+  pauseBackgroundMusic,
+  playBackgroundMusic,
+} from '../../components/Sound/SetUp';
+import {useAppContext} from '../../store/context';
 
 const SettingsScreen = () => {
-  const [backgroundMusic, setBackgroundMusic] = useState(true);
-  const [gameSound, setGameSound] = useState(true);
+  const {
+    isMusicEnable,
+    setIsMusicEnable,
+    isGameSoundEnable,
+    setIsGameSoundEnable,
+  } = useAppContext();
 
-  useEffect(() => {
-    loadSettings();
-  }, []);
+  const handleSoundToggle = async value => {};
 
-  const loadSettings = async () => {
-    try {
-      const music = await AsyncStorage.getItem('backgroundMusic');
-      const sound = await AsyncStorage.getItem('gameSound');
-      
-      if (music !== null) setBackgroundMusic(JSON.parse(music));
-      if (sound !== null) setGameSound(JSON.parse(sound));
-    } catch (error) {
-      console.error('Error loading settings:', error);
+  const handleMusicToggle = async value => {
+    setIsMusicEnable(value);
+    if (value) {
+      await playBackgroundMusic();
+    } else {
+      pauseBackgroundMusic();
     }
   };
-
-  const handleMusicToggle = async (value) => {
-    try {
-      await AsyncStorage.setItem('backgroundMusic', JSON.stringify(value));
-      setBackgroundMusic(value);
-      // Add your music control logic here
-    } catch (error) {
-      console.error('Error saving music setting:', error);
-    }
-  };
-
-  const handleSoundToggle = async (value) => {
-    try {
-      await AsyncStorage.setItem('gameSound', JSON.stringify(value));
-      setGameSound(value);
-      // Add your sound control logic here
-    } catch (error) {
-      console.error('Error saving sound setting:', error);
-    }
-  };
+  console.log(isMusicEnable);
 
   return (
     <ImageBackground
@@ -60,7 +44,7 @@ const SettingsScreen = () => {
           <View style={styles.settingRow}>
             <Text style={styles.settingText}>Background Music</Text>
             <CustomSwitch
-              value={backgroundMusic}
+              value={isMusicEnable}
               onValueChange={handleMusicToggle}
             />
           </View>
@@ -68,7 +52,7 @@ const SettingsScreen = () => {
           <View style={styles.settingRow}>
             <Text style={styles.settingText}>Game Sound</Text>
             <CustomSwitch
-              value={gameSound}
+              value={isGameSoundEnable}
               onValueChange={handleSoundToggle}
             />
           </View>
