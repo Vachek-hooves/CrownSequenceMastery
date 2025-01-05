@@ -13,9 +13,7 @@ import React, {useState} from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import HomeIcon from '../../components/Icons/HomeIcon';
 import {useNavigation} from '@react-navigation/native';
-import CustomButton from '../../components/UI/CustomButton';
 import {useAppContext} from '../../store/context';
-import {CROWNS} from '../../data/CustomizeCrown';
 import LinearGradient from 'react-native-linear-gradient';
 import CrownIcon from '../../components/Icons/CrownIcon';
 
@@ -166,9 +164,6 @@ const styles = StyleSheet.create({
     color: '#FCF8EA',
     fontWeight: 'bold',
   },
-  crownIcon: {
-    fontSize: 24,
-  },
   mainContent: {
     flex: 1,
     alignItems: 'center',
@@ -218,11 +213,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
   },
-  lockIcon: {
-    width: 48,
-    height: 48,
-    marginBottom: 16,
-    tintColor: '#FCF8EA',
+  lockedText: {
+    fontSize: 40,
+    marginBottom: 10,
   },
   requiredScore: {
     color: '#FCF8EA',
@@ -249,6 +242,9 @@ const styles = StyleSheet.create({
   },
   buttonTextDisabled: {
     color: '#999999',
+  },
+  selectedButtonText: {
+    color: '#FCF8EA',
   },
   pagination: {
     flexDirection: 'row',
