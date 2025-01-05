@@ -84,24 +84,27 @@ const CrownGameScreen = ({navigation}) => {
   );
 
   // Play sequence
-  const playSequence = useCallback(async (newSequence) => {
-    setGameStatus('watching');
-    setStatusMessage('Watch carefully...');
-    setIsPlaying(true);
-    
-    // Clear any existing timeout
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  const playSequence = useCallback(
+    async newSequence => {
+      setGameStatus('watching');
+      setStatusMessage('Watch carefully...');
+      setIsPlaying(true);
 
-    // Play each crown in sequence
-    for (let i = 0; i < newSequence.length; i++) {
-      await animateCrown(newSequence[i], 500);
-      await new Promise(resolve => setTimeout(resolve, 300));
-    }
-    
-    setIsPlaying(false);
-    setGameStatus('playing');
-    setStatusMessage('Your turn! Repeat the sequence');
-  }, [animateCrown]);
+      // Clear any existing timeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Play each crown in sequence
+      for (let i = 0; i < newSequence.length; i++) {
+        await animateCrown(newSequence[i], 500);
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
+
+      setIsPlaying(false);
+      setGameStatus('playing');
+      setStatusMessage('Your turn! Repeat the sequence');
+    },
+    [animateCrown],
+  );
 
   // Start new round
   const startNewRound = useCallback(async () => {
@@ -112,7 +115,7 @@ const CrownGameScreen = ({navigation}) => {
   }, [generateSequence, playSequence]);
 
   // Handle crown press
-  const handleCrownPress = async (index) => {
+  const handleCrownPress = async index => {
     if (isPlaying || gameStatus === 'watching') return;
 
     await animateCrown(index, 300);
@@ -120,7 +123,10 @@ const CrownGameScreen = ({navigation}) => {
     setUserSequence(newUserSequence);
 
     // Check if the move was correct
-    if (newUserSequence[newUserSequence.length - 1] !== sequence[newUserSequence.length - 1]) {
+    if (
+      newUserSequence[newUserSequence.length - 1] !==
+      sequence[newUserSequence.length - 1]
+    ) {
       // Wrong sequence - Game Over
       await updateScores(score);
       setIsGameOverModalVisible(true);
@@ -172,10 +178,10 @@ const CrownGameScreen = ({navigation}) => {
           <Text style={styles.modalSubtitle}>
             The sequence is broken, but your legacy endures
           </Text>
-          
+
           <View style={styles.scoreContainer}>
             <Text style={styles.finalScore}>{score}</Text>
-            <Image 
+            <Image
               source={require('../../assets/image/icons/crownIcon.png')}
               style={styles.crownIcon}
             />
@@ -191,13 +197,13 @@ const CrownGameScreen = ({navigation}) => {
           </View>
 
           <View style={styles.modalButtonsContainer}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.menuButton}
               onPress={handleReturnToMenu}>
               <Text style={styles.menuButtonText}>Menu</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.tryAgainButton}
               onPress={handleGameRestart}>
               <Text style={styles.tryAgainButtonText}>Try Again</Text>
@@ -239,16 +245,6 @@ const CrownGameScreen = ({navigation}) => {
             );
           }}>
           <HomeIcon />
-          {/* <View style={styles.iconCircle}>
-            <LinearGradient
-              colors={['#FFEA9E', '#FCF8EA']}
-              style={[styles.iconButton, styles.buttonShadow]}>
-              <Image
-                source={require('../../assets/image/icons/homeIcon.png')}
-                style={styles.icon}
-              />
-            </LinearGradient>
-          </View> */}
         </TouchableOpacity>
       </View>
 

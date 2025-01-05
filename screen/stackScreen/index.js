@@ -5,6 +5,8 @@ import ResultScreen from './ResultScreen';
 import AboutScreen from './AboutScreen';
 import SettingsScreen from './SettingsScreen';
 import CustomizeScreen from './CustomizeScreen';
+import SelectBackgroundScreen from './SelectBackgroundScreen';
+import SelectCrownScreen from './SelectCrownScreen';
 
 export {
   WelcomeScreen,
@@ -14,4 +16,6 @@ export {
   AboutScreen,
   CustomizeScreen,
   SettingsScreen,
+  SelectBackgroundScreen,
+  SelectCrownScreen,
 };

@@ -7,6 +7,8 @@ import {
   MainScreen,
   NameScreen,
   ResultScreen,
+  SelectBackgroundScreen,
+  SelectCrownScreen,
   SettingsScreen,
   WelcomeScreen,
 } from './screen/stackScreen';
@@ -95,6 +97,11 @@ const AppNavigator = () => {
       <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
       <Stack.Screen name="CustomizeScreen" component={CustomizeScreen} />
       <Stack.Screen name="AboutScreen" component={AboutScreen} />
+      <Stack.Screen
+        name="SelectBackgroundScreen"
+        component={SelectBackgroundScreen}
+      />
+      <Stack.Screen name="SelectCrownScreen" component={SelectCrownScreen} />
     </Stack.Navigator>
   );
 };
