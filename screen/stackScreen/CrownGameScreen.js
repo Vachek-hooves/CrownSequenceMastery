@@ -16,13 +16,8 @@ import HintIcon from '../../components/Icons/HintIcon';
 import HomeIcon from '../../components/Icons/HomeIcon';
 
 const CrownGameScreen = ({navigation}) => {
-  const {
-    isGameSoundEnable,
-    updateScores,
-    nickname,
-    selectedCrownSet,
-    crowns,
-  } = useAppContext();
+  const {isGameSoundEnable, updateScores, nickname, selectedCrownSet, crowns} =
+    useAppContext();
   const [sequence, setSequence] = useState([]);
   const [userSequence, setUserSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -226,20 +221,20 @@ const CrownGameScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={useHint} disabled={isPlaying}>
-          <View style={styles.iconCircle}>
-            <LinearGradient
+        {/* <TouchableOpacity onPress={useHint} disabled={isPlaying}> */}
+        {/* <View style={styles.iconCircle}> */}
+        {/* <LinearGradient
               colors={['#FFEA9E', '#FCF8EA']}
-              style={[styles.iconButton, styles.buttonShadow]}>
-              <Text style={styles.hintCount}>{hintsLeft}</Text>
-              <HintIcon />
-            </LinearGradient>
-          </View>
-        </TouchableOpacity>
+              style={[styles.iconButton, styles.buttonShadow]}></LinearGradient> */}
+        {/* <Text style={styles.hintCount}>{hintsLeft}</Text> */}
+        {/* </View> */}
+        {/* </TouchableOpacity> */}
+        <HintIcon onPress={useHint} hints={hintsLeft}/>
 
         <Text style={styles.score}>{score}</Text>
+        <HomeIcon />
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             Alert.alert(
               'Leave Game',
@@ -252,9 +247,7 @@ const CrownGameScreen = ({navigation}) => {
                 },
               ],
             );
-          }}>
-          <HomeIcon />
-        </TouchableOpacity>
+          }}></TouchableOpacity> */}
       </View>
 
       {!isGameStarted ? (
@@ -396,7 +389,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    // alignItems: 'center',
     marginTop: 40,
   },
   iconCircle: {
@@ -440,6 +433,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
+    color: 'white',
   },
   gameContainer: {
     flex: 1,
