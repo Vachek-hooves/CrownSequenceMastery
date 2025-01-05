@@ -7,6 +7,7 @@ import {
   Text,
   Animated,
   Alert,
+  Modal,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {CROWNS} from '../../data/CustomizeCrown';
@@ -15,7 +16,7 @@ import HintIcon from '../../components/Icons/HintIcon';
 import HomeIcon from '../../components/Icons/HomeIcon';
 
 const CrownGameScreen = ({navigation}) => {
-  const {isGameSoundEnable} = useAppContext();
+  const {isGameSoundEnable, updateScores, nickname} = useAppContext();
   const [sequence, setSequence] = useState([]);
   const [userSequence, setUserSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,6 +24,7 @@ const CrownGameScreen = ({navigation}) => {
   const [hintsLeft, setHintsLeft] = useState(3);
   const [activeIndex, setActiveIndex] = useState(null);
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isGameOverModalVisible, setIsGameOverModalVisible] = useState(false);
 
   const [glowAnimations] = useState(
     CROWNS[0].crowns.map(() => new Animated.Value(0)),
@@ -107,7 +109,7 @@ const CrownGameScreen = ({navigation}) => {
   }, [generateSequence, playSequence]);
 
   // Handle crown press
-  const handleCrownPress = async index => {
+  const handleCrownPress = async (index) => {
     if (isPlaying) return;
 
     await animateCrown(index, 300);
@@ -115,20 +117,10 @@ const CrownGameScreen = ({navigation}) => {
     setUserSequence(newUserSequence);
 
     // Check if the move was correct
-    if (
-      newUserSequence[newUserSequence.length - 1] !==
-      sequence[newUserSequence.length - 1]
-    ) {
-      Alert.alert('Game Over', `Final Score: ${score}`, [
-        {
-          text: 'Try Again',
-          onPress: startNewGame,
-        },
-        {
-          text: 'Main Menu',
-          onPress: () => navigation.navigate('MainScreen'),
-        },
-      ]);
+    if (newUserSequence[newUserSequence.length - 1] !== sequence[newUserSequence.length - 1]) {
+      // Wrong sequence - Game Over
+      await updateScores(score); // Update high score and total score
+      setIsGameOverModalVisible(true); // Show game over modal
       return;
     }
 
@@ -141,6 +133,18 @@ const CrownGameScreen = ({navigation}) => {
     }
   };
 
+  // Add function to handle game restart
+  const handleGameRestart = () => {
+    setIsGameOverModalVisible(false);
+    startNewGame();
+  };
+
+  // Add function to handle return to menu
+  const handleReturnToMenu = () => {
+    setIsGameOverModalVisible(false);
+    navigation.navigate('MainScreen');
+  };
+
   // Use hint
   const useHint = async () => {
     if (hintsLeft > 0 && !isPlaying) {
@@ -150,6 +154,54 @@ const CrownGameScreen = ({navigation}) => {
       Alert.alert('No Hints Left', 'You have used all your hints!');
     }
   };
+
+  const GameOverModal = () => (
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={isGameOverModalVisible}
+      onRequestClose={() => setIsGameOverModalVisible(false)}>
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}>The Crown Fades...</Text>
+          <Text style={styles.modalSubtitle}>
+            The sequence is broken, but your legacy endures
+          </Text>
+          
+          <View style={styles.scoreContainer}>
+            <Text style={styles.finalScore}>{score}</Text>
+            <Image 
+              source={require('../../assets/image/icons/crownIcon.png')}
+              style={styles.crownIcon}
+            />
+          </View>
+
+          <Text style={styles.playerName}>{nickname}</Text>
+          <View style={styles.totalScoreContainer}>
+            {/* <Image 
+              source={require('../../assets/image/icons/trophyIcon.png')}
+              style={styles.trophyIcon}
+            /> */}
+            <Text style={styles.totalScore}>{score}</Text>
+          </View>
+
+          <View style={styles.modalButtonsContainer}>
+            <TouchableOpacity 
+              style={styles.menuButton}
+              onPress={handleReturnToMenu}>
+              <Text style={styles.menuButtonText}>Menu</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity 
+              style={styles.tryAgainButton}
+              onPress={handleGameRestart}>
+              <Text style={styles.tryAgainButtonText}>Try Again</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
 
   return (
     <View style={styles.container}>
@@ -309,6 +361,7 @@ const CrownGameScreen = ({navigation}) => {
           </View>
         </View>
       )}
+      <GameOverModal />
     </View>
   );
 };
@@ -447,6 +500,96 @@ const styles = StyleSheet.create({
     width: 200,
   },
   startButtonText: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    backgroundColor: '#000',
+    padding: 20,
+    borderRadius: 20,
+    width: '80%',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FCF8EA',
+    marginBottom: 10,
+  },
+  modalSubtitle: {
+    fontSize: 16,
+    color: '#FCF8EA',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  scoreContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  finalScore: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#FCF8EA',
+    marginRight: 10,
+  },
+  crownIcon: {
+    width: 48,
+    height: 48,
+  },
+  playerName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FCF8EA',
+    marginBottom: 10,
+  },
+  totalScoreContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  trophyIcon: {
+    width: 48,
+    height: 48,
+    marginRight: 10,
+  },
+  totalScore: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FCF8EA',
+  },
+  modalButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
+  menuButton: {
+    backgroundColor: '#FCF8EA',
+    padding: 15,
+    borderRadius: 25,
+    width: '40%',
+  },
+  menuButtonText: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  tryAgainButton: {
+    backgroundColor: '#FCF8EA',
+    padding: 15,
+    borderRadius: 25,
+    width: '40%',
+  },
+  tryAgainButtonText: {
     color: '#000',
     fontSize: 18,
     fontWeight: 'bold',
