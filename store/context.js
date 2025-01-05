@@ -53,7 +53,7 @@ export const ContextProvider = ({children}) => {
 
   const unlockCrown = async (index) => {
     try {
-      if (totalScore >= 200 && !unlockedCrowns[index]) {
+      if (totalScore >= 20 && !unlockedCrowns[index]) {
         const newUnlockedCrowns = [...unlockedCrowns];
         newUnlockedCrowns[index] = true;
         

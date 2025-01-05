@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import MainLayout from '../../components/layout/MainLayout';
@@ -34,11 +35,21 @@ const SelectCrownScreen = () => {
   const handleSelectCrown = async (index) => {
     if (unlockedCrowns[index]) {
       await setSelectedCrownSet(index);
-    } else if (totalScore >= 200) {
-      const unlocked = await unlockCrown(index);
-      if (unlocked) {
-        await setSelectedCrownSet(index);
+    } else if (totalScore >= 20) {
+      try {
+        const unlocked = await unlockCrown(index);
+        if (unlocked) {
+          await setSelectedCrownSet(index);
+        }
+      } catch (error) {
+        console.error('Error unlocking crown:', error);
       }
+    } else {
+      Alert.alert(
+        'Crown Locked',
+        'You need 20 points to unlock this crown set.',
+        [{ text: 'OK', style: 'default' }]
+      );
     }
   };
 
@@ -84,7 +95,7 @@ const SelectCrownScreen = () => {
                     <View style={styles.lockedOverlay}>
                       <Text style={styles.lockedText}>🔒</Text>
                       <Text style={styles.requiredScore}>
-                        Score 200 to unlock
+                        Score 20 to unlock
                       </Text>
                     </View>
                   )}
@@ -92,7 +103,7 @@ const SelectCrownScreen = () => {
 
                 <TouchableOpacity
                   onPress={() => handleSelectCrown(index)}
-                  disabled={!unlockedCrowns[index] && totalScore < 200}
+                  disabled={!unlockedCrowns[index] && totalScore < 20}
                   style={styles.buttonWrapper}>
                   <LinearGradient
                     colors={
