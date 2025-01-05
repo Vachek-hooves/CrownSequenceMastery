@@ -107,17 +107,20 @@ const SelectCrownScreen = () => {
                   style={styles.buttonWrapper}>
                   <LinearGradient
                     colors={
-                      unlockedCrowns[index]
-                        ? ['#FFEA9E', '#FCF8EA']
-                        : ['#666666', '#444444']
+                      selectedCrownSet === index
+                        ? ['#666666', '#444444']
+                        : unlockedCrowns[index]
+                          ? ['#FFEA9E', '#FCF8EA']
+                          : ['#666666', '#444444']
                     }
                     style={styles.button}>
                     <Text
                       style={[
                         styles.buttonText,
+                        selectedCrownSet === index && styles.selectedButtonText,
                         !unlockedCrowns[index] && styles.buttonTextDisabled,
                       ]}>
-                      {selectedCrownSet === index ? 'Selected' : 'Select'}
+                      {selectedCrownSet === index ? 'SELECTED' : 'Select'}
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>
@@ -262,6 +265,9 @@ const styles = StyleSheet.create({
   },
   paginationDotActive: {
     backgroundColor: '#FCF8EA',
+  },
+  selectedButtonText: {
+    color: '#FCF8EA',
   },
 });
 
