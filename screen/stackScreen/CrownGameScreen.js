@@ -14,6 +14,7 @@ import {CROWNS} from '../../data/CustomizeCrown';
 import {useAppContext} from '../../store/context';
 import HintIcon from '../../components/Icons/HintIcon';
 import HomeIcon from '../../components/Icons/HomeIcon';
+import GameScreenLayout from '../../components/layout/GameScreenLayout';
 
 const CrownGameScreen = ({navigation}) => {
   const {isGameSoundEnable, updateScores, nickname, selectedCrownSet, crowns} =
@@ -219,35 +220,12 @@ const CrownGameScreen = ({navigation}) => {
   );
 
   return (
-    <View style={styles.container}>
+    <GameScreenLayout>
+      {/* <View style={styles.container}>  */}
       <View style={styles.header}>
-        {/* <TouchableOpacity onPress={useHint} disabled={isPlaying}> */}
-        {/* <View style={styles.iconCircle}> */}
-        {/* <LinearGradient
-              colors={['#FFEA9E', '#FCF8EA']}
-              style={[styles.iconButton, styles.buttonShadow]}></LinearGradient> */}
-        {/* <Text style={styles.hintCount}>{hintsLeft}</Text> */}
-        {/* </View> */}
-        {/* </TouchableOpacity> */}
-        <HintIcon onPress={useHint} hints={hintsLeft}/>
-
+        <HintIcon onPress={useHint} hints={hintsLeft} />
         <Text style={styles.score}>{score}</Text>
         <HomeIcon />
-
-        {/* <TouchableOpacity
-          onPress={() => {
-            Alert.alert(
-              'Leave Game',
-              'Are you sure you want to exit? Your progress will be lost.',
-              [
-                {text: 'Cancel', style: 'cancel'},
-                {
-                  text: 'Exit',
-                  onPress: () => navigation.navigate('MainScreen'),
-                },
-              ],
-            );
-          }}></TouchableOpacity> */}
       </View>
 
       {!isGameStarted ? (
@@ -376,7 +354,8 @@ const CrownGameScreen = ({navigation}) => {
         </>
       )}
       <GameOverModal />
-    </View>
+      {/* </View>  */}
+    </GameScreenLayout>
   );
 };
 
@@ -384,13 +363,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    padding: 20,
+    // padding: 20,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     // alignItems: 'center',
     marginTop: 40,
+    padding: 20,
   },
   iconCircle: {
     width: 70,
@@ -618,7 +598,7 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     position: 'absolute',
-    top: 120,
+    top: '15%',
     left: 0,
     right: 0,
     alignItems: 'center',
