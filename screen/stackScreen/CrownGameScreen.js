@@ -16,7 +16,13 @@ import HintIcon from '../../components/Icons/HintIcon';
 import HomeIcon from '../../components/Icons/HomeIcon';
 
 const CrownGameScreen = ({navigation}) => {
-  const {isGameSoundEnable, updateScores, nickname} = useAppContext();
+  const {
+    isGameSoundEnable,
+    updateScores,
+    nickname,
+    selectedCrownSet,
+    crowns,
+  } = useAppContext();
   const [sequence, setSequence] = useState([]);
   const [userSequence, setUserSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -166,6 +172,9 @@ const CrownGameScreen = ({navigation}) => {
     }
   };
 
+  // Get the current crown set
+  const currentCrownSet = crowns[selectedCrownSet];
+
   const GameOverModal = () => (
     <Modal
       animationType="fade"
@@ -294,7 +303,7 @@ const CrownGameScreen = ({navigation}) => {
                     activeIndex === 0 && styles.activeCrownButton,
                   ]}>
                   <Image
-                    source={CROWNS[0].crowns[0]}
+                    source={currentCrownSet.crowns[0]}
                     style={styles.crown}
                     resizeMode="contain"
                   />
@@ -329,7 +338,7 @@ const CrownGameScreen = ({navigation}) => {
                       activeIndex === index && styles.activeCrownButton,
                     ]}>
                     <Image
-                      source={CROWNS[0].crowns[index]}
+                      source={currentCrownSet.crowns[index]}
                       style={styles.crown}
                       resizeMode="contain"
                     />
@@ -363,7 +372,7 @@ const CrownGameScreen = ({navigation}) => {
                     activeIndex === 3 && styles.activeCrownButton,
                   ]}>
                   <Image
-                    source={CROWNS[0].crowns[3]}
+                    source={currentCrownSet.crowns[3]}
                     style={styles.crown}
                     resizeMode="contain"
                   />
