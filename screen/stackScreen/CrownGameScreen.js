@@ -25,6 +25,8 @@ const CrownGameScreen = ({navigation}) => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOverModalVisible, setIsGameOverModalVisible] = useState(false);
+  const [gameStatus, setGameStatus] = useState('waiting'); // 'waiting', 'watching', 'playing'
+  const [statusMessage, setStatusMessage] = useState('Watch the sequence...');
 
   const [glowAnimations] = useState(
     CROWNS[0].crowns.map(() => new Animated.Value(0)),
@@ -82,23 +84,24 @@ const CrownGameScreen = ({navigation}) => {
   );
 
   // Play sequence
-  const playSequence = useCallback(
-    async newSequence => {
-      setIsPlaying(true);
+  const playSequence = useCallback(async (newSequence) => {
+    setGameStatus('watching');
+    setStatusMessage('Watch carefully...');
+    setIsPlaying(true);
+    
+    // Clear any existing timeout
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Clear any existing timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Play each crown in sequence
-      for (let i = 0; i < newSequence.length; i++) {
-        await animateCrown(newSequence[i], 500);
-        await new Promise(resolve => setTimeout(resolve, 300)); // Gap between animations
-      }
-
-      setIsPlaying(false);
-    },
-    [animateCrown],
-  );
+    // Play each crown in sequence
+    for (let i = 0; i < newSequence.length; i++) {
+      await animateCrown(newSequence[i], 500);
+      await new Promise(resolve => setTimeout(resolve, 300));
+    }
+    
+    setIsPlaying(false);
+    setGameStatus('playing');
+    setStatusMessage('Your turn! Repeat the sequence');
+  }, [animateCrown]);
 
   // Start new round
   const startNewRound = useCallback(async () => {
@@ -110,7 +113,7 @@ const CrownGameScreen = ({navigation}) => {
 
   // Handle crown press
   const handleCrownPress = async (index) => {
-    if (isPlaying) return;
+    if (isPlaying || gameStatus === 'watching') return;
 
     await animateCrown(index, 300);
     const newUserSequence = [...userSequence, index];
@@ -119,14 +122,16 @@ const CrownGameScreen = ({navigation}) => {
     // Check if the move was correct
     if (newUserSequence[newUserSequence.length - 1] !== sequence[newUserSequence.length - 1]) {
       // Wrong sequence - Game Over
-      await updateScores(score); // Update high score and total score
-      setIsGameOverModalVisible(true); // Show game over modal
+      await updateScores(score);
+      setIsGameOverModalVisible(true);
       return;
     }
 
     // Check if sequence is complete
     if (newUserSequence.length === sequence.length) {
       setScore(prev => prev + sequence.length);
+      setGameStatus('waiting');
+      setStatusMessage('Great job! Watch the next sequence...');
       setTimeout(() => {
         startNewRound();
       }, 1000);
@@ -257,52 +262,27 @@ const CrownGameScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       ) : (
-        <View style={styles.gameContainer}>
-          {/* Top Crown */}
-          <View style={styles.topCrownContainer}>
-            <Animated.View
-              style={[
-                styles.crownContainer,
-                activeIndex === 0 && styles.activeCrownContainer,
-                {
-                  transform: [
-                    {
-                      scale: glowAnimations[0].interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [1, 1.2],
-                      }),
-                    },
-                  ],
-                },
-              ]}>
-              <TouchableOpacity
-                onPress={() => handleCrownPress(0)}
-                disabled={isPlaying}
-                style={[
-                  styles.crownButton,
-                  activeIndex === 0 && styles.activeCrownButton,
-                ]}>
-                <Image
-                  source={CROWNS[0].crowns[0]}
-                  style={styles.crown}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            </Animated.View>
+        <>
+          <View style={styles.statusContainer}>
+            <Text style={styles.statusText}>{statusMessage}</Text>
+            {gameStatus === 'playing' && (
+              <Text style={styles.progressText}>
+                {userSequence.length} / {sequence.length}
+              </Text>
+            )}
           </View>
 
-          {/* Middle Crowns */}
-          <View style={styles.middleCrownsContainer}>
-            {[1, 2].map(index => (
+          <View style={styles.gameContainer}>
+            {/* Top Crown */}
+            <View style={styles.topCrownContainer}>
               <Animated.View
-                key={index}
                 style={[
                   styles.crownContainer,
-                  activeIndex === index && styles.activeCrownContainer,
+                  activeIndex === 0 && styles.activeCrownContainer,
                   {
                     transform: [
                       {
-                        scale: glowAnimations[index].interpolate({
+                        scale: glowAnimations[0].interpolate({
                           inputRange: [0, 1],
                           outputRange: [1, 1.2],
                         }),
@@ -311,55 +291,91 @@ const CrownGameScreen = ({navigation}) => {
                   },
                 ]}>
                 <TouchableOpacity
-                  onPress={() => handleCrownPress(index)}
+                  onPress={() => handleCrownPress(0)}
                   disabled={isPlaying}
                   style={[
                     styles.crownButton,
-                    activeIndex === index && styles.activeCrownButton,
+                    activeIndex === 0 && styles.activeCrownButton,
                   ]}>
                   <Image
-                    source={CROWNS[0].crowns[index]}
+                    source={CROWNS[0].crowns[0]}
                     style={styles.crown}
                     resizeMode="contain"
                   />
                 </TouchableOpacity>
               </Animated.View>
-            ))}
-          </View>
+            </View>
 
-          {/* Bottom Crown */}
-          <View style={styles.bottomCrownContainer}>
-            <Animated.View
-              style={[
-                styles.crownContainer,
-                activeIndex === 3 && styles.activeCrownContainer,
-                {
-                  transform: [
+            {/* Middle Crowns */}
+            <View style={styles.middleCrownsContainer}>
+              {[1, 2].map(index => (
+                <Animated.View
+                  key={index}
+                  style={[
+                    styles.crownContainer,
+                    activeIndex === index && styles.activeCrownContainer,
                     {
-                      scale: glowAnimations[3].interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [1, 1.2],
-                      }),
+                      transform: [
+                        {
+                          scale: glowAnimations[index].interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [1, 1.2],
+                          }),
+                        },
+                      ],
                     },
-                  ],
-                },
-              ]}>
-              <TouchableOpacity
-                onPress={() => handleCrownPress(3)}
-                disabled={isPlaying}
+                  ]}>
+                  <TouchableOpacity
+                    onPress={() => handleCrownPress(index)}
+                    disabled={isPlaying}
+                    style={[
+                      styles.crownButton,
+                      activeIndex === index && styles.activeCrownButton,
+                    ]}>
+                    <Image
+                      source={CROWNS[0].crowns[index]}
+                      style={styles.crown}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </Animated.View>
+              ))}
+            </View>
+
+            {/* Bottom Crown */}
+            <View style={styles.bottomCrownContainer}>
+              <Animated.View
                 style={[
-                  styles.crownButton,
-                  activeIndex === 3 && styles.activeCrownButton,
+                  styles.crownContainer,
+                  activeIndex === 3 && styles.activeCrownContainer,
+                  {
+                    transform: [
+                      {
+                        scale: glowAnimations[3].interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [1, 1.2],
+                        }),
+                      },
+                    ],
+                  },
                 ]}>
-                <Image
-                  source={CROWNS[0].crowns[3]}
-                  style={styles.crown}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            </Animated.View>
+                <TouchableOpacity
+                  onPress={() => handleCrownPress(3)}
+                  disabled={isPlaying}
+                  style={[
+                    styles.crownButton,
+                    activeIndex === 3 && styles.activeCrownButton,
+                  ]}>
+                  <Image
+                    source={CROWNS[0].crowns[3]}
+                    style={styles.crown}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
           </View>
-        </View>
+        </>
       )}
       <GameOverModal />
     </View>
@@ -483,27 +499,33 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
   startText: {
-    color: '#FCF8EA',
     fontSize: 24,
+    color: '#FCF8EA',
     textAlign: 'center',
     marginBottom: 30,
+    fontWeight: 'bold',
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
     textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 10,
   },
   startButton: {
     backgroundColor: '#FCF8EA',
-    padding: 15,
+    paddingHorizontal: 30,
+    paddingVertical: 15,
     borderRadius: 25,
-    width: 200,
+    shadowColor: '#FCF8EA',
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 5,
   },
   startButtonText: {
+    fontSize: 20,
     color: '#000',
-    fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
   },
   modalOverlay: {
     flex: 1,
@@ -593,6 +615,30 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  statusContainer: {
+    position: 'absolute',
+    top: 120,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  statusText: {
+    fontSize: 24,
+    color: '#FCF8EA',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textShadowColor: 'rgba(252, 248, 234, 0.5)',
+    textShadowOffset: {width: 0, height: 0},
+    textShadowRadius: 10,
+    marginBottom: 10,
+  },
+  progressText: {
+    fontSize: 18,
+    color: '#FCF8EA',
+    opacity: 0.8,
     textAlign: 'center',
   },
 });
