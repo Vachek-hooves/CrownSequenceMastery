@@ -12,6 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {CROWNS} from '../../data/CustomizeCrown';
 import {useAppContext} from '../../store/context';
 import HintIcon from '../../components/Icons/HintIcon';
+import HomeIcon from '../../components/Icons/HomeIcon';
 
 const CrownGameScreen = ({navigation}) => {
   const {isGameSoundEnable} = useAppContext();
@@ -49,47 +50,53 @@ const CrownGameScreen = ({navigation}) => {
   }, [sequence]);
 
   // Play crown animation
-  const animateCrown = useCallback((index, duration = 500) => {
-    setActiveIndex(index);
-    
-    return new Promise(resolve => {
-      Animated.sequence([
-        Animated.timing(glowAnimations[index], {
-          toValue: 1,
-          duration: duration,
-          useNativeDriver: true,
-        }),
-        Animated.timing(glowAnimations[index], {
-          toValue: 0,
-          duration: duration,
-          useNativeDriver: true,
-        }),
-      ]).start(() => {
-        setActiveIndex(null);
-        resolve();
-      });
+  const animateCrown = useCallback(
+    (index, duration = 500) => {
+      setActiveIndex(index);
 
-      if (isGameSoundEnable) {
-        // Play sound effect here
-      }
-    });
-  }, [glowAnimations, isGameSoundEnable]);
+      return new Promise(resolve => {
+        Animated.sequence([
+          Animated.timing(glowAnimations[index], {
+            toValue: 1,
+            duration: duration,
+            useNativeDriver: true,
+          }),
+          Animated.timing(glowAnimations[index], {
+            toValue: 0,
+            duration: duration,
+            useNativeDriver: true,
+          }),
+        ]).start(() => {
+          setActiveIndex(null);
+          resolve();
+        });
+
+        if (isGameSoundEnable) {
+          // Play sound effect here
+        }
+      });
+    },
+    [glowAnimations, isGameSoundEnable],
+  );
 
   // Play sequence
-  const playSequence = useCallback(async (newSequence) => {
-    setIsPlaying(true);
-    
-    // Clear any existing timeout
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  const playSequence = useCallback(
+    async newSequence => {
+      setIsPlaying(true);
 
-    // Play each crown in sequence
-    for (let i = 0; i < newSequence.length; i++) {
-      await animateCrown(newSequence[i], 500);
-      await new Promise(resolve => setTimeout(resolve, 300)); // Gap between animations
-    }
-    
-    setIsPlaying(false);
-  }, [animateCrown]);
+      // Clear any existing timeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Play each crown in sequence
+      for (let i = 0; i < newSequence.length; i++) {
+        await animateCrown(newSequence[i], 500);
+        await new Promise(resolve => setTimeout(resolve, 300)); // Gap between animations
+      }
+
+      setIsPlaying(false);
+    },
+    [animateCrown],
+  );
 
   // Start new round
   const startNewRound = useCallback(async () => {
@@ -100,7 +107,7 @@ const CrownGameScreen = ({navigation}) => {
   }, [generateSequence, playSequence]);
 
   // Handle crown press
-  const handleCrownPress = async (index) => {
+  const handleCrownPress = async index => {
     if (isPlaying) return;
 
     await animateCrown(index, 300);
@@ -108,7 +115,10 @@ const CrownGameScreen = ({navigation}) => {
     setUserSequence(newUserSequence);
 
     // Check if the move was correct
-    if (newUserSequence[newUserSequence.length - 1] !== sequence[newUserSequence.length - 1]) {
+    if (
+      newUserSequence[newUserSequence.length - 1] !==
+      sequence[newUserSequence.length - 1]
+    ) {
       Alert.alert('Game Over', `Final Score: ${score}`, [
         {
           text: 'Try Again',
@@ -157,18 +167,22 @@ const CrownGameScreen = ({navigation}) => {
 
         <Text style={styles.score}>{score}</Text>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => {
             Alert.alert(
               'Leave Game',
               'Are you sure you want to exit? Your progress will be lost.',
               [
                 {text: 'Cancel', style: 'cancel'},
-                {text: 'Exit', onPress: () => navigation.navigate('MainScreen')},
-              ]
+                {
+                  text: 'Exit',
+                  onPress: () => navigation.navigate('MainScreen'),
+                },
+              ],
             );
           }}>
-          <View style={styles.iconCircle}>
+          <HomeIcon />
+          {/* <View style={styles.iconCircle}>
             <LinearGradient
               colors={['#FFEA9E', '#FCF8EA']}
               style={[styles.iconButton, styles.buttonShadow]}>
@@ -177,13 +191,15 @@ const CrownGameScreen = ({navigation}) => {
                 style={styles.icon}
               />
             </LinearGradient>
-          </View>
+          </View> */}
         </TouchableOpacity>
       </View>
 
       {!isGameStarted ? (
         <View style={styles.startContainer}>
-          <Text style={styles.startText}>Watch the sequence and repeat it!</Text>
+          <Text style={styles.startText}>
+            Watch the sequence and repeat it!
+          </Text>
           <TouchableOpacity onPress={startNewGame} style={styles.startButton}>
             <Text style={styles.startButtonText}>Start Game</Text>
           </TouchableOpacity>
@@ -197,12 +213,14 @@ const CrownGameScreen = ({navigation}) => {
                 styles.crownContainer,
                 activeIndex === 0 && styles.activeCrownContainer,
                 {
-                  transform: [{
-                    scale: glowAnimations[0].interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, 1.2],
-                    }),
-                  }],
+                  transform: [
+                    {
+                      scale: glowAnimations[0].interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 1.2],
+                      }),
+                    },
+                  ],
                 },
               ]}>
               <TouchableOpacity
@@ -212,8 +230,8 @@ const CrownGameScreen = ({navigation}) => {
                   styles.crownButton,
                   activeIndex === 0 && styles.activeCrownButton,
                 ]}>
-                <Image 
-                  source={CROWNS[0].crowns[0]} 
+                <Image
+                  source={CROWNS[0].crowns[0]}
                   style={styles.crown}
                   resizeMode="contain"
                 />
@@ -223,19 +241,21 @@ const CrownGameScreen = ({navigation}) => {
 
           {/* Middle Crowns */}
           <View style={styles.middleCrownsContainer}>
-            {[1, 2].map((index) => (
+            {[1, 2].map(index => (
               <Animated.View
                 key={index}
                 style={[
                   styles.crownContainer,
                   activeIndex === index && styles.activeCrownContainer,
                   {
-                    transform: [{
-                      scale: glowAnimations[index].interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [1, 1.2],
-                      }),
-                    }],
+                    transform: [
+                      {
+                        scale: glowAnimations[index].interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [1, 1.2],
+                        }),
+                      },
+                    ],
                   },
                 ]}>
                 <TouchableOpacity
@@ -245,8 +265,8 @@ const CrownGameScreen = ({navigation}) => {
                     styles.crownButton,
                     activeIndex === index && styles.activeCrownButton,
                   ]}>
-                  <Image 
-                    source={CROWNS[0].crowns[index]} 
+                  <Image
+                    source={CROWNS[0].crowns[index]}
                     style={styles.crown}
                     resizeMode="contain"
                   />
@@ -262,12 +282,14 @@ const CrownGameScreen = ({navigation}) => {
                 styles.crownContainer,
                 activeIndex === 3 && styles.activeCrownContainer,
                 {
-                  transform: [{
-                    scale: glowAnimations[3].interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, 1.2],
-                    }),
-                  }],
+                  transform: [
+                    {
+                      scale: glowAnimations[3].interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 1.2],
+                      }),
+                    },
+                  ],
                 },
               ]}>
               <TouchableOpacity
@@ -277,8 +299,8 @@ const CrownGameScreen = ({navigation}) => {
                   styles.crownButton,
                   activeIndex === 3 && styles.activeCrownButton,
                 ]}>
-                <Image 
-                  source={CROWNS[0].crowns[3]} 
+                <Image
+                  source={CROWNS[0].crowns[3]}
                   style={styles.crown}
                   resizeMode="contain"
                 />
@@ -368,8 +390,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   crownContainer: {
-    width: 120,
-    height: 120,
+    width: 150,
+    height: 150,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 60,
@@ -385,7 +407,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   activeCrownButton: {
-    backgroundColor: '#FCF8EA',
+    // backgroundColor: '#FCF8EA',
   },
   crown: {
     width: '100%',
