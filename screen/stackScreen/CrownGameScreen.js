@@ -396,9 +396,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 60,
   },
+  // activeCrownContainer: {
+  //   backgroundColor: '#FCF8EA'+90,
+  //   shadowColor: '#FCF8EA',
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 0,
+  //   },
+  //   shadowOpacity: 0.5,
+  //   shadowRadius: 10,
+  //   elevation: 5,
+  // },
   activeCrownContainer: {
     backgroundColor: '#FCF8EA',
   },
+
   crownButton: {
     width: '100%',
     height: '100%',
