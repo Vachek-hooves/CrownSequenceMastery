@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import React, {useState} from 'react';
 import MainLayout from '../../components/layout/MainLayout';
@@ -21,6 +22,7 @@ const SelectCrownScreen = () => {
   const navigation = useNavigation();
   const {totalScore, selectedCrownSet, setSelectedCrownSet} = useAppContext();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const screenWidth = Dimensions.get('window').width;
 
   // Crown sets with unlock conditions
   const crownSets = [
@@ -64,14 +66,15 @@ const SelectCrownScreen = () => {
             showsHorizontalScrollIndicator={false}
             onScroll={event => {
               const index = Math.round(
-                event.nativeEvent.contentOffset.x /
-                  event.nativeEvent.layoutMeasurement.width,
+                event.nativeEvent.contentOffset.x / screenWidth,
               );
               setCurrentIndex(index);
             }}
             scrollEventThrottle={16}>
             {crownSets.map((set, index) => (
-              <View key={set.id} style={styles.crownSetContainer}>
+              <View
+                key={set.id}
+                style={[styles.crownSetContainer, {width: screenWidth}]}>
                 <View style={styles.crownImageContainer}>
                   <Image
                     source={CROWNS[index].crowns[0]}
@@ -175,13 +178,13 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   crownSetContainer: {
-    width: 300,
     alignItems: 'center',
-    marginHorizontal: 10,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   crownImageContainer: {
-    width: 200,
-    height: 200,
+    width: 280,
+    height: 280,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 30,
@@ -190,7 +193,6 @@ const styles = StyleSheet.create({
   crownImage: {
     width: '100%',
     height: '100%',
-    opacity: 1,
   },
   lockedOverlay: {
     position: 'absolute',
@@ -203,39 +205,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
   },
-  lockedText: {
-    fontSize: 40,
-    marginBottom: 10,
-    textShadowColor: 'rgba(252, 248, 234, 0.5)',
-    textShadowOffset: {width: 0, height: 0},
-    textShadowRadius: 10,
+  lockIcon: {
+    width: 48,
+    height: 48,
+    marginBottom: 16,
+    tintColor: '#FCF8EA',
   },
   requiredScore: {
     color: '#FCF8EA',
-    fontSize: 16,
+    fontSize: 18,
     opacity: 0.8,
     textAlign: 'center',
     paddingHorizontal: 20,
   },
   buttonWrapper: {
     width: '100%',
+    maxWidth: 280,
     borderRadius: 25,
     overflow: 'hidden',
-    shadowColor: '#FCF8EA',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 5,
   },
   button: {
     borderRadius: 25,
     alignItems: 'center',
   },
   buttonText: {
-    paddingHorizontal: 20,
     paddingVertical: 16,
     fontSize: 18,
     fontWeight: 'bold',

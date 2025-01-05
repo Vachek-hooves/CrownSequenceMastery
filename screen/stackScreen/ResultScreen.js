@@ -5,6 +5,7 @@ import HomeIcon from '../../components/Icons/HomeIcon';
 import {useAppContext} from '../../store/context';
 import {useNavigation} from '@react-navigation/native';
 import CustomButton from '../../components/UI/CustomButton';
+import CrownIcon from '../../components/Icons/CrownIcon';
 
 const ResultScreen = () => {
   const {highScore, totalScore, nickname} = useAppContext();
@@ -14,16 +15,13 @@ const ResultScreen = () => {
     <MainLayout>
       <SafeAreaView style={styles.content}>
         <View style={styles.header}>
-          <CustomButton
-            onPress={() => navigation.navigate('MainScreen')}
-            variant="icon">
-            <HomeIcon />
-          </CustomButton>
+          <HomeIcon />
+          <CrownIcon />
         </View>
 
         <View style={styles.statsContainer}>
           <Text style={styles.title}>Game Statistics</Text>
-          
+
           <View style={styles.playerInfo}>
             <Text style={styles.playerName}>{nickname}</Text>
             <View style={styles.divider} />
@@ -54,22 +52,34 @@ const ResultScreen = () => {
             <View style={styles.achievementsList}>
               {/* Achievement items will be added here */}
               <View style={styles.achievementItem}>
-                <View style={[styles.achievementIcon, totalScore >= 100 && styles.achievementUnlocked]}>
+                <View
+                  style={[
+                    styles.achievementIcon,
+                    totalScore >= 100 && styles.achievementUnlocked,
+                  ]}>
                   <Text style={styles.achievementIconText}>🎯</Text>
                 </View>
                 <View style={styles.achievementInfo}>
                   <Text style={styles.achievementTitle}>Score Master</Text>
-                  <Text style={styles.achievementDesc}>Reach 100 total points</Text>
+                  <Text style={styles.achievementDesc}>
+                    Reach 100 total points
+                  </Text>
                 </View>
               </View>
 
               <View style={styles.achievementItem}>
-                <View style={[styles.achievementIcon, highScore >= 20 && styles.achievementUnlocked]}>
+                <View
+                  style={[
+                    styles.achievementIcon,
+                    highScore >= 20 && styles.achievementUnlocked,
+                  ]}>
                   <Text style={styles.achievementIconText}>👑</Text>
                 </View>
                 <View style={styles.achievementInfo}>
                   <Text style={styles.achievementTitle}>Crown Champion</Text>
-                  <Text style={styles.achievementDesc}>Get 20 points in one game</Text>
+                  <Text style={styles.achievementDesc}>
+                    Get 20 points in one game
+                  </Text>
                 </View>
               </View>
             </View>
@@ -86,7 +96,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    alignItems: 'flex-end',
+    // alignItems: 'flex-end',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   statsContainer: {
     flex: 1,

@@ -9,6 +9,7 @@ export const ContextProvider = ({children}) => {
   const [highScore, setHighScore] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const [nickname, setNickname] = useState('');
+  const [selectedCrownSet, setSelectedCrownSet] = useState(0);
 
   // Load saved data when app starts
   useEffect(() => {
@@ -54,6 +55,8 @@ export const ContextProvider = ({children}) => {
     nickname,
     setNickname,
     updateScores,
+    selectedCrownSet,
+  setSelectedCrownSet,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
