@@ -8,7 +8,6 @@ import {
   Animated,
   Alert,
   Modal,
-  SafeAreaView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {CROWNS} from '../../data/CustomizeCrown';
@@ -17,12 +16,7 @@ import HintIcon from '../../components/Icons/HintIcon';
 import HomeIcon from '../../components/Icons/HomeIcon';
 
 const CrownGameScreen = ({navigation}) => {
-  const {
-    isGameSoundEnable,
-    updateScores,
-    selectedCrownSet,
-    crowns,nickname
-  } = useAppContext();
+  const {isGameSoundEnable, updateScores, nickname} = useAppContext();
   const [sequence, setSequence] = useState([]);
   const [userSequence, setUserSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -172,9 +166,6 @@ const CrownGameScreen = ({navigation}) => {
     }
   };
 
-  // Get the current crown set based on selection
-  const currentCrownSet = crowns[selectedCrownSet];
-
   const GameOverModal = () => (
     <Modal
       animationType="fade"
@@ -278,23 +269,107 @@ const CrownGameScreen = ({navigation}) => {
           </View>
 
           <View style={styles.gameContainer}>
-            {[0, 1, 2, 3].map((index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleCrownPress(index)}
-                disabled={isPlaying || gameStatus === 'watching'}
+            {/* Top Crown */}
+            <View style={styles.topCrownContainer}>
+              <Animated.View
                 style={[
-                  styles.crownButton,
-                  styles[`crown${index}`],
-                  activeIndex === index && styles.activeCrown,
+                  styles.crownContainer,
+                  activeIndex === 0 && styles.activeCrownContainer,
+                  {
+                    transform: [
+                      {
+                        scale: glowAnimations[0].interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [1, 1.2],
+                        }),
+                      },
+                    ],
+                  },
                 ]}>
-                <Image
-                  source={currentCrownSet.crowns[index]}
-                  style={styles.crownImage}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            ))}
+                <TouchableOpacity
+                  onPress={() => handleCrownPress(0)}
+                  disabled={isPlaying}
+                  style={[
+                    styles.crownButton,
+                    activeIndex === 0 && styles.activeCrownButton,
+                  ]}>
+                  <Image
+                    source={CROWNS[0].crowns[0]}
+                    style={styles.crown}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
+
+            {/* Middle Crowns */}
+            <View style={styles.middleCrownsContainer}>
+              {[1, 2].map(index => (
+                <Animated.View
+                  key={index}
+                  style={[
+                    styles.crownContainer,
+                    activeIndex === index && styles.activeCrownContainer,
+                    {
+                      transform: [
+                        {
+                          scale: glowAnimations[index].interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [1, 1.2],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}>
+                  <TouchableOpacity
+                    onPress={() => handleCrownPress(index)}
+                    disabled={isPlaying}
+                    style={[
+                      styles.crownButton,
+                      activeIndex === index && styles.activeCrownButton,
+                    ]}>
+                    <Image
+                      source={CROWNS[0].crowns[index]}
+                      style={styles.crown}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                </Animated.View>
+              ))}
+            </View>
+
+            {/* Bottom Crown */}
+            <View style={styles.bottomCrownContainer}>
+              <Animated.View
+                style={[
+                  styles.crownContainer,
+                  activeIndex === 3 && styles.activeCrownContainer,
+                  {
+                    transform: [
+                      {
+                        scale: glowAnimations[3].interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [1, 1.2],
+                        }),
+                      },
+                    ],
+                  },
+                ]}>
+                <TouchableOpacity
+                  onPress={() => handleCrownPress(3)}
+                  disabled={isPlaying}
+                  style={[
+                    styles.crownButton,
+                    activeIndex === 3 && styles.activeCrownButton,
+                  ]}>
+                  <Image
+                    source={CROWNS[0].crowns[3]}
+                    style={styles.crown}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
           </View>
         </>
       )}
@@ -561,13 +636,6 @@ const styles = StyleSheet.create({
     color: '#FCF8EA',
     opacity: 0.8,
     textAlign: 'center',
-  },
-  crownImage: {
-    width: '100%',
-    height: '100%',
-  },
-  activeCrown: {
-    transform: [{scale: 1.1}],
   },
 });
 
