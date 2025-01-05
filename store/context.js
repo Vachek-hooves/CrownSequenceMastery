@@ -1,5 +1,6 @@
 import {createContext, useContext, useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {CROWNS} from '../data/CustomizeCrown';
 
 export const AppContext = createContext({});
 
@@ -10,6 +11,7 @@ export const ContextProvider = ({children}) => {
   const [totalScore, setTotalScore] = useState(0);
   const [nickname, setNickname] = useState('');
   const [selectedCrownSet, setSelectedCrownSet] = useState(0);
+  const [unlockedCrowns, setUnlockedCrowns] = useState([true, false, false, false]); // First crown always unlocked
 
   // Load saved data when app starts
   useEffect(() => {
@@ -21,10 +23,14 @@ export const ContextProvider = ({children}) => {
       const savedHighScore = await AsyncStorage.getItem('highScore');
       const savedTotalScore = await AsyncStorage.getItem('totalScore');
       const savedNickname = await AsyncStorage.getItem('nickname');
+      const savedUnlockedCrowns = await AsyncStorage.getItem('unlockedCrowns');
+      const savedSelectedCrownSet = await AsyncStorage.getItem('selectedCrownSet');
       
       if (savedHighScore) setHighScore(parseInt(savedHighScore));
       if (savedTotalScore) setTotalScore(parseInt(savedTotalScore));
       if (savedNickname) setNickname(savedNickname);
+      if (savedUnlockedCrowns) setUnlockedCrowns(JSON.parse(savedUnlockedCrowns));
+      if (savedSelectedCrownSet) setSelectedCrownSet(parseInt(savedSelectedCrownSet));
     } catch (error) {
       console.error('Error loading saved data:', error);
     }
@@ -45,6 +51,32 @@ export const ContextProvider = ({children}) => {
     }
   };
 
+  const unlockCrown = async (index) => {
+    try {
+      if (totalScore >= 200 && !unlockedCrowns[index]) {
+        const newUnlockedCrowns = [...unlockedCrowns];
+        newUnlockedCrowns[index] = true;
+        
+        await AsyncStorage.setItem('unlockedCrowns', JSON.stringify(newUnlockedCrowns));
+        setUnlockedCrowns(newUnlockedCrowns);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error unlocking crown:', error);
+      return false;
+    }
+  };
+
+  const selectCrownSet = async (index) => {
+    try {
+      await AsyncStorage.setItem('selectedCrownSet', index.toString());
+      setSelectedCrownSet(index);
+    } catch (error) {
+      console.error('Error selecting crown set:', error);
+    }
+  };
+
   const value = {
     isMusicEnable,
     setIsMusicEnable,
@@ -56,7 +88,10 @@ export const ContextProvider = ({children}) => {
     setNickname,
     updateScores,
     selectedCrownSet,
-  setSelectedCrownSet,
+    setSelectedCrownSet: selectCrownSet,
+    unlockedCrowns,
+    unlockCrown,
+    crowns: CROWNS,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

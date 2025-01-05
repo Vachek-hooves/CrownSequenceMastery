@@ -20,26 +20,25 @@ import CrownIcon from '../../components/Icons/CrownIcon';
 
 const SelectCrownScreen = () => {
   const navigation = useNavigation();
-  const {totalScore, selectedCrownSet, setSelectedCrownSet} = useAppContext();
+  const {
+    totalScore,
+    selectedCrownSet,
+    setSelectedCrownSet,
+    unlockedCrowns,
+    unlockCrown,
+    crowns
+  } = useAppContext();
   const [currentIndex, setCurrentIndex] = useState(0);
   const screenWidth = Dimensions.get('window').width;
 
-  // Crown sets with unlock conditions
-  const crownSets = [
-    {id: 0, name: 'Classic', required: 0}, // Always unlocked
-    {id: 1, name: 'Royal', required: 100},
-    {id: 2, name: 'Diamond', required: 250},
-    {id: 3, name: 'Mystic', required: 500},
-  ];
-
-  const isUnlocked = requiredScore => {
-    return totalScore >= requiredScore;
-  };
-
-  const handleSelectCrown = index => {
-    if (isUnlocked(crownSets[index].required)) {
-      setSelectedCrownSet(index);
-      // You might want to save this to AsyncStorage through context
+  const handleSelectCrown = async (index) => {
+    if (unlockedCrowns[index]) {
+      await setSelectedCrownSet(index);
+    } else if (totalScore >= 200) {
+      const unlocked = await unlockCrown(index);
+      if (unlocked) {
+        await setSelectedCrownSet(index);
+      }
     }
   };
 
@@ -64,28 +63,28 @@ const SelectCrownScreen = () => {
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            onScroll={event => {
+            onScroll={(event) => {
               const index = Math.round(
                 event.nativeEvent.contentOffset.x / screenWidth,
               );
               setCurrentIndex(index);
             }}
             scrollEventThrottle={16}>
-            {crownSets.map((set, index) => (
-              <View
-                key={set.id}
-                style={[styles.crownSetContainer, {width: screenWidth}]}>
+            {crowns.map((crownSet, index) => (
+              <View 
+                key={index} 
+                style={[styles.crownSetContainer, { width: screenWidth }]}>
                 <View style={styles.crownImageContainer}>
                   <Image
-                    source={CROWNS[index].crowns[0]}
+                    source={crownSet.crowns[0]}
                     style={styles.crownImage}
                     resizeMode="contain"
                   />
-                  {!isUnlocked(set.required) && (
+                  {!unlockedCrowns[index] && (
                     <View style={styles.lockedOverlay}>
                       <Text style={styles.lockedText}>🔒</Text>
                       <Text style={styles.requiredScore}>
-                        Score {set.required} to unlock
+                        Score 200 to unlock
                       </Text>
                     </View>
                   )}
@@ -93,11 +92,11 @@ const SelectCrownScreen = () => {
 
                 <TouchableOpacity
                   onPress={() => handleSelectCrown(index)}
-                  disabled={!isUnlocked(set.required)}
+                  disabled={!unlockedCrowns[index] && totalScore < 200}
                   style={styles.buttonWrapper}>
                   <LinearGradient
                     colors={
-                      isUnlocked(set.required)
+                      unlockedCrowns[index]
                         ? ['#FFEA9E', '#FCF8EA']
                         : ['#666666', '#444444']
                     }
@@ -105,7 +104,7 @@ const SelectCrownScreen = () => {
                     <Text
                       style={[
                         styles.buttonText,
-                        !isUnlocked(set.required) && styles.buttonTextDisabled,
+                        !unlockedCrowns[index] && styles.buttonTextDisabled,
                       ]}>
                       {selectedCrownSet === index ? 'Selected' : 'Select'}
                     </Text>
@@ -116,7 +115,7 @@ const SelectCrownScreen = () => {
           </ScrollView>
 
           <View style={styles.pagination}>
-            {crownSets.map((_, index) => (
+            {crowns.map((_, index) => (
               <View
                 key={index}
                 style={[
