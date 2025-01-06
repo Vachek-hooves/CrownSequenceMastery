@@ -35,6 +35,7 @@ const CrownGameScreen = ({navigation}) => {
   const [isGameOverModalVisible, setIsGameOverModalVisible] = useState(false);
   const [gameStatus, setGameStatus] = useState('waiting'); // 'waiting', 'watching', 'playing'
   const [statusMessage, setStatusMessage] = useState('Watch the sequence...');
+  const [level, setLevel] = useState(1);
 
   const [glowAnimations] = useState(
     CROWNS[0].crowns.map(() => new Animated.Value(0)),
@@ -131,13 +132,9 @@ const CrownGameScreen = ({navigation}) => {
     setUserSequence(newUserSequence);
 
     // Check if the move was correct
-    if (
-      newUserSequence[newUserSequence.length - 1] !==
-      sequence[newUserSequence.length - 1]
-    ) {
+    if (newUserSequence[newUserSequence.length - 1] !== sequence[newUserSequence.length - 1]) {
       // Wrong sequence - Game Over
-      await updateScores(score);
-      setIsGameOverModalVisible(true);
+      handleGameOver();
       return;
     }
 
@@ -146,6 +143,9 @@ const CrownGameScreen = ({navigation}) => {
       setScore(prev => prev + sequence.length);
       setGameStatus('waiting');
       setStatusMessage('Great job! Watch the next sequence...');
+      setLevel(prev => prev + 1); // Increment level when sequence is complete
+      
+      // Start new round after a delay
       setTimeout(() => {
         startNewRound();
       }, 1000);
@@ -229,6 +229,12 @@ const CrownGameScreen = ({navigation}) => {
     setGameStatus('gameover');
     setIsGameStarted(false);
     
+    console.warn('Game Over - Saving result:', {
+      score: score,
+      level: level,
+      sequence: sequence.length,
+    });
+
     // Add game result
     await addGameResult({
       score: score,
@@ -240,7 +246,7 @@ const CrownGameScreen = ({navigation}) => {
     await updateScores(score);
     
     // Show game over modal
-    setShowGameOverModal(true);
+    setIsGameOverModalVisible(true);
   };
 
   const checkSequence = () => {

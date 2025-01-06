@@ -13,15 +13,18 @@ import {useAppContext} from '../../store/context';
 import CrownIcon from '../../components/Icons/CrownIcon';
 
 const ResultScreen = () => {
-  const {highScore, totalScore, nickname, gameResults = []} = useAppContext();
-  console.log(gameResults,'game results');
+  const {highScore, totalScore, nickname, gameResults} = useAppContext();
+  console.log('Current game results:', gameResults); // Debug log
+
+  // Ensure gameResults is always an array
+  const results = gameResults || [];
 
   return (
     <MainLayout>
       <SafeAreaView style={styles.content}>
         <View style={styles.header}>
           <HomeIcon />
-          <CrownIcon />
+          {/* <CrownIcon /> */}
         </View>
 
         <View style={styles.statsContainer}>
@@ -51,37 +54,37 @@ const ResultScreen = () => {
 
           <View style={styles.achievementsContainer}>
             <Text style={styles.sectionTitle}>Game Results</Text>
-            <ScrollView
+            <ScrollView 
               style={styles.resultsScroll}
               showsVerticalScrollIndicator={false}>
-              {gameResults.map((result, index) => (
-                <View key={index} style={styles.resultItem}>
-                  <View style={styles.resultHeader}>
-                    <Text style={styles.resultDate}>
-                      {new Date(result.date).toLocaleDateString()}
-                    </Text>
-                    <Text style={styles.resultTime}>
-                      {new Date(result.date).toLocaleTimeString()}
-                    </Text>
+              {results.length > 0 ? (
+                results.map((result, index) => (
+                  <View key={index} style={styles.resultItem}>
+                    <View style={styles.resultHeader}>
+                      <Text style={styles.resultDate}>
+                        {new Date(result.date).toLocaleDateString()}
+                      </Text>
+                      <Text style={styles.resultTime}>
+                        {new Date(result.date).toLocaleTimeString()}
+                      </Text>
+                    </View>
+                    <View style={styles.resultDetails}>
+                      <View style={styles.resultStat}>
+                        <Text style={styles.resultLabel}>Score</Text>
+                        <Text style={styles.resultValue}>{result.score}</Text>
+                      </View>
+                      <View style={styles.resultStat}>
+                        <Text style={styles.resultLabel}>Level</Text>
+                        <Text style={styles.resultValue}>{result.level}</Text>
+                      </View>
+                      <View style={styles.resultStat}>
+                        <Text style={styles.resultLabel}>Sequence</Text>
+                        <Text style={styles.resultValue}>{result.sequence}</Text>
+                      </View>
+                    </View>
                   </View>
-                  <View style={styles.resultDetails}>
-                    <View style={styles.resultStat}>
-                      <Text style={styles.resultLabel}>Score</Text>
-                      <Text style={styles.resultValue}>{result.score}</Text>
-                    </View>
-                    <View style={styles.resultStat}>
-                      <Text style={styles.resultLabel}>Level</Text>
-                      <Text style={styles.resultValue}>{result.level}</Text>
-                    </View>
-                    <View style={styles.resultStat}>
-                      <Text style={styles.resultLabel}>Sequence</Text>
-                      <Text style={styles.resultValue}>{result.sequence}</Text>
-                    </View>
-                  </View>
-                </View>
-              ))}
-
-              {gameResults.length === 0 && (
+                ))
+              ) : (
                 <View style={styles.noResultsContainer}>
                   <Text style={styles.noResultsText}>No games played yet</Text>
                   <Text style={styles.noResultsSubtext}>

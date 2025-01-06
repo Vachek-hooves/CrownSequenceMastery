@@ -15,7 +15,7 @@ export const ContextProvider = ({children}) => {
   const [selectedBackground, setSelectedBackground] = useState(0);
   const [unlockedBackgrounds, setUnlockedBackgrounds] = useState([true, false, false, false]);
   const [gameResults, setGameResults] = useState([]);
-  console.log(selectedBackground);
+
 
   // Load saved data when app starts
   useEffect(() => {
@@ -126,8 +126,11 @@ export const ContextProvider = ({children}) => {
           ...result,
           date: new Date().toISOString(),
         },
-        ...gameResults,
+        ...(gameResults || []),
       ];
+      // Use console.warn for more visible logging in RN
+      console.warn('Saving new results:', newResults); 
+      
       await AsyncStorage.setItem('gameResults', JSON.stringify(newResults));
       setGameResults(newResults);
     } catch (error) {
