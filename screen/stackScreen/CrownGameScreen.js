@@ -46,21 +46,32 @@ const CrownGameScreen = ({navigation}) => {
     startNewGame();
   }, []);
 
-  // Start new game
+  // Start new game with complete reset
   const startNewGame = () => {
     setSequence([]);
     setUserSequence([]);
     setScore(0);
     setHintsLeft(3);
+    setLevel(1);
     setIsGameStarted(true);
-    startNewRound();
+    setGameStatus('waiting');
+    setStatusMessage('Watch the sequence...');
+    setActiveIndex(null);
+    setIsGameOverModalVisible(false);
+    
+    // Start first round with new sequence
+    setTimeout(() => {
+      const newSequence = generateSequence();
+      setSequence(newSequence);
+      playSequence(newSequence);
+    }, 1000);
   };
 
   // Generate new sequence
   const generateSequence = useCallback(() => {
     const newStep = Math.floor(Math.random() * 4);
-    return [...sequence, newStep];
-  }, [sequence]);
+    return [newStep];
+  }, []);
 
   // Play crown animation
   const animateCrown = useCallback(
@@ -117,11 +128,13 @@ const CrownGameScreen = ({navigation}) => {
 
   // Start new round
   const startNewRound = useCallback(async () => {
-    const newSequence = generateSequence();
+    const currentSequence = [...sequence];
+    const newStep = Math.floor(Math.random() * 4);
+    const newSequence = [...currentSequence, newStep];
     setSequence(newSequence);
     setUserSequence([]);
     await playSequence(newSequence);
-  }, [generateSequence, playSequence]);
+  }, [sequence, playSequence]);
 
   // Handle crown press
   const handleCrownPress = async index => {
@@ -155,10 +168,10 @@ const CrownGameScreen = ({navigation}) => {
     }
   };
 
-  // Add function to handle game restart
+  // Handle game restart
   const handleGameRestart = () => {
     setIsGameOverModalVisible(false);
-    startNewGame();
+    startNewGame(); // Use startNewGame instead of direct state updates
   };
 
   // Add function to handle return to menu
