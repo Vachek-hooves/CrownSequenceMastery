@@ -16,6 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppContext} from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
 import CrownIcon from '../../components/Icons/CrownIcon';
+import ReturnIcon from '../../components/Icons/ReturnIcon';
 
 const SelectCrownScreen = () => {
   const navigation = useNavigation();
@@ -138,6 +139,7 @@ const SelectCrownScreen = () => {
             ))}
           </View>
         </View>
+        <ReturnIcon/>
       </SafeAreaView>
     </MainLayout>
   );
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   mainContent: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
   },
   title: {
@@ -187,7 +189,7 @@ const styles = StyleSheet.create({
   },
   crownSetContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     paddingHorizontal: 20,
   },
   crownImageContainer: {
@@ -195,7 +197,7 @@ const styles = StyleSheet.create({
     height: 280,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 10,
     position: 'relative',
   },
   crownImage: {
@@ -250,7 +252,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 80,
     gap: 8,
   },
   paginationDot: {
@@ -261,6 +263,7 @@ const styles = StyleSheet.create({
   },
   paginationDotActive: {
     backgroundColor: '#FCF8EA',
+    width: 12,
   },
   selectedButtonText: {
     color: '#FCF8EA',

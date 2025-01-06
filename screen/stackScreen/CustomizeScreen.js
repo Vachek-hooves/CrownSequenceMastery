@@ -4,6 +4,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import MainLayout from '../../components/layout/MainLayout';
@@ -12,6 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 import CustomButton from '../../components/UI/CustomButton';
 import {useAppContext} from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
+import ReturnIcon from '../../components/Icons/ReturnIcon';
 
 const CustomizeScreen = () => {
   const navigation = useNavigation();
@@ -19,7 +21,9 @@ const CustomizeScreen = () => {
 
   return (
     <MainLayout>
-      <SafeAreaView style={styles.content}>
+      <ScrollView
+        // style={styles.content}
+        contentContainerStyle={styles.content}>
         <View style={styles.mainContent}>
           <Text style={styles.title}>Crown Customization</Text>
           <Text style={styles.subtitle}>
@@ -49,7 +53,8 @@ const CustomizeScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      </ScrollView>
+      <ReturnIcon />
     </MainLayout>
   );
 };

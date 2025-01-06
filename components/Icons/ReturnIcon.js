@@ -13,7 +13,7 @@ const ReturnIcon = () => {
       end={{x: 1, y: 1}}>
       <TouchableOpacity
         style={styles.homeButton}
-        onPress={() => navigation.navigate('MainScreen')}>
+        onPress={() => navigation.goBack()}>
         <Image
           source={require('../../assets/image/icons/returnIcon.png')}
           style={styles.homeIcon}

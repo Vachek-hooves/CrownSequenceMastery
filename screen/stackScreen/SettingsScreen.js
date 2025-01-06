@@ -50,13 +50,13 @@ const SettingsScreen = () => {
             />
           </View>
 
-          <View style={styles.settingRow}>
+          {/* <View style={styles.settingRow}>
             <Text style={styles.settingText}>Game Sound</Text>
             <CustomSwitch
               value={isGameSoundEnable}
               onValueChange={handleSoundToggle}
             />
-          </View>
+          </View> */}
         </View>
         <ReturnIcon />
       </SafeAreaView>
