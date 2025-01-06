@@ -1,6 +1,6 @@
 workflows:
   crown-workflow:
-    name: Crowns Sequence Mastery
+    name: Crowns
     max_build_duration: 120
     integrations:
       app_store_connect: CrownSequanceCodemagicKey
