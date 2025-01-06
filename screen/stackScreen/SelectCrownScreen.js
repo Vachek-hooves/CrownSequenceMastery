@@ -34,7 +34,7 @@ const SelectCrownScreen = () => {
   const handleSelectCrown = async (index) => {
     if (unlockedCrowns[index]) {
       await setSelectedCrownSet(index);
-    } else if (totalScore >= 20) {
+    } else if (totalScore >= 200) {
       try {
         const unlocked = await unlockCrown(index);
         if (unlocked) {
@@ -46,8 +46,8 @@ const SelectCrownScreen = () => {
     } else {
       Alert.alert(
         'Crown Locked',
-        'You need 20 points to unlock this crown set.',
-        [{ text: 'OK', style: 'default' }]
+        'You need 200 points to unlock this crown set.',
+        [{text: 'OK', style: 'default'}],
       );
     }
   };
@@ -94,7 +94,7 @@ const SelectCrownScreen = () => {
                     <View style={styles.lockedOverlay}>
                       <Text style={styles.lockedText}>🔒</Text>
                       <Text style={styles.requiredScore}>
-                        Score 20 to unlock
+                        Score 200 to unlock
                       </Text>
                     </View>
                   )}
@@ -102,7 +102,7 @@ const SelectCrownScreen = () => {
 
                 <TouchableOpacity
                   onPress={() => handleSelectCrown(index)}
-                  disabled={!unlockedCrowns[index] && totalScore < 20}
+                  disabled={!unlockedCrowns[index] && totalScore < 200}
                   style={styles.buttonWrapper}>
                   <LinearGradient
                     colors={

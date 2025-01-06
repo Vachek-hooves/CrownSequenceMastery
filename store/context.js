@@ -16,6 +16,7 @@ export const ContextProvider = ({children}) => {
   const [unlockedBackgrounds, setUnlockedBackgrounds] = useState([true, false, false, false]);
   const [gameResults, setGameResults] = useState([]);
 
+  const UNLOCK_COST = 200; // Define cost constant
 
   // Load saved data when app starts
   useEffect(() => {
@@ -69,12 +70,18 @@ export const ContextProvider = ({children}) => {
 
   const unlockCrown = async (index) => {
     try {
-      if (totalScore >= 20 && !unlockedCrowns[index]) {
+      if (totalScore >= UNLOCK_COST && !unlockedCrowns[index]) {
+        // Deduct points from total score
+        const newTotalScore = totalScore - UNLOCK_COST;
+        await AsyncStorage.setItem('totalScore', newTotalScore.toString());
+        setTotalScore(newTotalScore);
+
+        // Unlock the crown
         const newUnlockedCrowns = [...unlockedCrowns];
         newUnlockedCrowns[index] = true;
-        
         await AsyncStorage.setItem('unlockedCrowns', JSON.stringify(newUnlockedCrowns));
         setUnlockedCrowns(newUnlockedCrowns);
+        
         return true;
       }
       return false;
@@ -95,12 +102,18 @@ export const ContextProvider = ({children}) => {
 
   const unlockBackground = async (index) => {
     try {
-      if (totalScore >= 20 && !unlockedBackgrounds[index]) {
+      if (totalScore >= UNLOCK_COST && !unlockedBackgrounds[index]) {
+        // Deduct points from total score
+        const newTotalScore = totalScore - UNLOCK_COST;
+        await AsyncStorage.setItem('totalScore', newTotalScore.toString());
+        setTotalScore(newTotalScore);
+
+        // Unlock the background
         const newUnlockedBackgrounds = [...unlockedBackgrounds];
         newUnlockedBackgrounds[index] = true;
-        
         await AsyncStorage.setItem('unlockedBackgrounds', JSON.stringify(newUnlockedBackgrounds));
         setUnlockedBackgrounds(newUnlockedBackgrounds);
+        
         return true;
       }
       return false;

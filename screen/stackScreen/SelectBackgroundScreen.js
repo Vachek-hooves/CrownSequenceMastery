@@ -32,7 +32,7 @@ const SelectBackgroundScreen = () => {
   const handleSelectBackground = async index => {
     if (unlockedBackgrounds[index]) {
       await setSelectedBackground(index);
-    } else if (totalScore >= 20) {
+    } else if (totalScore >= 200) {
       try {
         const unlocked = await unlockBackground(index);
         if (unlocked) {
@@ -44,7 +44,7 @@ const SelectBackgroundScreen = () => {
     } else {
       Alert.alert(
         'Background Locked',
-        'You need 20 points to unlock this background.',
+        'You need 200 points to unlock this background.',
         [{text: 'OK', style: 'default'}],
       );
     }

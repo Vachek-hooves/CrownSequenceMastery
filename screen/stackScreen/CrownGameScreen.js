@@ -58,7 +58,7 @@ const CrownGameScreen = ({navigation}) => {
     setStatusMessage('Watch the sequence...');
     setActiveIndex(null);
     setIsGameOverModalVisible(false);
-    
+
     // Start first round with new sequence
     setTimeout(() => {
       const newSequence = generateSequence();
@@ -119,6 +119,7 @@ const CrownGameScreen = ({navigation}) => {
         await new Promise(resolve => setTimeout(resolve, 300));
       }
 
+      console.log(newSequence);
       setIsPlaying(false);
       setGameStatus('playing');
       setStatusMessage('Your turn! Repeat the sequence');
@@ -156,7 +157,7 @@ const CrownGameScreen = ({navigation}) => {
 
     // Check if sequence is complete
     if (newUserSequence.length === sequence.length) {
-      setScore(prev => prev + (sequence.length * 2));
+      setScore(prev => prev + sequence.length * 2);
       setGameStatus('waiting');
       setStatusMessage('Great job! Watch the next sequence...');
       setLevel(prev => prev + 1); // Increment level when sequence is complete
