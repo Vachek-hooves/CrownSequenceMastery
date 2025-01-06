@@ -14,6 +14,7 @@ export const ContextProvider = ({children}) => {
   const [unlockedCrowns, setUnlockedCrowns] = useState([true, false, false, false]); // First crown always unlocked
   const [selectedBackground, setSelectedBackground] = useState(0);
   const [unlockedBackgrounds, setUnlockedBackgrounds] = useState([true, false, false, false]);
+  const [gameResults, setGameResults] = useState([]);
   console.log(selectedBackground);
 
   // Load saved data when app starts
@@ -30,6 +31,7 @@ export const ContextProvider = ({children}) => {
       const savedSelectedCrownSet = await AsyncStorage.getItem('selectedCrownSet');
       const savedBackground = await AsyncStorage.getItem('selectedBackground');
       const savedUnlockedBackgrounds = await AsyncStorage.getItem('unlockedBackgrounds');
+      const savedResults = await AsyncStorage.getItem('gameResults');
       
       if (savedHighScore) setHighScore(parseInt(savedHighScore));
       if (savedTotalScore) setTotalScore(parseInt(savedTotalScore));
@@ -41,6 +43,9 @@ export const ContextProvider = ({children}) => {
       }
       if (savedUnlockedBackgrounds) {
         setUnlockedBackgrounds(JSON.parse(savedUnlockedBackgrounds));
+      }
+      if (savedResults) {
+        setGameResults(JSON.parse(savedResults));
       }
     } catch (error) {
       console.error('Error loading saved data:', error);
@@ -114,6 +119,22 @@ export const ContextProvider = ({children}) => {
     }
   };
 
+  const addGameResult = async (result) => {
+    try {
+      const newResults = [
+        {
+          ...result,
+          date: new Date().toISOString(),
+        },
+        ...gameResults,
+      ];
+      await AsyncStorage.setItem('gameResults', JSON.stringify(newResults));
+      setGameResults(newResults);
+    } catch (error) {
+      console.error('Error saving game result:', error);
+    }
+  };
+
   const value = {
     isMusicEnable,
     setIsMusicEnable,
@@ -133,6 +154,8 @@ export const ContextProvider = ({children}) => {
     setSelectedBackground: selectBackground,
     unlockedBackgrounds,
     unlockBackground,
+    gameResults,
+    addGameResult,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

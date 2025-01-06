@@ -14,6 +14,7 @@ import CrownIcon from '../../components/Icons/CrownIcon';
 
 const ResultScreen = () => {
   const {highScore, totalScore, nickname, gameResults = []} = useAppContext();
+  console.log(gameResults,'game results');
 
   return (
     <MainLayout>

@@ -17,8 +17,14 @@ import HomeIcon from '../../components/Icons/HomeIcon';
 import GameScreenLayout from '../../components/layout/GameScreenLayout';
 
 const CrownGameScreen = ({navigation}) => {
-  const {isGameSoundEnable, updateScores, nickname, selectedCrownSet, crowns} =
-    useAppContext();
+  const {
+    isGameSoundEnable,
+    updateScores,
+    nickname,
+    selectedCrownSet,
+    crowns,
+    addGameResult,
+  } = useAppContext();
   const [sequence, setSequence] = useState([]);
   const [userSequence, setUserSequence] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -218,6 +224,38 @@ const CrownGameScreen = ({navigation}) => {
       </View>
     </Modal>
   );
+
+  const handleGameOver = async () => {
+    setGameStatus('gameover');
+    setIsGameStarted(false);
+    
+    // Add game result
+    await addGameResult({
+      score: score,
+      level: level,
+      sequence: sequence.length,
+    });
+
+    // Update high score and total score
+    await updateScores(score);
+    
+    // Show game over modal
+    setShowGameOverModal(true);
+  };
+
+  const checkSequence = () => {
+    if (JSON.stringify(sequence) === JSON.stringify(userSequence)) {
+      playCorrectSound();
+      setScore(prevScore => prevScore + 10);
+      setLevel(prevLevel => prevLevel + 1);
+      generateSequence(level + 1);
+      setUserSequence([]);
+      setGameStatus('watching');
+    } else {
+      playWrongSound();
+      handleGameOver(); // This will now save the game result
+    }
+  };
 
   return (
     <GameScreenLayout>
