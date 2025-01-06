@@ -12,6 +12,9 @@ export const ContextProvider = ({children}) => {
   const [nickname, setNickname] = useState('');
   const [selectedCrownSet, setSelectedCrownSet] = useState(0);
   const [unlockedCrowns, setUnlockedCrowns] = useState([true, false, false, false]); // First crown always unlocked
+  const [selectedBackground, setSelectedBackground] = useState(0);
+  const [unlockedBackgrounds, setUnlockedBackgrounds] = useState([true, false, false, false]);
+  console.log(selectedBackground);
 
   // Load saved data when app starts
   useEffect(() => {
@@ -68,6 +71,23 @@ export const ContextProvider = ({children}) => {
     }
   };
 
+  const unlockBackground = async (index) => {
+    try {
+      if (totalScore >= 20 && !unlockedBackgrounds[index]) {
+        const newUnlockedBackgrounds = [...unlockedBackgrounds];
+        newUnlockedBackgrounds[index] = true;
+        
+        await AsyncStorage.setItem('unlockedBackgrounds', JSON.stringify(newUnlockedBackgrounds));
+        setUnlockedBackgrounds(newUnlockedBackgrounds);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Error unlocking background:', error);
+      return false;
+    }
+  };
+
   const selectCrownSet = async (index) => {
     try {
       await AsyncStorage.setItem('selectedCrownSet', index.toString());
@@ -92,6 +112,10 @@ export const ContextProvider = ({children}) => {
     unlockedCrowns,
     unlockCrown,
     crowns: CROWNS,
+    selectedBackground,
+  setSelectedBackground,
+  unlockedBackgrounds,
+  unlockBackground,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
