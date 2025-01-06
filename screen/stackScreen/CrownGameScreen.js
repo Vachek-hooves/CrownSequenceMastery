@@ -156,7 +156,7 @@ const CrownGameScreen = ({navigation}) => {
 
     // Check if sequence is complete
     if (newUserSequence.length === sequence.length) {
-      setScore(prev => prev + sequence.length);
+      setScore(prev => prev + (sequence.length * 2));
       setGameStatus('waiting');
       setStatusMessage('Great job! Watch the next sequence...');
       setLevel(prev => prev + 1); // Increment level when sequence is complete

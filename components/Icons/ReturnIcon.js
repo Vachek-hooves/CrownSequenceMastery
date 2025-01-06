@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     marginLeft: 30,
     marginTop: 30,
     position: 'absolute',
-    bottom: 70,
+    bottom: 60,
     right: 70,
   },
   homeButtonShadow: {

@@ -19,7 +19,7 @@ const NameScreen = ({navigation}) => {
   const [nickname, setNickname] = useState('');
   const [userImage, setUserImage] = useState(null);
   const [isExistingUser, setIsExistingUser] = useState(false);
-  const isValidNickname = nickname.trim().length > 2;
+  const isValidNickname = nickname.trim().length > 1;
 
   useEffect(() => {
     loadUserData();
