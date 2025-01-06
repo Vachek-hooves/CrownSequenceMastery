@@ -15,6 +15,7 @@ import {useAppContext} from '../../store/context';
 import LinearGradient from 'react-native-linear-gradient';
 import CrownIcon from '../../components/Icons/CrownIcon';
 import {background} from '../../data/CustomizeBackground';
+import ReturnIcon from '../../components/Icons/ReturnIcon';
 
 const SelectBackgroundScreen = () => {
   const navigation = useNavigation();
@@ -28,7 +29,7 @@ const SelectBackgroundScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const screenWidth = Dimensions.get('window').width;
 
-  const handleSelectBackground = async (index) => {
+  const handleSelectBackground = async index => {
     if (unlockedBackgrounds[index]) {
       await setSelectedBackground(index);
     } else if (totalScore >= 20) {
@@ -44,7 +45,7 @@ const SelectBackgroundScreen = () => {
       Alert.alert(
         'Background Locked',
         'You need 20 points to unlock this background.',
-        [{ text: 'OK', style: 'default' }]
+        [{text: 'OK', style: 'default'}],
       );
     }
   };
@@ -62,15 +63,13 @@ const SelectBackgroundScreen = () => {
 
         <View style={styles.mainContent}>
           <Text style={styles.title}>Background</Text>
-          <Text style={styles.subtitle}>
-            Choose your game background color
-          </Text>
+          <Text style={styles.subtitle}>Choose your game background color</Text>
 
           <ScrollView
             horizontal
             pagingEnabled
             showsHorizontalScrollIndicator={false}
-            onScroll={(event) => {
+            onScroll={event => {
               const index = Math.round(
                 event.nativeEvent.contentOffset.x / screenWidth,
               );
@@ -78,15 +77,12 @@ const SelectBackgroundScreen = () => {
             }}
             scrollEventThrottle={16}>
             {background.map((bg, index) => (
-              <View 
-                key={index} 
-                style={[styles.bgContainer, { width: screenWidth }]}>
+              <View
+                key={index}
+                style={[styles.bgContainer, {width: screenWidth}]}>
                 <View style={styles.colorPreviewContainer}>
-                  <View 
-                    style={[
-                      styles.colorPreview,
-                      { backgroundColor: bg.bgColor }
-                    ]}
+                  <View
+                    style={[styles.colorPreview, {backgroundColor: bg.bgColor}]}
                   />
                   {!unlockedBackgrounds[index] && (
                     <View style={styles.lockedOverlay}>
@@ -107,15 +103,17 @@ const SelectBackgroundScreen = () => {
                       selectedBackground === index
                         ? ['#666666', '#444444']
                         : unlockedBackgrounds[index]
-                          ? ['#FFEA9E', '#FCF8EA']
-                          : ['#666666', '#444444']
+                        ? ['#FFEA9E', '#FCF8EA']
+                        : ['#666666', '#444444']
                     }
                     style={styles.button}>
                     <Text
                       style={[
                         styles.buttonText,
-                        selectedBackground === index && styles.selectedButtonText,
-                        !unlockedBackgrounds[index] && styles.buttonTextDisabled,
+                        selectedBackground === index &&
+                          styles.selectedButtonText,
+                        !unlockedBackgrounds[index] &&
+                          styles.buttonTextDisabled,
                       ]}>
                       {selectedBackground === index ? 'SELECTED' : 'Select'}
                     </Text>
@@ -137,6 +135,7 @@ const SelectBackgroundScreen = () => {
             ))}
           </View>
         </View>
+        <ReturnIcon />
       </SafeAreaView>
     </MainLayout>
   );
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   mainContent: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'center',
   },
   title: {
@@ -252,7 +251,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 80,
     gap: 8,
   },
   paginationDot: {

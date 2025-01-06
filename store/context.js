@@ -28,12 +28,20 @@ export const ContextProvider = ({children}) => {
       const savedNickname = await AsyncStorage.getItem('nickname');
       const savedUnlockedCrowns = await AsyncStorage.getItem('unlockedCrowns');
       const savedSelectedCrownSet = await AsyncStorage.getItem('selectedCrownSet');
+      const savedBackground = await AsyncStorage.getItem('selectedBackground');
+      const savedUnlockedBackgrounds = await AsyncStorage.getItem('unlockedBackgrounds');
       
       if (savedHighScore) setHighScore(parseInt(savedHighScore));
       if (savedTotalScore) setTotalScore(parseInt(savedTotalScore));
       if (savedNickname) setNickname(savedNickname);
       if (savedUnlockedCrowns) setUnlockedCrowns(JSON.parse(savedUnlockedCrowns));
       if (savedSelectedCrownSet) setSelectedCrownSet(parseInt(savedSelectedCrownSet));
+      if (savedBackground) {
+        setSelectedBackground(parseInt(savedBackground));
+      }
+      if (savedUnlockedBackgrounds) {
+        setUnlockedBackgrounds(JSON.parse(savedUnlockedBackgrounds));
+      }
     } catch (error) {
       console.error('Error loading saved data:', error);
     }
@@ -68,6 +76,15 @@ export const ContextProvider = ({children}) => {
     } catch (error) {
       console.error('Error unlocking crown:', error);
       return false;
+    }
+  };
+
+  const selectBackground = async (index) => {
+    try {
+      await AsyncStorage.setItem('selectedBackground', index.toString());
+      setSelectedBackground(index);
+    } catch (error) {
+      console.error('Error saving background selection:', error);
     }
   };
 
@@ -113,9 +130,9 @@ export const ContextProvider = ({children}) => {
     unlockCrown,
     crowns: CROWNS,
     selectedBackground,
-  setSelectedBackground,
-  unlockedBackgrounds,
-  unlockBackground,
+    setSelectedBackground: selectBackground,
+    unlockedBackgrounds,
+    unlockBackground,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
