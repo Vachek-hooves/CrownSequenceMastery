@@ -38,10 +38,8 @@ const ResultScreen = () => {
             </View>
 
             <View style={styles.scoreItem}>
-              {/* <Image
-                source={require('../../assets/image/icons/trophyIcon.png')}
-                style={styles.icon}
-              /> */}
+              <Text style={styles.trophyIcon}>🏆</Text>
+              
               <Text style={styles.scoreLabel}>Total Score</Text>
               <Text style={styles.scoreValue}>{totalScore}</Text>
             </View>
@@ -144,6 +142,11 @@ const styles = StyleSheet.create({
     height: 40,
     marginBottom: 10,
     tintColor: '#FCF8EA',
+  },
+  trophyIcon: {
+    fontSize: 38,
+    color: '#FCF8EA',
+    marginBottom: 10,
   },
   scoreLabel: {
     color: '#FCF8EA',
