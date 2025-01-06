@@ -88,7 +88,7 @@ const SelectBackgroundScreen = () => {
                     <View style={styles.lockedOverlay}>
                       <Text style={styles.lockedText}>🔒</Text>
                       <Text style={styles.requiredScore}>
-                        Score 20 to unlock
+                        Score 200 to unlock
                       </Text>
                     </View>
                   )}
@@ -96,7 +96,7 @@ const SelectBackgroundScreen = () => {
 
                 <TouchableOpacity
                   onPress={() => handleSelectBackground(index)}
-                  disabled={!unlockedBackgrounds[index] && totalScore < 20}
+                  disabled={!unlockedBackgrounds[index] && totalScore < 200}
                   style={styles.buttonWrapper}>
                   <LinearGradient
                     colors={
