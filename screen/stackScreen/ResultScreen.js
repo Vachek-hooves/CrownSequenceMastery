@@ -100,10 +100,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    margin: 20,
   },
   statsContainer: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 20,
   },
   title: {
     fontSize: 32,

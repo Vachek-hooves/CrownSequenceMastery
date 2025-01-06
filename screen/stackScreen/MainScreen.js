@@ -12,8 +12,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../../components/UI/CustomButton';
 import CrownIcon from '../../components/Icons/CrownIcon';
 import LampIcon from '../../components/Icons/LampIcon';
+import {useAppContext} from '../../store/context';
 
 const MainScreen = ({navigation}) => {
+  const {totalScore} = useAppContext();
   return (
     <ImageBackground
       source={require('../../assets/image/bg/bg.png')}
@@ -22,7 +24,7 @@ const MainScreen = ({navigation}) => {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.scoreContainer}>
-            <Text style={styles.scoreText}>0</Text>
+            <Text style={styles.scoreText}>{totalScore}</Text>
             <CrownIcon />
           </View>
         </View>
