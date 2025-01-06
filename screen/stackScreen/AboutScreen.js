@@ -19,7 +19,9 @@ const AboutScreen = () => {
       source={require('../../assets/image/bg/bg.png')}
       style={styles.container}>
       <SafeAreaView style={styles.content}>
-        <HomeIcon />
+        <View style={styles.header}>
+          <HomeIcon />
+        </View>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.textContainer}>
             <Text style={styles.title}>About Game</Text>

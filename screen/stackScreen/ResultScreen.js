@@ -24,7 +24,6 @@ const ResultScreen = () => {
       <SafeAreaView style={styles.content}>
         <View style={styles.header}>
           <HomeIcon />
-          {/* <CrownIcon /> */}
         </View>
 
         <View style={styles.statsContainer}>
@@ -54,7 +53,7 @@ const ResultScreen = () => {
 
           <View style={styles.achievementsContainer}>
             <Text style={styles.sectionTitle}>Game Results</Text>
-            <ScrollView 
+            <ScrollView
               style={styles.resultsScroll}
               showsVerticalScrollIndicator={false}>
               {results.length > 0 ? (
@@ -79,7 +78,9 @@ const ResultScreen = () => {
                       </View>
                       <View style={styles.resultStat}>
                         <Text style={styles.resultLabel}>Sequence</Text>
-                        <Text style={styles.resultValue}>{result.sequence}</Text>
+                        <Text style={styles.resultValue}>
+                          {result.sequence}
+                        </Text>
                       </View>
                     </View>
                   </View>
