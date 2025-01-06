@@ -1,15 +1,19 @@
-import {SafeAreaView, StyleSheet, Text, View, Image} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import HomeIcon from '../../components/Icons/HomeIcon';
 import {useAppContext} from '../../store/context';
-import {useNavigation} from '@react-navigation/native';
-import CustomButton from '../../components/UI/CustomButton';
 import CrownIcon from '../../components/Icons/CrownIcon';
 
 const ResultScreen = () => {
-  const {highScore, totalScore, nickname} = useAppContext();
-  const navigation = useNavigation();
+  const {highScore, totalScore, nickname, gameResults = []} = useAppContext();
 
   return (
     <MainLayout>
@@ -39,48 +43,52 @@ const ResultScreen = () => {
 
             <View style={styles.scoreItem}>
               <Text style={styles.trophyIcon}>🏆</Text>
-              
               <Text style={styles.scoreLabel}>Total Score</Text>
               <Text style={styles.scoreValue}>{totalScore}</Text>
             </View>
           </View>
 
           <View style={styles.achievementsContainer}>
-            <Text style={styles.sectionTitle}>Achievements</Text>
-            <View style={styles.achievementsList}>
-              {/* Achievement items will be added here */}
-              <View style={styles.achievementItem}>
-                <View
-                  style={[
-                    styles.achievementIcon,
-                    totalScore >= 100 && styles.achievementUnlocked,
-                  ]}>
-                  <Text style={styles.achievementIconText}>🎯</Text>
+            <Text style={styles.sectionTitle}>Game Results</Text>
+            <ScrollView
+              style={styles.resultsScroll}
+              showsVerticalScrollIndicator={false}>
+              {gameResults.map((result, index) => (
+                <View key={index} style={styles.resultItem}>
+                  <View style={styles.resultHeader}>
+                    <Text style={styles.resultDate}>
+                      {new Date(result.date).toLocaleDateString()}
+                    </Text>
+                    <Text style={styles.resultTime}>
+                      {new Date(result.date).toLocaleTimeString()}
+                    </Text>
+                  </View>
+                  <View style={styles.resultDetails}>
+                    <View style={styles.resultStat}>
+                      <Text style={styles.resultLabel}>Score</Text>
+                      <Text style={styles.resultValue}>{result.score}</Text>
+                    </View>
+                    <View style={styles.resultStat}>
+                      <Text style={styles.resultLabel}>Level</Text>
+                      <Text style={styles.resultValue}>{result.level}</Text>
+                    </View>
+                    <View style={styles.resultStat}>
+                      <Text style={styles.resultLabel}>Sequence</Text>
+                      <Text style={styles.resultValue}>{result.sequence}</Text>
+                    </View>
+                  </View>
                 </View>
-                <View style={styles.achievementInfo}>
-                  <Text style={styles.achievementTitle}>Score Master</Text>
-                  <Text style={styles.achievementDesc}>
-                    Reach 100 total points
-                  </Text>
-                </View>
-              </View>
+              ))}
 
-              <View style={styles.achievementItem}>
-                <View
-                  style={[
-                    styles.achievementIcon,
-                    highScore >= 20 && styles.achievementUnlocked,
-                  ]}>
-                  <Text style={styles.achievementIconText}>👑</Text>
-                </View>
-                <View style={styles.achievementInfo}>
-                  <Text style={styles.achievementTitle}>Crown Champion</Text>
-                  <Text style={styles.achievementDesc}>
-                    Get 20 points in one game
+              {gameResults.length === 0 && (
+                <View style={styles.noResultsContainer}>
+                  <Text style={styles.noResultsText}>No games played yet</Text>
+                  <Text style={styles.noResultsSubtext}>
+                    Your game results will appear here
                   </Text>
                 </View>
-              </View>
-            </View>
+              )}
+            </ScrollView>
           </View>
         </View>
       </SafeAreaView>
@@ -102,20 +110,20 @@ const styles = StyleSheet.create({
   },
   statsContainer: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 10,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#FCF8EA',
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 10,
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
     textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 10,
   },
   playerInfo: {
-    marginBottom: 30,
+    marginBottom: 15,
   },
   playerName: {
     fontSize: 24,
@@ -126,13 +134,13 @@ const styles = StyleSheet.create({
   divider: {
     height: 2,
     backgroundColor: 'rgba(252, 248, 234, 0.2)',
-    width: '50%',
+    width: '80%',
     alignSelf: 'center',
   },
   scoreSection: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 40,
+    marginBottom: 20,
   },
   scoreItem: {
     alignItems: 'center',
@@ -161,49 +169,71 @@ const styles = StyleSheet.create({
   },
   achievementsContainer: {
     flex: 1,
+    marginTop: 20,
   },
   sectionTitle: {
     fontSize: 24,
     color: '#FCF8EA',
     marginBottom: 20,
     fontWeight: '600',
+    textAlign: 'center',
   },
-  achievementsList: {
-    gap: 15,
+  resultsScroll: {
+    flex: 1,
   },
-  achievementItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  resultItem: {
     backgroundColor: 'rgba(252, 248, 234, 0.1)',
     borderRadius: 15,
     padding: 15,
+    marginBottom: 15,
   },
-  achievementIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'rgba(252, 248, 234, 0.2)',
-    justifyContent: 'center',
+  resultHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  resultDate: {
+    color: '#FCF8EA',
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  resultTime: {
+    color: '#FCF8EA',
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  resultDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  resultStat: {
     alignItems: 'center',
-    marginRight: 15,
   },
-  achievementUnlocked: {
-    backgroundColor: '#FCF8EA',
+  resultLabel: {
+    color: '#FCF8EA',
+    fontSize: 12,
+    opacity: 0.8,
+    marginBottom: 4,
   },
-  achievementIconText: {
-    fontSize: 24,
+  resultValue: {
+    color: '#FCF8EA',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  achievementInfo: {
-    flex: 1,
+  noResultsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 30,
   },
-  achievementTitle: {
+  noResultsText: {
     color: '#FCF8EA',
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 5,
+    marginBottom: 8,
   },
-  achievementDesc: {
+  noResultsSubtext: {
     color: '#FCF8EA',
+    fontSize: 14,
     opacity: 0.8,
   },
 });
