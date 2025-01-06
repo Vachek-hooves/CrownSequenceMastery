@@ -5,6 +5,7 @@ import {
   View,
   SafeAreaView,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import CustomSwitch from '../../components/UI/CustomSwitch';
 import {
@@ -14,7 +15,7 @@ import {
 import {useAppContext} from '../../store/context';
 import ReturnIcon from '../../components/Icons/ReturnIcon';
 
-const SettingsScreen = () => {
+const SettingsScreen = ({navigation}) => {
   const {
     isMusicEnable,
     setIsMusicEnable,
@@ -47,6 +48,19 @@ const SettingsScreen = () => {
             <CustomSwitch
               value={isMusicEnable}
               onValueChange={handleMusicToggle}
+            />
+          </View>
+
+          <View style={styles.settingRow}>
+            <Text style={styles.settingText}>Change user name</Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#FCF8EA',
+                width: 30,
+                height: 30,
+                borderRadius: 20,
+              }}
+              onPress={() => navigation.navigate('NameScreen')}
             />
           </View>
 
