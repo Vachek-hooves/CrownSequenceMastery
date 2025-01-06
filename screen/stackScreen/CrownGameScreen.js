@@ -232,7 +232,7 @@ const CrownGameScreen = ({navigation}) => {
     setGameStatus('gameover');
     setIsGameStarted(false);
 
-    console.warn('Game Over - Saving result:', {
+    console.log('Game Over - Saving result:', {
       score: score,
       level: level,
       sequence: sequence.length,
@@ -277,12 +277,12 @@ const CrownGameScreen = ({navigation}) => {
 
       {!isGameStarted ? (
         <View style={styles.startContainer}>
-          <Text style={styles.startText}>
+          {/* <Text style={styles.startText}>
             Watch the sequence and repeat it!
-          </Text>
-          <TouchableOpacity onPress={startNewGame} style={styles.startButton}>
+          </Text> */}
+          {/* <TouchableOpacity onPress={startNewGame} style={styles.startButton}>
             <Text style={styles.startButtonText}>Start Game</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       ) : (
         <>
@@ -626,6 +626,7 @@ const styles = StyleSheet.create({
     width: '40%',
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: 5,
   },
   menuButtonText: {
     color: '#000',
@@ -638,6 +639,9 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 25,
     width: '40%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
   },
   tryAgainButtonText: {
     color: '#000',

@@ -129,7 +129,7 @@ export const ContextProvider = ({children}) => {
         ...(gameResults || []),
       ];
       // Use console.warn for more visible logging in RN
-      console.warn('Saving new results:', newResults); 
+      console.log('Saving new results:', newResults); 
       
       await AsyncStorage.setItem('gameResults', JSON.stringify(newResults));
       setGameResults(newResults);
