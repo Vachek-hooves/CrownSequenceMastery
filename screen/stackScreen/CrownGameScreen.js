@@ -132,7 +132,10 @@ const CrownGameScreen = ({navigation}) => {
     setUserSequence(newUserSequence);
 
     // Check if the move was correct
-    if (newUserSequence[newUserSequence.length - 1] !== sequence[newUserSequence.length - 1]) {
+    if (
+      newUserSequence[newUserSequence.length - 1] !==
+      sequence[newUserSequence.length - 1]
+    ) {
       // Wrong sequence - Game Over
       handleGameOver();
       return;
@@ -144,7 +147,7 @@ const CrownGameScreen = ({navigation}) => {
       setGameStatus('waiting');
       setStatusMessage('Great job! Watch the next sequence...');
       setLevel(prev => prev + 1); // Increment level when sequence is complete
-      
+
       // Start new round after a delay
       setTimeout(() => {
         startNewRound();
@@ -228,7 +231,7 @@ const CrownGameScreen = ({navigation}) => {
   const handleGameOver = async () => {
     setGameStatus('gameover');
     setIsGameStarted(false);
-    
+
     console.warn('Game Over - Saving result:', {
       score: score,
       level: level,
@@ -244,7 +247,7 @@ const CrownGameScreen = ({navigation}) => {
 
     // Update high score and total score
     await updateScores(score);
-    
+
     // Show game over modal
     setIsGameOverModalVisible(true);
   };
@@ -259,7 +262,7 @@ const CrownGameScreen = ({navigation}) => {
       setGameStatus('watching');
     } else {
       playWrongSound();
-      handleGameOver(); // This will now save the game result
+      // handleGameOver(); // This will now save the game result
     }
   };
 
@@ -621,6 +624,8 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 25,
     width: '40%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   menuButtonText: {
     color: '#000',

@@ -14,7 +14,9 @@ const WelcomeScreen = ({navigation}) => {
     <ImageBackground
       source={require('../../assets/image/bg/bg.png')}
       style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>
           Welcome to{'\n'}Crowns Sequence{'\n'}Mastery
         </Text>
@@ -56,6 +58,7 @@ const WelcomeScreen = ({navigation}) => {
           onPress={() => navigation.navigate('NameScreen')}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
+        {/* <View style={{height: 30}} /> */}
       </ScrollView>
     </ImageBackground>
   );
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   content: {
-    flex: 1,
+    // flex: 1,
     padding: 20,
     justifyContent: 'space-between',
   },
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
     lineHeight: 40,
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
-    textShadowOffset: { width: 0, height: 0 },
+    textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 10,
   },
   subtitle: {
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 30,
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
-    textShadowOffset: { width: 0, height: 0 },
+    textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 8,
   },
   instructionsContainer: {
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
     color: '#FCF8EA',
     marginBottom: 10,
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
-    textShadowOffset: { width: 0, height: 0 },
+    textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 8,
   },
   instruction: {
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     paddingLeft: 20,
     textShadowColor: 'rgba(252, 248, 234, 0.3)',
-    textShadowOffset: { width: 0, height: 0 },
+    textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 5,
   },
   nextButton: {
