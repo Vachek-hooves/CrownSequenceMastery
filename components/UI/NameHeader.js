@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 40,
+    marginVertical: 20,
   },
   menuIconContainer: {
     // width: 50,

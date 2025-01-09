@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Image,
   Alert,
+  ScrollView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -108,46 +109,44 @@ const NameScreen = ({navigation}) => {
       source={require('../../assets/image/bg/bg.png')}
       style={styles.container}
       // blurRadius={100}
-      >
+    >
       <SafeAreaView style={styles.content}>
-        <View style={styles.headerRow}>
-          <HomeIcon />
-          <Text style={styles.title}>Nickname</Text>
-        </View>
-
-        <TouchableOpacity onPress={selectImage} style={styles.imageContainer}>
-          {userImage ? (
-            <Image source={{uri: userImage}} style={styles.profileImage} />
-          ) : (
-            <View style={styles.placeholderImage}>
-              <Text style={styles.placeholderText}>Add Photo</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-
-        <Text style={styles.subtitle}>
-          Every ruler needs a name. Enter yours to begin the challenge
-        </Text>
-
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your nickname"
-            placeholderTextColor="rgba(252, 248, 234, 0.5)"
-            value={nickname}
-            onChangeText={setNickname}
-            maxLength={20}
-          />
-        </View>
-
-        {isExistingUser && (
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={deleteUserData}>
-            <Text style={styles.deleteButtonText}>Delete Profile</Text>
+        <ScrollView>
+          <View style={styles.headerRow}>
+            <HomeIcon />
+            <Text style={styles.title}>Nickname</Text>
+          </View>
+          <TouchableOpacity onPress={selectImage} style={styles.imageContainer}>
+            {userImage ? (
+              <Image source={{uri: userImage}} style={styles.profileImage} />
+            ) : (
+              <View style={styles.placeholderImage}>
+                <Text style={styles.placeholderText}>Add Photo</Text>
+              </View>
+            )}
           </TouchableOpacity>
-        )}
-
+          <Text style={styles.subtitle}>
+            Every ruler needs a name. Enter yours to begin the challenge
+          </Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your nickname"
+              placeholderTextColor="rgba(252, 248, 234, 0.5)"
+              value={nickname}
+              onChangeText={setNickname}
+              maxLength={20}
+            />
+          </View>
+          {isExistingUser && (
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={deleteUserData}>
+              <Text style={styles.deleteButtonText}>Delete Profile</Text>
+            </TouchableOpacity>
+          )}
+          {/* <View style={{height: 100}} /> */}
+        </ScrollView>
         {isValidNickname ? (
           <LinearGradient
             colors={['#FFEA9E', '#FCF8EA']}
@@ -178,12 +177,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
-    paddingTop: 100,
-    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingHorizontal: 10,
   },
   content: {
     flex: 1,
-    padding: 40,
+    padding: 30,
   },
   headerRow: {
     flexDirection: 'row',
@@ -226,7 +225,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(128, 128, 128, 0.3)',
     // padding: 15,
     borderRadius: 25,
-    marginBottom: '10%',
+    marginBottom: 20,
+    marginTop:40
   },
   startButtonShadow: {
     shadowColor: '#FCF8EA',

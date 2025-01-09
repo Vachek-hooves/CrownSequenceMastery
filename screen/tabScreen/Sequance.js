@@ -66,7 +66,7 @@ const Sequance = ({navigation}) => {
             <Text style={styles.addButtonText}>+</Text>
           </LinearGradient>
         </TouchableOpacity>
-        <View style={{height: 100}}></View>
+        <View style={{height: 110}}></View>
       </SafeAreaView>
     </MainLayout>
   );
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     // bottom: 100,
     alignSelf: 'center',
-    marginTop: 40,
+    marginTop: 20,
   },
   addButtonGradient: {
     width: 60,

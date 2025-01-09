@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    // marginLeft: 30,
-    // marginTop: 30,
+    marginLeft: 15,
+    marginTop: 15,
   },
   homeButtonShadow: {
     shadowColor: '#FCF8EA',

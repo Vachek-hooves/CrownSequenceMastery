@@ -7,6 +7,7 @@ import {
   TextInput,
   SafeAreaView,
   Modal,
+  ScrollView,
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {AppContext} from '../../store/context';
@@ -112,7 +113,7 @@ const EditSequence = ({route, navigation}) => {
 
     const success = await updateSequence(id, updatedSequence);
     if (success) {
-      navigation.navigate('Navigation',{screen: 'Sequance'});
+      navigation.navigate('Navigation', {screen: 'Sequance'});
     }
   };
 
@@ -126,82 +127,83 @@ const EditSequence = ({route, navigation}) => {
           <Text style={styles.closeButtonText}>×</Text>
         </TouchableOpacity>
       </View>
-
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          value={goal}
-          onChangeText={setGoal}
-          placeholder="Set Your Goal"
-          placeholderTextColor="#666"
-        />
-
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          value={description}
-          onChangeText={setDescription}
-          placeholder="Write a description"
-          placeholderTextColor="#666"
-          multiline
-          numberOfLines={4}
-        />
-
-        <TouchableOpacity
-          style={styles.colorPickerButton}
-          onPress={() => setShowColorPicker(true)}>
-          <View
-            style={[styles.colorPreview, {backgroundColor: selectedColor}]}
+      <ScrollView>
+        <View style={styles.form}>
+          <TextInput
+            style={styles.input}
+            value={goal}
+            onChangeText={setGoal}
+            placeholder="Set Your Goal"
+            placeholderTextColor="#666"
           />
-        </TouchableOpacity>
 
-        <Text style={styles.sectionTitle}>
-          Set a start date and end date to stay focused and motivated
-        </Text>
-
-        <View style={styles.dateContainer}>
-          <TouchableOpacity
-            style={[styles.input, styles.dateInput]}
-            onPress={() => setShowStartCalendar(true)}>
-            <Text style={startDate ? styles.dateText : styles.placeholderText}>
-              {startDate || 'Start date'}
-            </Text>
-          </TouchableOpacity>
+          <TextInput
+            style={[styles.input, styles.textArea]}
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Write a description"
+            placeholderTextColor="#666"
+            multiline
+            numberOfLines={4}
+          />
 
           <TouchableOpacity
-            style={[styles.input, styles.dateInput]}
-            onPress={() => setShowEndCalendar(true)}>
-            <Text style={endDate ? styles.dateText : styles.placeholderText}>
-              {endDate || 'End date'}
-            </Text>
+            style={styles.colorPickerButton}
+            onPress={() => setShowColorPicker(true)}>
+            <View
+              style={[styles.colorPreview, {backgroundColor: selectedColor}]}
+            />
           </TouchableOpacity>
-        </View>
 
-        <Text style={styles.sectionTitle}>Select days for your sequence</Text>
-        <View style={styles.daysContainer}>
-          {weekDays.map(day => (
+          <Text style={styles.sectionTitle}>
+            Set a start date and end date to stay focused and motivated
+          </Text>
+
+          <View style={styles.dateContainer}>
             <TouchableOpacity
-              key={day}
-              style={[
-                styles.dayButton,
-                selectedDays.includes(day) && styles.dayButtonSelected,
-              ]}
-              onPress={() => toggleDay(day)}>
+              style={[styles.input, styles.dateInput]}
+              onPress={() => setShowStartCalendar(true)}>
               <Text
-                style={[
-                  styles.dayButtonText,
-                  selectedDays.includes(day) && styles.dayButtonTextSelected,
-                ]}>
-                {day}
+                style={startDate ? styles.dateText : styles.placeholderText}>
+                {startDate || 'Start date'}
               </Text>
             </TouchableOpacity>
-          ))}
+
+            <TouchableOpacity
+              style={[styles.input, styles.dateInput]}
+              onPress={() => setShowEndCalendar(true)}>
+              <Text style={endDate ? styles.dateText : styles.placeholderText}>
+                {endDate || 'End date'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.sectionTitle}>Select days for your sequence</Text>
+          <View style={styles.daysContainer}>
+            {weekDays.map(day => (
+              <TouchableOpacity
+                key={day}
+                style={[
+                  styles.dayButton,
+                  selectedDays.includes(day) && styles.dayButtonSelected,
+                ]}
+                onPress={() => toggleDay(day)}>
+                <Text
+                  style={[
+                    styles.dayButtonText,
+                    selectedDays.includes(day) && styles.dayButtonTextSelected,
+                  ]}>
+                  {day}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
+            <Text style={styles.updateButtonText}>Update</Text>
+          </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
-          <Text style={styles.updateButtonText}>Update</Text>
-        </TouchableOpacity>
-      </View>
-
+      </ScrollView>
       {/* Calendar Modals with added props */}
       <CalendarModal
         visible={showStartCalendar}
@@ -235,7 +237,7 @@ const EditSequence = ({route, navigation}) => {
   );
 };
 
-const ColorPickerModal = ({ visible, onClose, colors, onSelectColor }) => (
+const ColorPickerModal = ({visible, onClose, colors, onSelectColor}) => (
   <Modal
     animationType="fade"
     transparent={true}
@@ -249,7 +251,7 @@ const ColorPickerModal = ({ visible, onClose, colors, onSelectColor }) => (
         {colors.map(color => (
           <TouchableOpacity
             key={color}
-            style={[styles.colorOption, { backgroundColor: color }]}
+            style={[styles.colorOption, {backgroundColor: color}]}
             onPress={() => onSelectColor(color)}
           />
         ))}
@@ -258,7 +260,14 @@ const ColorPickerModal = ({ visible, onClose, colors, onSelectColor }) => (
   </Modal>
 );
 
-const CalendarModal = ({ visible, onClose, onDayPress, minDate, markedDates, selectedColor }) => (
+const CalendarModal = ({
+  visible,
+  onClose,
+  onDayPress,
+  minDate,
+  markedDates,
+  selectedColor,
+}) => (
   <Modal
     animationType="fade"
     transparent={true}
@@ -396,6 +405,7 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
     marginTop: 'auto',
+    marginTop: 60,
   },
   updateButtonText: {
     color: '#000000',

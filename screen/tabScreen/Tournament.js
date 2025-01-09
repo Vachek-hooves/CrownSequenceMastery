@@ -30,7 +30,7 @@ const Tournament = ({navigation}) => {
           </View>
         </View>
 
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {/* Crown Image and Title */}
           <View style={styles.titleContainer}>
             <Image
@@ -66,7 +66,7 @@ const Tournament = ({navigation}) => {
           </View>
         </ScrollView>
       </SafeAreaView>
-        <View style={{height: 50}} />
+        <View style={{height: 120}} />
     </ImageBackground>
   );
 };
