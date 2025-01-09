@@ -105,19 +105,30 @@ const styles = StyleSheet.create({
   tabBar: {
     height: 80,
     borderTopWidth: 0,
-    elevation: 0,
+    elevation: 8, // Increased for better shadow on Android
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    bottom: 20, // Added gap from bottom
+    left: 10,
+    right: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    marginHorizontal: 20,
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   tabIcon: {
-    width: 24,
-    height: 24,
+    width: 32,
+    height: 32,
     tintColor: '#000000',
     opacity: 0.5,
+    marginTop:25
   },
   tabIconFocused: {
     opacity: 1,
@@ -128,6 +139,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     opacity: 0.5,
     marginTop: 4,
+    paddingTop:20
   },
   tabLabelFocused: {
     opacity: 1,
