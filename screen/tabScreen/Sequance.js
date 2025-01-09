@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,24 +8,17 @@ import {
 } from 'react-native';
 import MainLayout from '../../components/layout/MainLayout';
 import LinearGradient from 'react-native-linear-gradient';
-import { AppContext } from '../../store/context';
+import {AppContext} from '../../store/context';
+import NameHeader from '../../components/UI/NameHeader';
 
 const Sequance = () => {
-  const { nickname } = useContext(AppContext);
+  // const {nickname} = useContext(AppContext);
 
   return (
     <MainLayout>
       <SafeAreaView style={styles.container}>
         {/* Header Section */}
-        <View style={styles.header}>
-          <View style={styles.profileIcon}>
-            <Text style={styles.profileIconText}>☰</Text>
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>Welcome back,</Text>
-            <Text style={styles.nicknameText}>{nickname}</Text>
-          </View>
-        </View>
+        <NameHeader />
 
         {/* Content Section */}
         <View style={styles.content}>
@@ -62,38 +55,6 @@ const Sequance = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  profileIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#FFEA9E',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  profileIconText: {
-    fontSize: 18,
-    color: '#000000',
-  },
-  welcomeContainer: {
-    flex: 1,
-  },
-  welcomeText: {
-    fontSize: 16,
-    color: '#FCF8EA',
-    opacity: 0.8,
-  },
-  nicknameText: {
-    fontSize: 24,
-    color: '#FCF8EA',
-    fontWeight: 'bold',
   },
   content: {
     flex: 1,
