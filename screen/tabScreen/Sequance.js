@@ -31,7 +31,7 @@ const Sequance = ({navigation}) => {
             <TouchableOpacity
               key={sequence.id}
               style={styles.sequenceCard}
-              onPress={() => navigation.navigate('SequenceDetail', { id: sequence.id })}>
+              onPress={() => navigation.navigate('SequenceDetails', { id: sequence.id })}>
               <View style={[styles.cardIndicator, { backgroundColor: sequence.color }]} />
               <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>{sequence.goal}</Text>
