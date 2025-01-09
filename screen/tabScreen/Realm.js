@@ -21,7 +21,8 @@ const Realm = () => {
     tasks, 
     addTask, 
     updateTaskProgress, 
-    updateTaskClaimed 
+    updateTaskClaimed,
+    deleteTask 
   } = useContext(AppContext);
   const [nickname, setNickname] = useState('');
   const [currentDate, setCurrentDate] = useState('');
@@ -69,6 +70,10 @@ const Realm = () => {
 
   const handleTaskClaim = async (taskId) => {
     await updateTaskClaimed(taskId, true);
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    await deleteTask(taskId);
   };
 
   return (
@@ -120,6 +125,7 @@ const Realm = () => {
                     isClaimed={task.isClaimed}
                     onProgressChange={(progress) => handleTaskProgress(task.id, progress)}
                     onClaim={() => handleTaskClaim(task.id)}
+                    onDelete={() => handleDeleteTask(task.id)}
                   />
                 ))}
               </View>

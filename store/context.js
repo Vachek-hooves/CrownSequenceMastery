@@ -207,6 +207,18 @@ export const ContextProvider = ({children}) => {
     }
   };
 
+  const deleteTask = async (taskId) => {
+    try {
+      const updatedTasks = tasks.filter(task => task.id !== taskId);
+      await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+      setTasks(updatedTasks);
+      return true;
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      return false;
+    }
+  };
+
   const value = {
     isMusicEnable,
     setIsMusicEnable,
@@ -232,6 +244,7 @@ export const ContextProvider = ({children}) => {
     addTask,
     updateTaskProgress,
     updateTaskClaimed,
+    deleteTask,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

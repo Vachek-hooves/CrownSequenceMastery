@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const TaskItem = ({
@@ -8,20 +8,38 @@ const TaskItem = ({
   isClaimed = false,
   onProgressChange,
   onClaim,
+  onDelete,
 }) => {
   const progressSteps = [0, 25, 50, 75, 100];
 
-  const handleProgressPress = (step) => {
-    onProgressChange(step);
-  };
-
-  const handleClaim = () => {
-    onClaim();
+  const handleDelete = () => {
+    Alert.alert(
+      'Delete Task',
+      'Are you sure you want to delete this task?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: onDelete,
+          style: 'destructive',
+        },
+      ],
+    );
   };
 
   return (
     <View style={styles.container}>
-      {/* Left indicator - changes color when claimed */}
+      {/* Delete Button */}
+      <TouchableOpacity 
+        style={styles.deleteButton}
+        onPress={handleDelete}>
+        <Text style={styles.deleteButtonText}>×</Text>
+      </TouchableOpacity>
+
+      {/* Left indicator */}
       <View style={[
         styles.indicator, 
         isClaimed && styles.indicatorClaimed
@@ -36,7 +54,7 @@ const TaskItem = ({
           {progressSteps.map((step) => (
             <TouchableOpacity
               key={step}
-              onPress={() => handleProgressPress(step)}
+              onPress={() => onProgressChange(step)}
               style={styles.progressStepWrapper}>
               <View style={[
                 styles.progressStep,
@@ -51,7 +69,7 @@ const TaskItem = ({
       {/* Claim Button */}
       <TouchableOpacity 
         style={styles.claimButton}
-        onPress={handleClaim}>
+        onPress={onClaim}>
         <LinearGradient
           colors={['#FFEA9E', '#FCF8EA']}
           style={styles.claimGradient}
@@ -82,6 +100,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     padding: 16,
+    paddingRight: 40, // Make space for delete button
   },
   title: {
     color: '#FCF8EA',
@@ -125,6 +144,24 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 14,
     fontWeight: '600',
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  deleteButtonText: {
+    color: '#FCF8EA',
+    fontSize: 20,
+    fontWeight: 'bold',
+    lineHeight: 20,
   },
 });
 
