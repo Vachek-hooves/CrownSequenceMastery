@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Modal
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -17,8 +18,20 @@ const CreateSequance = ({ navigation }) => {
   const [endDate, setEndDate] = useState('');
   const [task, setTask] = useState('');
   const [selectedDays, setSelectedDays] = useState([]);
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [selectedColor, setSelectedColor] = useState('#00FF00'); // Default green color
 
   const weekDays = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+  const colors = [
+    '#00FF00', // Green
+    '#FF0000', // Red
+    '#0000FF', // Blue
+    '#FFFF00', // Yellow
+    '#FF00FF', // Magenta
+    '#00FFFF', // Cyan
+    '#FFA500', // Orange
+    '#800080', // Purple
+  ];
 
   const toggleDay = (day) => {
     if (selectedDays.includes(day)) {
@@ -28,6 +41,32 @@ const CreateSequance = ({ navigation }) => {
     }
   };
 
+  const ColorPickerModal = () => (
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={showColorPicker}
+      onRequestClose={() => setShowColorPicker(false)}>
+      <TouchableOpacity
+        style={styles.modalOverlay}
+        activeOpacity={1}
+        onPress={() => setShowColorPicker(false)}>
+        <View style={styles.colorPickerContainer}>
+          {colors.map((color) => (
+            <TouchableOpacity
+              key={color}
+              style={[styles.colorOption, { backgroundColor: color }]}
+              onPress={() => {
+                setSelectedColor(color);
+                setShowColorPicker(false);
+              }}
+            />
+          ))}
+        </View>
+      </TouchableOpacity>
+    </Modal>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -35,7 +74,7 @@ const CreateSequance = ({ navigation }) => {
 
       
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>+ Create a New Sequence</Text>
+        <Text style={styles.headerTitle}>Create a New Sequence</Text>
         <TouchableOpacity 
           style={styles.closeButton}
           onPress={() => navigation.goBack()}>
@@ -61,6 +100,12 @@ const CreateSequance = ({ navigation }) => {
           numberOfLines={4}
           value={description}
           onChangeText={setDescription}
+        />
+
+        {/* Color Picker Button */}
+        <TouchableOpacity
+          style={[styles.colorPickerButton, { backgroundColor: selectedColor }]}
+          onPress={() => setShowColorPicker(true)}
         />
 
         <Text style={styles.sectionTitle}>
@@ -127,12 +172,16 @@ const CreateSequance = ({ navigation }) => {
           </LinearGradient>
         </TouchableOpacity>
 
+        
+
         {/* Set Button */}
         <TouchableOpacity style={styles.setButton}>
           <Text style={styles.setButtonText}>Set</Text>
         </TouchableOpacity>
       </View>
       </ScrollView>
+
+      <ColorPickerModal />
     </SafeAreaView>
   );
 };
@@ -246,6 +295,41 @@ const styles = StyleSheet.create({
     color: '#FCF8EA',
     fontSize: 18,
     fontWeight: '600',
+  },
+  colorPickerButton: {
+    width: 30,
+    height: 30,
+    borderRadius: '50%',
+    // position: 'absolute',
+    // top: 120, // Adjust based on your layout
+    // right: 20,
+    alignSelf: 'center',
+    marginVertical:15
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  colorPickerContainer: {
+    backgroundColor: '#1A1A1A',
+    padding: 20,
+    borderRadius: 12,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '80%',
+    maxWidth: 300,
+    justifyContent: 'center',
+    gap: 16,
+  },
+  colorOption: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    margin: 5,
+    borderWidth: 2,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
 });
 
