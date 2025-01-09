@@ -16,6 +16,7 @@ export const ContextProvider = ({children}) => {
   const [unlockedBackgrounds, setUnlockedBackgrounds] = useState([true, false, false, false]);
   const [gameResults, setGameResults] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [sequences, setSequences] = useState([]);
 
   const UNLOCK_COST = 200; // Define cost constant
 
@@ -54,6 +55,11 @@ export const ContextProvider = ({children}) => {
       const savedTasks = await AsyncStorage.getItem('tasks');
       if (savedTasks) {
         setTasks(JSON.parse(savedTasks));
+      }
+
+      const savedSequences = await AsyncStorage.getItem('sequences');
+      if (savedSequences) {
+        setSequences(JSON.parse(savedSequences));
       }
     } catch (error) {
       console.error('Error loading data:', error);
@@ -219,6 +225,52 @@ export const ContextProvider = ({children}) => {
     }
   };
 
+  const addSequence = async (sequenceData) => {
+    try {
+      const newSequence = {
+        id: Date.now(),
+        ...sequenceData,
+        createdAt: new Date().toISOString(),
+        tasks: [],
+        progress: 0,
+      };
+
+      const updatedSequences = [...sequences, newSequence];
+      await AsyncStorage.setItem('sequences', JSON.stringify(updatedSequences));
+      setSequences(updatedSequences);
+      return true;
+    } catch (error) {
+      console.error('Error adding sequence:', error);
+      return false;
+    }
+  };
+
+  const updateSequence = async (sequenceId, updatedData) => {
+    try {
+      const updatedSequences = sequences.map(seq => 
+        seq.id === sequenceId ? { ...seq, ...updatedData } : seq
+      );
+      await AsyncStorage.setItem('sequences', JSON.stringify(updatedSequences));
+      setSequences(updatedSequences);
+      return true;
+    } catch (error) {
+      console.error('Error updating sequence:', error);
+      return false;
+    }
+  };
+
+  const deleteSequence = async (sequenceId) => {
+    try {
+      const updatedSequences = sequences.filter(seq => seq.id !== sequenceId);
+      await AsyncStorage.setItem('sequences', JSON.stringify(updatedSequences));
+      setSequences(updatedSequences);
+      return true;
+    } catch (error) {
+      console.error('Error deleting sequence:', error);
+      return false;
+    }
+  };
+
   const value = {
     isMusicEnable,
     setIsMusicEnable,
@@ -245,6 +297,10 @@ export const ContextProvider = ({children}) => {
     updateTaskProgress,
     updateTaskClaimed,
     deleteTask,
+    sequences,
+    addSequence,
+    updateSequence,
+    deleteSequence,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

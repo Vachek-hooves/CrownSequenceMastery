@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Calendar } from 'react-native-calendars';
+import { AppContext } from '../../store/context';
 
 const CreateSequance = ({ navigation }) => {
+  const { addSequence } = useContext(AppContext);
   const [goal, setGoal] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -137,6 +139,32 @@ const CreateSequance = ({ navigation }) => {
     </Modal>
   );
 
+  const handleSave = async () => {
+    if (!goal.trim() || !description.trim() || !startDate || !endDate) {
+      // Add your preferred validation feedback here
+      return;
+    }
+
+    const sequenceData = {
+      goal,
+      description,
+      startDate,
+      endDate,
+      color: selectedColor,
+      selectedDays,
+      tasks: [{
+        title: task,
+        days: selectedDays,
+        progress: 0,
+      }],
+    };
+
+    const success = await addSequence(sequenceData);
+    if (success) {
+      navigation.goBack();
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -246,7 +274,9 @@ const CreateSequance = ({ navigation }) => {
         
 
         {/* Set Button */}
-        <TouchableOpacity style={styles.setButton}>
+        <TouchableOpacity 
+          style={styles.setButton}
+          onPress={handleSave}>
           <Text style={styles.setButtonText}>Set</Text>
         </TouchableOpacity>
       </View>

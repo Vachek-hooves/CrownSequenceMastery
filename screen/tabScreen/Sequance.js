@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import MainLayout from '../../components/layout/MainLayout';
 import LinearGradient from 'react-native-linear-gradient';
@@ -12,7 +13,11 @@ import {AppContext} from '../../store/context';
 import NameHeader from '../../components/UI/NameHeader';
 
 const Sequance = ({navigation}) => {
-  // const {nickname} = useContext(AppContext);
+  const { sequences } = useContext(AppContext);
+
+  const handleAddPress = () => {
+    navigation.navigate('CreateSequance');
+  };
 
   return (
     <MainLayout>
@@ -20,33 +25,42 @@ const Sequance = ({navigation}) => {
         {/* Header Section */}
         <NameHeader />
 
-        {/* Content Section */}
-        <View style={styles.content}>
-          <Text style={styles.title}>
-            Sequences – Your Path to{'\n'}Mastery
-          </Text>
-          <Text style={styles.subtitle}>
-            Craft your journey one step at a time
-          </Text>
+        {/* Sequences List */}
+        <ScrollView style={styles.scrollView}>
+          {sequences.map(sequence => (
+            <TouchableOpacity
+              key={sequence.id}
+              style={styles.sequenceCard}
+              onPress={() => navigation.navigate('SequenceDetail', { id: sequence.id })}>
+              <View style={[styles.cardIndicator, { backgroundColor: sequence.color }]} />
+              <View style={styles.cardContent}>
+                <Text style={styles.cardTitle}>{sequence.goal}</Text>
+                <Text style={styles.cardDescription} numberOfLines={2}>
+                  {sequence.description}
+                </Text>
+                <View style={styles.cardFooter}>
+                  <Text style={styles.dateText}>
+                    {sequence.startDate} - {sequence.endDate}
+                  </Text>
+                  <Text style={styles.progressText}>{sequence.progress}%</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
 
-          {/* Features List */}
-          <View style={styles.featuresList}>
-            <Text style={styles.featureItem}>• Set Goals</Text>
-            <Text style={styles.featureItem}>• Stay on Track</Text>
-            <Text style={styles.featureItem}>• See Daily Tasks</Text>
-          </View>
-
-          {/* Add Button */}
-          <TouchableOpacity style={styles.addButton} onPress={()=>navigation.navigate('CreateSequance')}>
-            <LinearGradient
-              colors={['#FFEA9E', '#FCF8EA']}
-              style={styles.addButtonGradient}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 1}}>
-              <Text style={styles.addButtonText}>+</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
+        {/* Add Button */}
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={handleAddPress}>
+          <LinearGradient
+            colors={['#FFEA9E', '#FCF8EA']}
+            style={styles.addButtonGradient}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}>
+            <Text style={styles.addButtonText}>+</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </SafeAreaView>
     </MainLayout>
   );
@@ -101,6 +115,53 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontWeight: 'bold',
     // transform: [{scale: 1.8}],
+  },
+  scrollView: {
+    flex: 1,
+    marginTop: 20,
+  },
+  sequenceCard: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 12,
+    marginBottom: 16,
+    marginHorizontal: 20,
+    overflow: 'hidden',
+  },
+  cardIndicator: {
+    width: 4,
+    height: '100%',
+  },
+  cardContent: {
+    flex: 1,
+    padding: 16,
+  },
+  cardTitle: {
+    fontSize: 18,
+    color: '#FCF8EA',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  cardDescription: {
+    fontSize: 14,
+    color: '#FCF8EA',
+    opacity: 0.8,
+    marginBottom: 12,
+  },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dateText: {
+    fontSize: 12,
+    color: '#FCF8EA',
+    opacity: 0.6,
+  },
+  progressText: {
+    fontSize: 14,
+    color: '#FCF8EA',
+    fontWeight: '600',
   },
 });
 
