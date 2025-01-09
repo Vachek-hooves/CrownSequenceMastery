@@ -25,6 +25,7 @@ import {useAppContext} from './store/context';
 import Navigation from './Navigation';
 import CreateSequance from './screen/stackScreen/CreateSequance';
 import SequenceDetails from './screen/stackScreen/SequenceDetails';
+import EditSequence from './screen/stackScreen/EditSequence';
 
 const Stack = createNativeStackNavigator();
 
@@ -108,6 +109,7 @@ const AppNavigator = () => {
       <Stack.Screen name="SelectCrownScreen" component={SelectCrownScreen} />
       <Stack.Screen name="CreateSequance" component={CreateSequance} />
       <Stack.Screen name="SequenceDetails" component={SequenceDetails} />
+      <Stack.Screen name='EditSequence' component={EditSequence}/>
     </Stack.Navigator>
   );
 };

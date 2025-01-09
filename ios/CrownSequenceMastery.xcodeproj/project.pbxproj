@@ -433,7 +433,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.crown.sequancemastery";
+				PRODUCT_BUNDLE_IDENTIFIER = com.crown.sequancemastery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CrownSequenceMastery.app/CrownSequenceMastery";
 			};
@@ -457,7 +457,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.crown.sequancemastery";
+				PRODUCT_BUNDLE_IDENTIFIER = com.crown.sequancemastery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CrownSequenceMastery.app/CrownSequenceMastery";
 			};
@@ -483,7 +483,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.crown.sequancemastery";
+				PRODUCT_BUNDLE_IDENTIFIER = com.crown.sequancemastery;
 				PRODUCT_NAME = CrownSequenceMastery;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -510,7 +510,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.crown.sequancemastery";
+				PRODUCT_BUNDLE_IDENTIFIER = com.crown.sequancemastery;
 				PRODUCT_NAME = CrownSequenceMastery;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

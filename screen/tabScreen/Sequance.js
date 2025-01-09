@@ -42,7 +42,7 @@ const Sequance = ({navigation}) => {
                   <Text style={styles.dateText}>
                     {sequence.startDate} - {sequence.endDate}
                   </Text>
-                  <Text style={styles.progressText}>{sequence.progress}%</Text>
+                  {/* <Text style={styles.progressText}>{sequence.progress}%</Text> */}
                 </View>
               </View>
             </TouchableOpacity>

@@ -106,7 +106,7 @@ const CreateSequance = ({ navigation }) => {
     setShowEndCalendar(false);
   };
 
-  const CalendarModal = ({ visible, onClose, onDayPress, minDate }) => (
+   const CalendarModal = ({ visible, onClose, onDayPress, minDate }) => (
     <Modal
       animationType="fade"
       transparent={true}

@@ -93,11 +93,11 @@ const SequenceDetails = ({ route, navigation }) => {
       </View>
       </ScrollView>
       {/* Edit Button */}
-      {/* <TouchableOpacity 
+      <TouchableOpacity 
         style={styles.editButton}
         onPress={() => navigation.navigate('EditSequence', { id: sequence.id })}>
         <Text style={styles.editButtonText}>Edit</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       {/* Delete Button */}
       <TouchableOpacity 
