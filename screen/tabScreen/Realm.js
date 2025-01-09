@@ -12,10 +12,13 @@ import MainLayout from '../../components/layout/MainLayout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import SettingsIcon from '../../components/Icons/SettingsIcon';
+import TaskItem from '../../components/UI/TaskItem';
 
 const Realm = () => {
   const [nickname, setNickname] = useState('');
   const [currentDate, setCurrentDate] = useState('');
+  const [showNewTask, setShowNewTask] = useState(false);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     loadUserData();
@@ -41,10 +44,25 @@ const Realm = () => {
     return `${day}.${month}.${year}`;
   };
 
+  const handleAddTask = () => {
+    setShowNewTask(true);
+    // For testing, let's add a sample task
+    setTasks([
+      ...tasks,
+      {
+        id: Date.now(),
+        title: 'Here is a Task',
+        progress: 25,
+      },
+    ]);
+  };
+
   return (
     <MainLayout>
       <SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollView}>
           {/* Header Section */}
           <View style={styles.header}>
             <View style={styles.menuIconContainer}>
@@ -68,7 +86,9 @@ const Realm = () => {
             </View>
 
             {/* Add Task Button */}
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity 
+              style={styles.addButton}
+              onPress={handleAddTask}>
               <LinearGradient
                 colors={['#FFEA9E', '#FCF8EA']}
                 style={styles.addButtonGradient}
@@ -78,17 +98,29 @@ const Realm = () => {
               </LinearGradient>
             </TouchableOpacity>
 
-            {/* No Tasks Message */}
-            <View style={styles.noTasksContainer}>
-              <Text style={styles.noTasksEmoji}>✨</Text>
-              <Text style={styles.noTasksText}>No Tasks Today!</Text>
-              <Text style={styles.noTasksSubtext}>
-                Enjoy a well-deserved break – you've earned it!
-              </Text>
-              <Text style={styles.noTasksSubtext}>
-                Take this time to plan your next move or start a new sequence.
-              </Text>
-            </View>
+            {/* Tasks List */}
+            {tasks.length > 0 ? (
+              <View style={styles.tasksList}>
+                {tasks.map(task => (
+                  <TaskItem
+                    key={task.id}
+                    title={task.title}
+                    progress={task.progress}
+                  />
+                ))}
+              </View>
+            ) : (
+              <View style={styles.noTasksContainer}>
+                <Text style={styles.noTasksEmoji}>✨</Text>
+                <Text style={styles.noTasksText}>No Tasks Today!</Text>
+                <Text style={styles.noTasksSubtext}>
+                  Enjoy a well-deserved break – you've earned it!
+                </Text>
+                <Text style={styles.noTasksSubtext}>
+                  Take this time to plan your next move or start a new sequence.
+                </Text>
+              </View>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -116,7 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     // justifyContent: 'center',
     // alignItems: 'center',
-    padding:5
+    padding: 5,
   },
   menuIcon: {
     width: 20,
@@ -144,7 +176,6 @@ const styles = StyleSheet.create({
     // justifyContent: 'space-between',
     // alignItems: 'center',
     marginBottom: 20,
-
   },
   tasksTitle: {
     fontSize: 30,
@@ -197,6 +228,9 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     textAlign: 'center',
     marginBottom: 10,
+  },
+  tasksList: {
+    marginTop: 20,
   },
 });
 
