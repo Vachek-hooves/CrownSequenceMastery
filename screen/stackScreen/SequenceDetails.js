@@ -6,16 +6,40 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { AppContext } from '../../store/context';
 
 const SequenceDetails = ({ route, navigation }) => {
-  const { sequences } = useContext(AppContext);
+  const { sequences, deleteSequence } = useContext(AppContext);
   const { id } = route.params;
   const sequence = sequences.find(seq => seq.id === id);
   console.log(sequence);
 
   if (!sequence) return null;
+
+  const handleDelete = () => {
+    Alert.alert(
+      "Delete Sequence",
+      "Are you sure you want to delete this sequence?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            const success = await deleteSequence(id);
+            if (success) {
+              navigation.goBack();
+            }
+          }
+        }
+      ]
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,10 +93,17 @@ const SequenceDetails = ({ route, navigation }) => {
       </View>
       </ScrollView>
       {/* Edit Button */}
-      <TouchableOpacity 
+      {/* <TouchableOpacity 
         style={styles.editButton}
         onPress={() => navigation.navigate('EditSequence', { id: sequence.id })}>
         <Text style={styles.editButtonText}>Edit</Text>
+      </TouchableOpacity> */}
+
+      {/* Delete Button */}
+      <TouchableOpacity 
+        style={styles.deleteButton}
+        onPress={handleDelete}>
+        <Text style={styles.deleteButtonText}>Delete</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -164,10 +195,26 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 16,
     alignItems: 'center',
-    marginTop: 'auto',
+    // marginTop: 'auto',
+    marginHorizontal: 20,
+    marginBottom: 20,
   },
   editButtonText: {
     color: '#000000',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  deleteButton: {
+    backgroundColor: '#FF3B30',
+    borderRadius: 25,
+    padding: 16,
+    alignItems: 'center',
+    marginTop: 'auto',
+    marginHorizontal: 20,
+    marginVertical: 20,
+  },
+  deleteButtonText: {
+    color: '#FFFFFF',
     fontSize: 18,
     fontWeight: '600',
   },
