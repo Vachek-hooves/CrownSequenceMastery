@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -9,8 +9,6 @@ const TaskItem = ({
   onProgressChange,
   onClaim,
 }) => {
-  const [currentProgress, setCurrentProgress] = useState(progress);
-  // const [isClaimed, setIsClaimed] = useState(false);
   const progressSteps = [0, 25, 50, 75, 100];
 
   const handleProgressPress = (step) => {
@@ -42,8 +40,7 @@ const TaskItem = ({
               style={styles.progressStepWrapper}>
               <View style={[
                 styles.progressStep,
-                currentProgress >= step && styles.progressStepActive,
-                currentProgress === step && styles.progressStepCurrent,
+                progress >= step && styles.progressStepActive,
               ]} />
               <Text style={styles.progressText}>{step}%</Text>
             </TouchableOpacity>
@@ -110,9 +107,6 @@ const styles = StyleSheet.create({
   },
   progressStepActive: {
     backgroundColor: '#FFC600', // Gold color for active steps
-  },
-  progressStepCurrent: {
-    backgroundColor: '#FFC600', // Same gold color for current step
   },
   progressText: {
     color: '#FCF8EA',
