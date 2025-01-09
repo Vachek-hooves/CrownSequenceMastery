@@ -13,12 +13,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import SettingsIcon from '../../components/Icons/SettingsIcon';
 import TaskItem from '../../components/UI/TaskItem';
+import CreateTaskModal from '../../components/UI/CreateTaskModal';
 
 const Realm = () => {
   const [nickname, setNickname] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [showNewTask, setShowNewTask] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     loadUserData();
@@ -45,14 +47,15 @@ const Realm = () => {
   };
 
   const handleAddTask = () => {
-    setShowNewTask(true);
-    // For testing, let's add a sample task
+    setIsModalVisible(true);
+  };
+
+  const handleCreateTask = (newTask) => {
     setTasks([
       ...tasks,
       {
         id: Date.now(),
-        title: 'Here is a Task',
-        progress: 25,
+        ...newTask,
       },
     ]);
   };
@@ -60,44 +63,41 @@ const Realm = () => {
   return (
     <MainLayout>
       <SafeAreaView style={styles.container}>
-          {/* Header Section */}
-          <View style={styles.header}>
-            <View style={styles.menuIconContainer}>
-              {/* <View style={styles.menuIcon} /> */}
-              {/* <Image
+        {/* Header Section */}
+        <View style={styles.header}>
+          <View style={styles.menuIconContainer}>
+            {/* <View style={styles.menuIcon} /> */}
+            {/* <Image
                 source={require('../../assets/image/icons/settingsIcon.png')}
                 /> */}
-              <SettingsIcon />
-            </View>
-            <View style={styles.welcomeContainer}>
-              <Text style={styles.welcomeText}>Welcome back,</Text>
-              <Text style={styles.nicknameText}>{nickname}</Text>
-            </View>
+            <SettingsIcon />
+          </View>
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.welcomeText}>Welcome back,</Text>
+            <Text style={styles.nicknameText}>{nickname}</Text>
+          </View>
+        </View>
+
+        {/* Tasks Section */}
+        <View style={styles.tasksContainer}>
+          <View style={styles.tasksHeader}>
+            <Text style={styles.tasksTitle}>Today's tasks</Text>
+            <Text style={styles.tasksDate}>{currentDate}</Text>
           </View>
 
-          {/* Tasks Section */}
-          <View style={styles.tasksContainer}>
-            <View style={styles.tasksHeader}>
-              <Text style={styles.tasksTitle}>Today's tasks</Text>
-              <Text style={styles.tasksDate}>{currentDate}</Text>
-            </View>
-
-            {/* Add Task Button */}
-            <TouchableOpacity 
-              style={styles.addButton}
-              onPress={handleAddTask}>
-              <LinearGradient
-                colors={['#FFEA9E', '#FCF8EA']}
-                style={styles.addButtonGradient}
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 1}}>
-                <Text style={styles.addButtonText}>+</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                  style={styles.scrollView}>
-
+          {/* Add Task Button */}
+          <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+            <LinearGradient
+              colors={['#FFEA9E', '#FCF8EA']}
+              style={styles.addButtonGradient}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}>
+              <Text style={styles.addButtonText}>+</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.scrollView}>
             {/* Tasks List */}
             {tasks.length > 0 ? (
               <View style={styles.tasksList}>
@@ -106,6 +106,7 @@ const Realm = () => {
                     key={task.id}
                     title={task.title}
                     progress={task.progress}
+                    
                   />
                 ))}
               </View>
@@ -121,8 +122,14 @@ const Realm = () => {
                 </Text>
               </View>
             )}
-        </ScrollView>
-          </View>
+          </ScrollView>
+        </View>
+
+        <CreateTaskModal
+          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          onCreateTask={handleCreateTask}
+        />
       </SafeAreaView>
     </MainLayout>
   );
@@ -192,6 +199,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     zIndex: 1,
+    margin: 10,
   },
   addButtonGradient: {
     width: 40,
