@@ -2,17 +2,23 @@ import React, { useState } from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const TaskItem = ({title, progress = 0}) => {
+const TaskItem = ({
+  title,
+  progress = 0,
+  isClaimed = false,
+  onProgressChange,
+  onClaim,
+}) => {
   const [currentProgress, setCurrentProgress] = useState(progress);
-  const [isClaimed, setIsClaimed] = useState(false);
+  // const [isClaimed, setIsClaimed] = useState(false);
   const progressSteps = [0, 25, 50, 75, 100];
 
   const handleProgressPress = (step) => {
-    setCurrentProgress(step);
+    onProgressChange(step);
   };
 
   const handleClaim = () => {
-    setIsClaimed(true);
+    onClaim();
   };
 
   return (

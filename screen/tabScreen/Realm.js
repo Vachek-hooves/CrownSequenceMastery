@@ -7,19 +7,25 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import MainLayout from '../../components/layout/MainLayout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import SettingsIcon from '../../components/Icons/SettingsIcon';
 import TaskItem from '../../components/UI/TaskItem';
 import CreateTaskModal from '../../components/UI/CreateTaskModal';
+import {AppContext} from '../../store/context';
 
 const Realm = () => {
+  const { 
+    tasks, 
+    addTask, 
+    updateTaskProgress, 
+    updateTaskClaimed 
+  } = useContext(AppContext);
   const [nickname, setNickname] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [showNewTask, setShowNewTask] = useState(false);
-  const [tasks, setTasks] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
@@ -50,14 +56,19 @@ const Realm = () => {
     setIsModalVisible(true);
   };
 
-  const handleCreateTask = (newTask) => {
-    setTasks([
-      ...tasks,
-      {
-        id: Date.now(),
-        ...newTask,
-      },
-    ]);
+  const handleCreateTask = async (newTask) => {
+    const success = await addTask(newTask);
+    if (success) {
+      setIsModalVisible(false);
+    }
+  };
+
+  const handleTaskProgress = async (taskId, progress) => {
+    await updateTaskProgress(taskId, progress);
+  };
+
+  const handleTaskClaim = async (taskId) => {
+    await updateTaskClaimed(taskId, true);
   };
 
   return (
@@ -106,7 +117,9 @@ const Realm = () => {
                     key={task.id}
                     title={task.title}
                     progress={task.progress}
-                    
+                    isClaimed={task.isClaimed}
+                    onProgressChange={(progress) => handleTaskProgress(task.id, progress)}
+                    onClaim={() => handleTaskClaim(task.id)}
                   />
                 ))}
               </View>

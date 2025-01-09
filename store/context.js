@@ -15,6 +15,7 @@ export const ContextProvider = ({children}) => {
   const [selectedBackground, setSelectedBackground] = useState(0);
   const [unlockedBackgrounds, setUnlockedBackgrounds] = useState([true, false, false, false]);
   const [gameResults, setGameResults] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   const UNLOCK_COST = 200; // Define cost constant
 
@@ -48,8 +49,14 @@ export const ContextProvider = ({children}) => {
       if (savedResults) {
         setGameResults(JSON.parse(savedResults));
       }
+
+      // Load tasks
+      const savedTasks = await AsyncStorage.getItem('tasks');
+      if (savedTasks) {
+        setTasks(JSON.parse(savedTasks));
+      }
     } catch (error) {
-      console.error('Error loading saved data:', error);
+      console.error('Error loading data:', error);
     }
   };
 
@@ -151,6 +158,55 @@ export const ContextProvider = ({children}) => {
     }
   };
 
+  // Add new task
+  const addTask = async (newTask) => {
+    try {
+      const taskWithId = {
+        id: Date.now(),
+        ...newTask,
+        createdAt: new Date().toISOString(),
+      };
+
+      const updatedTasks = [...tasks, taskWithId];
+      await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+      setTasks(updatedTasks);
+      return true;
+    } catch (error) {
+      console.error('Error adding task:', error);
+      return false;
+    }
+  };
+
+  // Update task progress
+  const updateTaskProgress = async (taskId, progress) => {
+    try {
+      const updatedTasks = tasks.map(task => 
+        task.id === taskId ? {...task, progress} : task
+      );
+      await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+      setTasks(updatedTasks);
+      return true;
+    } catch (error) {
+      console.error('Error updating task:', error);
+      return false;
+    }
+  };
+
+  // Update task claimed status
+  const updateTaskClaimed = async (taskId, isClaimed) => {
+    try {
+      const updatedTasks = tasks.map(task => 
+        task.id === taskId ? {...task, isClaimed} : task
+      );
+      await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+      setTasks(updatedTasks);
+      return true;
+    } catch (error) {
+      console.error('Error updating task:', error);
+      return false;
+    }
+  };
+
   const value = {
     isMusicEnable,
     setIsMusicEnable,
@@ -172,6 +228,10 @@ export const ContextProvider = ({children}) => {
     unlockBackground,
     gameResults,
     addGameResult,
+    tasks,
+    addTask,
+    updateTaskProgress,
+    updateTaskClaimed,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
