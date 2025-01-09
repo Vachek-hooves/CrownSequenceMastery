@@ -10,6 +10,7 @@ import {
   Modal
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { Calendar } from 'react-native-calendars';
 
 const CreateSequance = ({ navigation }) => {
   const [goal, setGoal] = useState('');
@@ -20,6 +21,9 @@ const CreateSequance = ({ navigation }) => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [selectedColor, setSelectedColor] = useState('#00FF00'); // Default green color
+  const [showStartCalendar, setShowStartCalendar] = useState(false);
+  const [showEndCalendar, setShowEndCalendar] = useState(false);
+  const [markedDates, setMarkedDates] = useState({});
 
   const weekDays = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
   const colors = [
@@ -62,6 +66,72 @@ const CreateSequance = ({ navigation }) => {
               }}
             />
           ))}
+        </View>
+      </TouchableOpacity>
+    </Modal>
+  );
+
+  const handleStartDateSelect = (day) => {
+    setStartDate(day.dateString);
+    const newMarkedDates = {
+      [day.dateString]: {
+        selected: true,
+        startingDay: true,
+        color: selectedColor,
+      },
+    };
+    if (endDate) {
+      newMarkedDates[endDate] = {
+        selected: true,
+        endingDay: true,
+        color: selectedColor,
+      };
+    }
+    setMarkedDates(newMarkedDates);
+    setShowStartCalendar(false);
+  };
+
+  const handleEndDateSelect = (day) => {
+    setEndDate(day.dateString);
+    setMarkedDates({
+      ...markedDates,
+      [day.dateString]: {
+        selected: true,
+        endingDay: true,
+        color: selectedColor,
+      },
+    });
+    setShowEndCalendar(false);
+  };
+
+  const CalendarModal = ({ visible, onClose, onDayPress, minDate }) => (
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={visible}
+      onRequestClose={onClose}>
+      <TouchableOpacity
+        style={styles.modalOverlay}
+        activeOpacity={1}
+        onPress={onClose}>
+        <View style={styles.calendarContainer}>
+          <Calendar
+            onDayPress={onDayPress}
+            markedDates={markedDates}
+            minDate={minDate}
+            theme={{
+              backgroundColor: '#1A1A1A',
+              calendarBackground: '#1A1A1A',
+              textSectionTitleColor: '#FCF8EA',
+              selectedDayBackgroundColor: selectedColor,
+              selectedDayTextColor: '#000000',
+              todayTextColor: selectedColor,
+              dayTextColor: '#FCF8EA',
+              textDisabledColor: '#444444',
+              monthTextColor: '#FCF8EA',
+              arrowColor: '#FCF8EA',
+            }}
+          />
         </View>
       </TouchableOpacity>
     </Modal>
@@ -113,20 +183,21 @@ const CreateSequance = ({ navigation }) => {
         </Text>
 
         <View style={styles.dateContainer}>
-          <TextInput
+          <TouchableOpacity
             style={[styles.input, styles.dateInput]}
-            placeholder="Start date"
-            placeholderTextColor="#666"
-            value={startDate}
-            onChangeText={setStartDate}
-          />
-          <TextInput
+            onPress={() => setShowStartCalendar(true)}>
+            <Text style={startDate ? styles.dateText : styles.placeholderText}>
+              {startDate || 'Start date'}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             style={[styles.input, styles.dateInput]}
-            placeholder="End date"
-            placeholderTextColor="#666"
-            value={endDate}
-            onChangeText={setEndDate}
-          />
+            onPress={() => setShowEndCalendar(true)}>
+            <Text style={endDate ? styles.dateText : styles.placeholderText}>
+              {endDate || 'End date'}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.sectionTitle}>
@@ -180,6 +251,20 @@ const CreateSequance = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       </ScrollView>
+
+      <CalendarModal
+        visible={showStartCalendar}
+        onClose={() => setShowStartCalendar(false)}
+        onDayPress={handleStartDateSelect}
+        minDate={new Date().toISOString().split('T')[0]}
+      />
+
+      <CalendarModal
+        visible={showEndCalendar}
+        onClose={() => setShowEndCalendar(false)}
+        onDayPress={handleEndDateSelect}
+        minDate={startDate}
+      />
 
       <ColorPickerModal />
     </SafeAreaView>
@@ -243,6 +328,15 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     width: '48%',
+    justifyContent: 'center',
+  },
+  dateText: {
+    color: '#FCF8EA',
+    fontSize: 16,
+  },
+  placeholderText: {
+    color: '#666',
+    fontSize: 16,
   },
   daysContainer: {
     flexDirection: 'row',
@@ -330,6 +424,13 @@ const styles = StyleSheet.create({
     margin: 5,
     borderWidth: 2,
     borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  calendarContainer: {
+    backgroundColor: '#1A1A1A',
+    borderRadius: 12,
+    padding: 10,
+    width: '90%',
+    maxWidth: 400,
   },
 });
 
