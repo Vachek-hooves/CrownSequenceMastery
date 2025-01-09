@@ -11,7 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {AppContext} from '../../store/context';
 import NameHeader from '../../components/UI/NameHeader';
 
-const Sequance = () => {
+const Sequance = ({navigation}) => {
   // const {nickname} = useContext(AppContext);
 
   return (
@@ -37,7 +37,7 @@ const Sequance = () => {
           </View>
 
           {/* Add Button */}
-          <TouchableOpacity style={styles.addButton}>
+          <TouchableOpacity style={styles.addButton} onPress={()=>navigation.navigate('CreateSequance')}>
             <LinearGradient
               colors={['#FFEA9E', '#FCF8EA']}
               style={styles.addButtonGradient}

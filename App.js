@@ -23,6 +23,7 @@ import {
 import {AppState} from 'react-native';
 import {useAppContext} from './store/context';
 import Navigation from './Navigation';
+import CreateSequance from './screen/stackScreen/CreateSequance';
 
 const Stack = createNativeStackNavigator();
 
@@ -104,6 +105,7 @@ const AppNavigator = () => {
         component={SelectBackgroundScreen}
       />
       <Stack.Screen name="SelectCrownScreen" component={SelectCrownScreen} />
+      <Stack.Screen name="CreateSequance" component={CreateSequance} />
     </Stack.Navigator>
   );
 };
