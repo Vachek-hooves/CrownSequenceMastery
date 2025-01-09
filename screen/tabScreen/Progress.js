@@ -71,7 +71,38 @@ const Progress = () => {
         </View>
       </View>
       <ScrollView>
-      {/* Progress Circles */}
+         {/* Tasks Section */}
+      {tasks.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Tasks</Text>
+          <View style={styles.progressGrid}>
+            {tasks.map(task => (
+              <ProgressCircle
+                key={task.id}
+                progress={task.progress}
+                goal={task.title}
+              />
+            ))}
+          </View>
+        </View>
+      )}
+ {/* Sequences Section */}
+ {sequences.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Sequences</Text>
+          <View style={styles.progressGrid}>
+            {sequences.map(sequence => (
+              <ProgressCircle
+                key={sequence.id}
+                progress={sequence.progress}
+                goal={sequence.goal}
+              />
+            ))}
+          </View>
+        </View>
+      )}
+
+      {/* Progress Circles
       <View style={styles.progressGrid}>
         {tasks.map(task => (
           <ProgressCircle
@@ -87,7 +118,7 @@ const Progress = () => {
             goal={sequence.goal}
           />
         ))}
-      </View>
+      </View> */}
       </ScrollView>
       <View style={{height: 90}} />
     </SafeAreaView>
@@ -157,6 +188,27 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     textAlign: 'center',
     marginTop: 4,
+  },section: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  sectionTitle: {
+    color: '#FCF8EA',
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 16,
+    opacity: 0.7,
+  },
+  progressGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    gap: 20,
+  },
+  // Update progressContainer style
+  progressContainer: {
+    alignItems: 'center',
+    width: '45%', // Adjust this value to control how many items per row
   },
 });
 

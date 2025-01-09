@@ -13,7 +13,7 @@ import {AppContext} from '../../store/context';
 import NameHeader from '../../components/UI/NameHeader';
 
 const Sequance = ({navigation}) => {
-  const { sequences } = useContext(AppContext);
+  const {sequences} = useContext(AppContext);
 
   const handleAddPress = () => {
     navigation.navigate('CreateSequance');
@@ -31,8 +31,15 @@ const Sequance = ({navigation}) => {
             <TouchableOpacity
               key={sequence.id}
               style={styles.sequenceCard}
-              onPress={() => navigation.navigate('SequenceDetails', { id: sequence.id })}>
-              <View style={[styles.cardIndicator, { backgroundColor: sequence.color }]} />
+              onPress={() =>
+                navigation.navigate('SequenceDetails', {id: sequence.id})
+              }>
+              <View
+                style={[
+                  styles.cardIndicator,
+                  {backgroundColor: sequence.color},
+                ]}
+              />
               <View style={styles.cardContent}>
                 <Text style={styles.cardTitle}>{sequence.goal}</Text>
                 <Text style={styles.cardDescription} numberOfLines={2}>
@@ -50,9 +57,7 @@ const Sequance = ({navigation}) => {
         </ScrollView>
 
         {/* Add Button */}
-        <TouchableOpacity 
-          style={styles.addButton}
-          onPress={handleAddPress}>
+        <TouchableOpacity style={styles.addButton} onPress={handleAddPress}>
           <LinearGradient
             colors={['#FFEA9E', '#FCF8EA']}
             style={styles.addButtonGradient}
