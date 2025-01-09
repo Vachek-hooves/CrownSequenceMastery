@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progressStep: {
-    width: 40,
+    width: 35,
     height: 20,
     borderRadius: 3,
     backgroundColor: '#545454', // Default dark gray color

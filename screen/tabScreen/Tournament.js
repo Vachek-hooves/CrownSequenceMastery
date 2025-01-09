@@ -66,6 +66,7 @@ const Tournament = ({navigation}) => {
           </View>
         </ScrollView>
       </SafeAreaView>
+        <View style={{height: 50}} />
     </ImageBackground>
   );
 };

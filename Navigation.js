@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     opacity: 0.5,
     marginTop: 4,
-    paddingTop:20
+    paddingTop:15
   },
   tabLabelFocused: {
     opacity: 1,

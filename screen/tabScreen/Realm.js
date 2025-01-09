@@ -149,6 +149,7 @@ const Realm = () => {
           onCreateTask={handleCreateTask}
         />
       </SafeAreaView>
+      <View style={{height: 100}} />
     </MainLayout>
   );
 };
