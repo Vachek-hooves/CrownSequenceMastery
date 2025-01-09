@@ -61,6 +61,7 @@ const Sequance = ({navigation}) => {
             <Text style={styles.addButtonText}>+</Text>
           </LinearGradient>
         </TouchableOpacity>
+        <View style={{height: 100}}></View>
       </SafeAreaView>
     </MainLayout>
   );
