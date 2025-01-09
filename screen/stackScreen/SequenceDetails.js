@@ -13,36 +13,16 @@ const SequenceDetails = ({ route, navigation }) => {
   const { sequences } = useContext(AppContext);
   const { id } = route.params;
   const sequence = sequences.find(seq => seq.id === id);
+  console.log(sequence);
 
   if (!sequence) return null;
 
-  const renderWeekDays = (taskDays) => {
-    const days = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
-    return (
-      <View style={styles.daysContainer}>
-        {days.map(day => (
-          <View
-            key={day}
-            style={[
-              styles.dayPill,
-              taskDays.includes(day) && styles.dayPillSelected,
-            ]}>
-            <Text
-              style={[
-                styles.dayText,
-                taskDays.includes(day) && styles.dayTextSelected,
-              ]}>
-              {day}
-            </Text>
-          </View>
-        ))}
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header with close button */}
+      {/* Header */}
+      <ScrollView style={{flex: 1, marginTop: 20,paddingHorizontal: 10}}>
+
+      
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{sequence.goal}</Text>
         <TouchableOpacity 
@@ -52,50 +32,42 @@ const SequenceDetails = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.content}>
-        {/* Description */}
-        <View style={styles.descriptionContainer}>
-          {sequence.description.split('\n').map((line, index) => (
-            <Text key={index} style={styles.descriptionText}>{line}</Text>
-          ))}
-        </View>
+      {/* Description */}
+      <Text style={styles.description}>{sequence.description}</Text>
 
-        {/* Dates */}
-        <View style={styles.dateContainer}>
-          <View style={styles.dateBox}>
-            <Text style={styles.dateText}>{sequence.startDate}</Text>
-          </View>
-          <View style={styles.dateBox}>
-            <Text style={styles.dateText}>{sequence.endDate}</Text>
-          </View>
+      {/* Dates */}
+      <View style={styles.dateContainer}>
+        <View style={styles.dateBox}>
+          <Text style={styles.dateText}>{sequence.startDate}</Text>
         </View>
+        <View style={styles.dateBox}>
+          <Text style={styles.dateText}>{sequence.endDate}</Text>
+        </View>
+      </View>
 
-        {/* Tasks List */}
-        {sequence.tasks.map((task, index) => (
-          <View key={index} style={styles.taskItem}>
-            <Text style={styles.taskTitle}>{task.title}</Text>
-            <View style={styles.daysRow}>
-              {['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'].map((day) => (
-                <View
-                  key={day}
-                  style={[
-                    styles.dayPill,
-                    task.days.includes(day) && styles.dayPillSelected,
-                  ]}>
-                  <Text
-                    style={[
-                      styles.dayText,
-                      task.days.includes(day) && styles.dayTextSelected,
-                    ]}>
-                    {day}
-                  </Text>
-                </View>
-              ))}
-            </View>
+      {/* Task with Days */}
+      <View style={styles.taskContainer}>
+        <Text style={styles.taskTitle}>Task 1</Text>
+      </View>
+      <View style={styles.daysRow}>
+        {['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'].map((day) => (
+          <View
+            key={day}
+            style={[
+              styles.dayPill,
+              sequence.selectedDays.includes(day) && styles.dayPillSelected,
+            ]}>
+            <Text
+              style={[
+                styles.dayText,
+                sequence.selectedDays.includes(day) && styles.dayTextSelected,
+              ]}>
+              {day}
+            </Text>
           </View>
         ))}
+      </View>
       </ScrollView>
-
       {/* Edit Button */}
       <TouchableOpacity 
         style={styles.editButton}
@@ -110,15 +82,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1A1A1A',
+    padding: 30,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
+    marginBottom: 20,
   },
   headerTitle: {
-    fontSize: 28,
+    fontSize: 24,
     color: '#FCF8EA',
     fontWeight: '600',
   },
@@ -134,18 +107,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#FCF8EA',
   },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-  descriptionContainer: {
-    marginBottom: 24,
-  },
-  descriptionText: {
+  description: {
     fontSize: 16,
     color: '#FCF8EA',
-    opacity: 0.8,
-    marginBottom: 8,
+    marginBottom: 24,
   },
   dateContainer: {
     flexDirection: 'row',
@@ -163,22 +128,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
-  taskItem: {
-    marginBottom: 16,
-  },
-  taskTitle: {
-    fontSize: 18,
-    color: '#FCF8EA',
-    marginBottom: 12,
+  taskContainer: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     padding: 16,
     borderRadius: 8,
+    marginBottom: 12,
+  },
+  taskTitle: {
+    fontSize: 16,
+    color: '#FCF8EA',
   },
   daysRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: 8,
+    marginBottom: 24,
   },
   dayPill: {
     paddingVertical: 8,
@@ -197,14 +160,14 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   editButton: {
-    margin: 20,
-    padding: 16,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: '#FFEA9E',
     borderRadius: 25,
+    padding: 16,
     alignItems: 'center',
+    marginTop: 'auto',
   },
   editButtonText: {
-    color: '#FCF8EA',
+    color: '#000000',
     fontSize: 18,
     fontWeight: '600',
   },
