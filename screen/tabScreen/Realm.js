@@ -60,16 +60,13 @@ const Realm = () => {
   return (
     <MainLayout>
       <SafeAreaView style={styles.container}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.scrollView}>
           {/* Header Section */}
           <View style={styles.header}>
             <View style={styles.menuIconContainer}>
               {/* <View style={styles.menuIcon} /> */}
               {/* <Image
                 source={require('../../assets/image/icons/settingsIcon.png')}
-              /> */}
+                /> */}
               <SettingsIcon />
             </View>
             <View style={styles.welcomeContainer}>
@@ -97,6 +94,9 @@ const Realm = () => {
                 <Text style={styles.addButtonText}>+</Text>
               </LinearGradient>
             </TouchableOpacity>
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  style={styles.scrollView}>
 
             {/* Tasks List */}
             {tasks.length > 0 ? (
@@ -121,8 +121,8 @@ const Realm = () => {
                 </Text>
               </View>
             )}
-          </View>
         </ScrollView>
+          </View>
       </SafeAreaView>
     </MainLayout>
   );
