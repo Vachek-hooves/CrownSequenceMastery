@@ -162,7 +162,7 @@ const CreateSequance = ({ navigation }) => {
         </View>
 
         {/* Add Task Button */}
-        <TouchableOpacity style={styles.addTaskButton}>
+        {/* <TouchableOpacity style={styles.addTaskButton}>
           <LinearGradient
             colors={['#FFEA9E', '#FCF8EA']}
             style={styles.addTaskButtonGradient}
@@ -170,7 +170,7 @@ const CreateSequance = ({ navigation }) => {
             end={{x: 1, y: 1}}>
             <Text style={styles.addTaskButtonText}>+</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         
 
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 15,
     alignItems: 'center',
-    marginTop: 'auto',
+    marginTop: 20,
   },
   setButtonText: {
     color: '#FCF8EA',
