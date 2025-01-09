@@ -44,7 +44,7 @@ const Realm = () => {
   return (
     <MainLayout>
       <SafeAreaView style={styles.container}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
           {/* Header Section */}
           <View style={styles.header}>
             <View style={styles.menuIconContainer}>
@@ -99,6 +99,9 @@ const Realm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollView: {
+    flex: 1,
     padding: 20,
   },
   header: {
@@ -137,13 +140,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tasksHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
     marginBottom: 20,
+
   },
   tasksTitle: {
-    fontSize: 32,
+    fontSize: 30,
     color: '#FCF8EA',
     fontWeight: 'bold',
   },
