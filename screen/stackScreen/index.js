@@ -7,6 +7,7 @@ import SettingsScreen from './SettingsScreen';
 import CustomizeScreen from './CustomizeScreen';
 import SelectBackgroundScreen from './SelectBackgroundScreen';
 import SelectCrownScreen from './SelectCrownScreen';
+import CreateTask from './CreateTask';
 
 export {
   WelcomeScreen,
@@ -18,4 +19,5 @@ export {
   SettingsScreen,
   SelectBackgroundScreen,
   SelectCrownScreen,
+  CreateTask,
 };
