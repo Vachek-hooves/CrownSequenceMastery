@@ -15,35 +15,31 @@ import SettingsIcon from '../../components/Icons/SettingsIcon';
 import TaskItem from '../../components/UI/TaskItem';
 import CreateTaskModal from '../../components/UI/CreateTaskModal';
 import {AppContext} from '../../store/context';
+import NameHeader from '../../components/UI/NameHeader';
 
 const Realm = () => {
-  const { 
-    tasks, 
-    addTask, 
-    updateTaskProgress, 
-    updateTaskClaimed,
-    deleteTask 
-  } = useContext(AppContext);
-  const [nickname, setNickname] = useState('');
+  const {tasks, addTask, updateTaskProgress, updateTaskClaimed, deleteTask} =
+    useContext(AppContext);
+  // const [nickname, setNickname] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [showNewTask, setShowNewTask] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
-    loadUserData();
+    // loadUserData();
     setCurrentDate(formatDate(new Date()));
   }, []);
 
-  const loadUserData = async () => {
-    try {
-      const savedNickname = await AsyncStorage.getItem('userNickname');
-      if (savedNickname) {
-        setNickname(savedNickname);
-      }
-    } catch (error) {
-      console.error('Error loading user data:', error);
-    }
-  };
+  // const loadUserData = async () => {
+  //   try {
+  //     const savedNickname = await AsyncStorage.getItem('userNickname');
+  //     if (savedNickname) {
+  //       setNickname(savedNickname);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error loading user data:', error);
+  //   }
+  // };
 
   const formatDate = date => {
     // Format: DD.MM.YYYY
@@ -57,7 +53,7 @@ const Realm = () => {
     setIsModalVisible(true);
   };
 
-  const handleCreateTask = async (newTask) => {
+  const handleCreateTask = async newTask => {
     const success = await addTask(newTask);
     if (success) {
       setIsModalVisible(false);
@@ -68,11 +64,11 @@ const Realm = () => {
     await updateTaskProgress(taskId, progress);
   };
 
-  const handleTaskClaim = async (taskId) => {
+  const handleTaskClaim = async taskId => {
     await updateTaskClaimed(taskId, true);
   };
 
-  const handleDeleteTask = async (taskId) => {
+  const handleDeleteTask = async taskId => {
     await deleteTask(taskId);
   };
 
@@ -80,19 +76,20 @@ const Realm = () => {
     <MainLayout>
       <SafeAreaView style={styles.container}>
         {/* Header Section */}
-        <View style={styles.header}>
+        <NameHeader />
+        {/* <View style={styles.header}>
           <View style={styles.menuIconContainer}>
-            {/* <View style={styles.menuIcon} /> */}
-            {/* <Image
+            <View style={styles.menuIcon} />
+            <Image
                 source={require('../../assets/image/icons/settingsIcon.png')}
-                /> */}
+                />
             <SettingsIcon />
           </View>
           <View style={styles.welcomeContainer}>
             <Text style={styles.welcomeText}>Welcome back,</Text>
             <Text style={styles.nicknameText}>{nickname}</Text>
           </View>
-        </View>
+        </View> */}
 
         {/* Tasks Section */}
         <View style={styles.tasksContainer}>
@@ -123,7 +120,9 @@ const Realm = () => {
                     title={task.title}
                     progress={task.progress}
                     isClaimed={task.isClaimed}
-                    onProgressChange={(progress) => handleTaskProgress(task.id, progress)}
+                    onProgressChange={progress =>
+                      handleTaskProgress(task.id, progress)
+                    }
                     onClaim={() => handleTaskClaim(task.id)}
                     onDelete={() => handleDeleteTask(task.id)}
                   />
@@ -161,38 +160,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
     padding: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 40,
-  },
-  menuIconContainer: {
-    // width: 50,
-    // height: 50,
-    // backgroundColor: '#FCF8EA',
-    borderRadius: 25,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    padding: 5,
-  },
-  menuIcon: {
-    width: 20,
-    height: 20,
-    backgroundColor: '#000',
-  },
-  welcomeContainer: {
-    marginLeft: 15,
-  },
-  welcomeText: {
-    fontSize: 18,
-    color: '#FCF8EA',
-    opacity: 0.8,
-  },
-  nicknameText: {
-    fontSize: 24,
-    color: '#FCF8EA',
-    fontWeight: 'bold',
   },
   tasksContainer: {
     flex: 1,
