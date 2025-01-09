@@ -13,7 +13,9 @@ const WelcomeScreen = ({navigation}) => {
   return (
     <ImageBackground
       source={require('../../assets/image/bg/bg.png')}
-      style={styles.container}>
+      style={styles.container}
+      // blurRadius={100}
+    >
       <ScrollView
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}>
@@ -21,45 +23,31 @@ const WelcomeScreen = ({navigation}) => {
           Welcome to{'\n'}Crowns Sequence{'\n'}Mastery
         </Text>
 
-        <Text style={styles.subtitle}>
-          Memorize the light. Repeat the pattern. Claim the crown.
-        </Text>
+        <Text style={styles.subtitle}>Your path to mastery begins now!</Text>
 
         <View style={styles.instructionsContainer}>
-          <Text style={styles.sectionTitle}>💠 How to Play:</Text>
-          <Text style={styles.instruction}>
-            1. Watch the Sequence – Crowns will light up in order.
-          </Text>
-          <Text style={styles.instruction}>
-            2. Repeat It – Tap the crowns in the same sequence.
-          </Text>
-          <Text style={styles.instruction}>
-            3. Keep Going – Each round adds more steps.
+          <Text style={styles.sectionTitle}>
+            💠 Set Goals – Break down ambitions into daily tasks and track your
+            progress.
           </Text>
         </View>
 
         <View style={styles.hintsContainer}>
-          <Text style={styles.sectionTitle}>💠 Hints:</Text>
-          <Text style={styles.instruction}>
-            Tap the hint button to replay the sequence. You have 3 per game –
-            use them wisely!
+          <Text style={styles.sectionTitle}>
+            💠 Challenge Yourself – Enjoy a fun mini-game
           </Text>
         </View>
 
         <View style={styles.rewardsContainer}>
-          <Text style={styles.sectionTitle}>💠 Unlock Rewards:</Text>
-          <Text style={styles.instruction}>
-            Earn points to unlock new crowns and backgrounds as you progress.
-          </Text>
+          <Text style={styles.sectionTitle}>💠 Achieve. Play. Master.</Text>
         </View>
 
-        <TouchableOpacity
-          style={styles.nextButton}
-          onPress={() => navigation.navigate('NameScreen')}>
-          <Text style={styles.nextButtonText}>Next</Text>
-        </TouchableOpacity>
-        {/* <View style={{height: 30}} /> */}
       </ScrollView>
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={() => navigation.navigate('NameScreen')}>
+        <Text style={styles.nextButtonText}>Next</Text>
+      </TouchableOpacity>
     </ImageBackground>
   );
 };
@@ -75,6 +63,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     padding: 20,
     justifyContent: 'space-between',
+    marginTop: 100,
   },
   title: {
     fontSize: 40,
@@ -128,8 +117,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFE5B4',
     padding: 15,
     borderRadius: 25,
-    width: '100%',
-    marginBottom: 30,
+    width: '90%',
+    marginBottom: '20%',
+    alignSelf: 'center',
   },
   nextButtonText: {
     textAlign: 'center',

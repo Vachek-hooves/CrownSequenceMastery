@@ -4,7 +4,7 @@ import {ContextProvider} from './store/context';
 import {
   AboutScreen,
   CustomizeScreen,
-  MainScreen,
+  Tournament,
   NameScreen,
   ResultScreen,
   SelectBackgroundScreen,
@@ -22,6 +22,7 @@ import {
 } from './components/Sound/SetUp';
 import {AppState} from 'react-native';
 import {useAppContext} from './store/context';
+import Navigation from './Navigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -90,8 +91,9 @@ const AppNavigator = () => {
         animationDuration: 1000,
       }}>
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} />
+      <Stack.Screen name="Navigation" component={Navigation} />
       <Stack.Screen name="NameScreen" component={NameScreen} />
-      <Stack.Screen name="MainScreen" component={MainScreen} />
+      <Stack.Screen name="Tournament" component={Tournament} />
       <Stack.Screen name="CrownGameScreen" component={CrownGameScreen} />
       <Stack.Screen name="ResultScreen" component={ResultScreen} />
       <Stack.Screen name="SettingsScreen" component={SettingsScreen} />

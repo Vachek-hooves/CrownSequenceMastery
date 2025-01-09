@@ -1,5 +1,5 @@
 import WelcomeScreen from './WelcomeScreen';
-import MainScreen from './MainScreen';
+import Tournament from '../tabScreen/Tournament';
 import NameScreen from './NameScreen';
 import ResultScreen from './ResultScreen';
 import AboutScreen from './AboutScreen';
@@ -10,7 +10,7 @@ import SelectCrownScreen from './SelectCrownScreen';
 
 export {
   WelcomeScreen,
-  MainScreen,
+  Tournament,
   NameScreen,
   ResultScreen,
   AboutScreen,

@@ -14,12 +14,13 @@ import CrownIcon from '../../components/Icons/CrownIcon';
 import LampIcon from '../../components/Icons/LampIcon';
 import {useAppContext} from '../../store/context';
 
-const MainScreen = ({navigation}) => {
+const Tournament = ({navigation}) => {
   const {totalScore} = useAppContext();
   return (
     <ImageBackground
       source={require('../../assets/image/bg/bg.png')}
-      style={styles.container}>
+      style={styles.container}
+      blurRadius={80}>
       <SafeAreaView style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
@@ -143,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MainScreen;
+export default Tournament;

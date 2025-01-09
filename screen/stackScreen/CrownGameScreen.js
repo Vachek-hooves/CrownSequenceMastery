@@ -178,7 +178,7 @@ const CrownGameScreen = ({navigation}) => {
   // Add function to handle return to menu
   const handleReturnToMenu = () => {
     setIsGameOverModalVisible(false);
-    navigation.navigate('MainScreen');
+    navigation.navigate('Tournament');
   };
 
   // Use hint

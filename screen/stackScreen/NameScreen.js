@@ -68,7 +68,7 @@ const NameScreen = ({navigation}) => {
       }
 
       await AsyncStorage.setItem('userNickname', nickname.trim());
-      navigation.navigate('MainScreen');
+      navigation.navigate('Navigation');
     } catch (error) {
       console.error('Error saving nickname:', error);
       Alert.alert('Error', 'Failed to save nickname. Please try again.');
@@ -106,10 +106,11 @@ const NameScreen = ({navigation}) => {
   return (
     <ImageBackground
       source={require('../../assets/image/bg/bg.png')}
-      style={styles.container}>
+      style={styles.container}
+      // blurRadius={100}
+      >
       <SafeAreaView style={styles.content}>
         <View style={styles.headerRow}>
-        
           <HomeIcon />
           <Text style={styles.title}>Nickname</Text>
         </View>

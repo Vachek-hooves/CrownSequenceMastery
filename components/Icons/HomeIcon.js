@@ -12,7 +12,7 @@ const HomeIcon = () => {
       end={{x: 1, y: 1}}>
       <TouchableOpacity
         style={styles.homeButton}
-        onPress={() => navigation.navigate('MainScreen')}>
+        onPress={() => navigation.navigate('Tournament')}>
         <Image
           source={require('../../assets/image/icons/homeIcon.png')}
           style={styles.homeIcon}
