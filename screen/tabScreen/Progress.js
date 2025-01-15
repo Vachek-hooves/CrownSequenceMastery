@@ -1,19 +1,55 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Text, View, SafeAreaView,ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {AppContext} from '../../store/context';
 import NameHeader from '../../components/UI/NameHeader';
 
 const Progress = () => {
   const {sequences, tasks} = useContext(AppContext);
 
+  function reduceAndCalculateAll(array) {
+    return array.reduce((result, current) => {
+      // Extract or calculate a numeric value
+      const numericValue = (function getNumericValue(value) {
+        if (typeof value === 'number') {
+          return value;
+        } else if (typeof value === 'string' && !isNaN(parseFloat(value))) {
+          return parseFloat(value);
+        } else if (typeof value === 'object' && value !== null) {
+          return Object.values(value).reduce((sum, val) => {
+            return sum + (typeof val === 'number' ? val : 0);
+          }, 0);
+        }
+        return 0;
+      })(current);
+
+      // Perform calculations and store results as strings
+      result.push(
+        String(numericValue),
+        String(numericValue + 10),
+        String(numericValue * 2),
+        String(numericValue / 2),
+        String(numericValue - 5),
+      );
+
+      return result;
+    }, []);
+  }
+
   const ProgressCircle = ({progress, goal, size = 140}) => {
     const getProgressColor = percentage => {
-      if (percentage === 0) return '#FF3B30'; // red
-      if (percentage <= 25) return '#FFCC00'; // red
-      if (percentage <= 50) return '#5856D6'; // yellow
-      if (percentage <= 75) return '#34C759'; // blue
-      if (percentage < 100) return '#00FF00'; // light green
-      return '#00FF00'; // bright green
+      if (percentage === 0) return '#FF3B30';
+      if (percentage <= 25) return '#FFCC00';
+      if (percentage <= 50) return '#5856D6';
+      if (percentage <= 75) return '#34C759';
+      if (percentage < 100) return '#00FF00';
+      return '#00FF00';
     };
 
     return (
@@ -32,10 +68,15 @@ const Progress = () => {
           />
 
           {/* Center Content */}
-          <View style={styles.centerContent}>
-            <Text style={styles.progressText}>{Math.round(progress)}%</Text>
-            <Text style={styles.goalText}>{goal}</Text>
-          </View>
+          
+          {/* <View style={styles.centerContent}> */}
+          <TouchableOpacity
+            style={styles.centerContent}
+            onPress={reduceAndCalculateAll}
+          />
+          <Text style={styles.progressText}>{Math.round(progress)}%</Text>
+          <Text style={styles.goalText}>{goal}</Text>
+          {/* </View> */}
         </View>
       </View>
     );
@@ -45,7 +86,6 @@ const Progress = () => {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <NameHeader />
-      
 
       {/* Progress Legend */}
       <View style={styles.legend}>
@@ -71,23 +111,23 @@ const Progress = () => {
         </View>
       </View>
       <ScrollView>
-         {/* Tasks Section */}
-      {tasks.length > 0 && (
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Tasks</Text>
-          <View style={styles.progressGrid}>
-            {tasks.map(task => (
-              <ProgressCircle
-                key={task.id}
-                progress={task.progress}
-                goal={task.title}
-              />
-            ))}
+        {/* Tasks Section */}
+        {tasks.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Tasks</Text>
+            <View style={styles.progressGrid}>
+              {tasks.map(task => (
+                <ProgressCircle
+                  key={task.id}
+                  progress={task.progress}
+                  goal={task.title}
+                />
+              ))}
+            </View>
           </View>
-        </View>
-      )}
- {/* Sequences Section */}
- {sequences.length > 0 && (
+        )}
+        {/* Sequences Section */}
+        {/* {sequences.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Sequences</Text>
           <View style={styles.progressGrid}>
@@ -100,9 +140,9 @@ const Progress = () => {
             ))}
           </View>
         </View>
-      )}
+      )} */}
 
-      {/* Progress Circles
+        {/* Progress Circles
       <View style={styles.progressGrid}>
         {tasks.map(task => (
           <ProgressCircle
@@ -188,7 +228,8 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     textAlign: 'center',
     marginTop: 4,
-  },section: {
+  },
+  section: {
     marginTop: 20,
     paddingHorizontal: 20,
   },
