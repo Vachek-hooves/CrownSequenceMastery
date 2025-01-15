@@ -58,16 +58,6 @@ const Realm = () => {
     setCurrentDate(formatDate(new Date()));
   }, []);
 
-  // const loadUserData = async () => {
-  //   try {
-  //     const savedNickname = await AsyncStorage.getItem('userNickname');
-  //     if (savedNickname) {
-  //       setNickname(savedNickname);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error loading user data:', error);
-  //   }
-  // };
 
   const formatDate = date => {
     // Format: DD.MM.YYYY
@@ -105,19 +95,6 @@ const Realm = () => {
       <SafeAreaView style={styles.container}>
         {/* Header Section */}
         <NameHeader />
-        {/* <View style={styles.header}>
-          <View style={styles.menuIconContainer}>
-            <View style={styles.menuIcon} />
-            <Image
-                source={require('../../assets/image/icons/settingsIcon.png')}
-                />
-            <SettingsIcon />
-          </View>
-          <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>Welcome back,</Text>
-            <Text style={styles.nicknameText}>{nickname}</Text>
-          </View>
-        </View> */}
 
         {/* Tasks Section */}
         <View style={styles.tasksContainer}>
@@ -129,7 +106,8 @@ const Realm = () => {
           {/* Add Task Button */}
           <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
             <LinearGradient
-              colors={['#FFEA9E', '#FCF8EA']}
+              // colors={['#FFEA9E', '#FCF8EA']}
+              colors={['#FF6B6B', '#4ECDC4']}
               style={styles.addButtonGradient}
               start={{x: 0, y: 0}}
               end={{x: 1, y: 1}}>

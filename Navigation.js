@@ -18,7 +18,12 @@ const Navigation = () => {
         tabBarActiveTintColor: '#FFC600',
         tabBarBackground: () => (
           <LinearGradient
-            colors={['#FCF8EA', '#FFEA9E']}
+            // colors={['#FCF8EA', '#FFEA9E']}
+            // Alternative color combinations:
+            // colors={['#A8E6CF', '#FFD3B6']} // Mint to Peach
+            // colors={['#6C5CE7', '#00CEFF']} // Purple to Cyan
+            // colors={['#FF9A9E', '#FAD0C4']} // Pink to Soft Peach
+            colors={['#FF6B6B', '#4ECDC4']} // Coral to Turquoise
             style={StyleSheet.absoluteFill}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
     height: 32,
     tintColor: '#000000',
     opacity: 0.5,
-    marginTop:25
+    marginTop: 25,
   },
   tabIconFocused: {
     opacity: 1,
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
     color: '#000000',
     opacity: 0.5,
     marginTop: 4,
-    paddingTop:15
+    paddingTop: 15,
   },
   tabLabelFocused: {
     opacity: 1,

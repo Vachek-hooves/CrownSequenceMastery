@@ -41,7 +41,6 @@ const WelcomeScreen = ({navigation}) => {
         <View style={styles.rewardsContainer}>
           <Text style={styles.sectionTitle}>💠 Achieve. Play. Master.</Text>
         </View>
-
       </ScrollView>
       <TouchableOpacity
         style={styles.nextButton}
@@ -66,9 +65,10 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   title: {
-    fontSize: 40,
+    fontSize: 44,
     fontWeight: 'bold',
-    color: '#FCF8EA',
+    // color: '#FCF8EA',
+    color: '#A8E6CF',
     textAlign: 'center',
     marginTop: 40,
     lineHeight: 40,
@@ -78,7 +78,8 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    color: '#FCF8EA',
+    // color: '#FCF8EA',
+    color: '#A8E6CF',
     textAlign: 'center',
     marginTop: 20,
     marginBottom: 30,
@@ -96,16 +97,18 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#FCF8EA',
+    // color: '#FCF8EA',
+    color: '#A8E6CF',
     marginBottom: 10,
     textShadowColor: 'rgba(252, 248, 234, 0.5)',
     textShadowOffset: {width: 0, height: 0},
     textShadowRadius: 8,
   },
   instruction: {
-    fontSize: 20,
+    fontSize: 22,
+    color: '#FCF8EA',
     color: '#FCF8EA',
     marginBottom: 8,
     paddingLeft: 20,
@@ -114,7 +117,8 @@ const styles = StyleSheet.create({
     textShadowRadius: 5,
   },
   nextButton: {
-    backgroundColor: '#FFE5B4',
+    // backgroundColor: '#FFE5B4',
+    backgroundColor: '#4ECDC4',
     padding: 15,
     borderRadius: 25,
     width: '90%',

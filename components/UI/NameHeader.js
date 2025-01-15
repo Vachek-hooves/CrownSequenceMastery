@@ -2,6 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState, useEffect} from 'react';
 import SettingsIcon from '../Icons/SettingsIcon';
+import LinearGradient from 'react-native-linear-gradient';
 
 const NameHeader = () => {
   const [nickname, setNickname] = useState('');

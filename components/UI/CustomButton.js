@@ -9,7 +9,8 @@ const CustomButton = ({title, onPress, variant = 'secondary'}) => {
     <LinearGradient
       colors={
         isPlayButton
-          ? ['#FFEA9E', '#FCF8EA']
+          // ? ['#FFEA9E', '#FCF8EA']
+          ? ['#FF6B6B', '#4ECDC4']
           : ['rgba(36, 36, 36, 1)', 'rgba(36, 36, 36, 1)']
       }
       style={[styles.button, isPlayButton && styles.buttonShadow]}

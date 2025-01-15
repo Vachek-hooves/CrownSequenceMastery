@@ -59,7 +59,8 @@ const Sequance = ({navigation}) => {
         {/* Add Button */}
         <TouchableOpacity style={styles.addButton} onPress={handleAddPress}>
           <LinearGradient
-            colors={['#FFEA9E', '#FCF8EA']}
+            // colors={['#FFEA9E', '#FCF8EA']}
+            colors={['#FF6B6B', '#4ECDC4']}
             style={styles.addButtonGradient}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}>
