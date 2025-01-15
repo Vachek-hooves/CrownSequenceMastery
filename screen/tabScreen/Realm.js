@@ -16,6 +16,7 @@ import TaskItem from '../../components/UI/TaskItem';
 import CreateTaskModal from '../../components/UI/CreateTaskModal';
 import {AppContext} from '../../store/context';
 import NameHeader from '../../components/UI/NameHeader';
+import {TaskPallette} from '../../data/TaskPalette';
 
 const Realm = () => {
   const {tasks, addTask, updateTaskProgress, updateTaskClaimed, deleteTask} =
@@ -24,6 +25,33 @@ const Realm = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [showNewTask, setShowNewTask] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  (function randomObjectSelector() {
+    const intervalInSeconds = 3; // Interval in seconds
+    const iterations = 10; // Number of iterations
+    let iterationCount = 0;
+
+    // console.log(
+    //   `Random object selection started for ${iterations} iterations every ${intervalInSeconds} seconds.`,
+    // );
+
+    const timer = setInterval(() => {
+      if (iterationCount >= iterations) {
+        clearInterval(timer);
+        console.log('Random selection stopped.');
+        return;
+      }
+
+      // Randomly select an object
+      const randomIndex = Math.floor(Math.random() * TaskPallette.length);
+      const selectedObject = TaskPallette[randomIndex];
+
+      // Log the selected object
+      // console.log(`Selected object: ${JSON.stringify(selectedObject)}`);
+
+      iterationCount++;
+    }, intervalInSeconds * 1000);
+  })();
 
   useEffect(() => {
     // loadUserData();

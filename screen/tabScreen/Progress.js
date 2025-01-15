@@ -111,6 +111,7 @@ const Progress = () => {
         </View>
       </View>
       <ScrollView>
+      
         {/* Tasks Section */}
         {tasks.length > 0 && (
           <View style={styles.section}>

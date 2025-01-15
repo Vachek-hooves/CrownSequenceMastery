@@ -47,14 +47,14 @@ const Tournament = ({navigation}) => {
               onPress={() => navigation.navigate('CrownGameScreen')}
               variant="primary"
             />
-            <CustomButton
+            {/* <CustomButton
               title="Result"
               onPress={() => navigation.navigate('ResultScreen')}
-            />
-            <CustomButton
+            /> */}
+            {/* <CustomButton
               title="About"
               onPress={() => navigation.navigate('AboutScreen')}
-            />
+            /> */}
             <CustomButton
               title="Customize Challenge"
               onPress={() => navigation.navigate('CustomizeScreen')}

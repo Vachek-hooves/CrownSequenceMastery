@@ -42,7 +42,7 @@ const CustomizeScreen = () => {
               </LinearGradient>
             </TouchableOpacity>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate('SelectBackgroundScreen')}
               style={styles.buttonWrapper}>
               <LinearGradient
@@ -50,7 +50,7 @@ const CustomizeScreen = () => {
                 style={styles.button}>
                 <Text style={styles.buttonText}>Choose Background</Text>
               </LinearGradient>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>
