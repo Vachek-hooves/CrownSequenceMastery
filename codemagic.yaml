@@ -28,32 +28,57 @@ workflows:
         script: |
           #!/bin/sh
           cd $CM_BUILD_DIR/ios
-          # Print current values before increment
-          echo "Current Info.plist values:"
-          plutil -p CrownSequenceMastery/Info.plist | grep CFBundle
           
+          # Get the latest build number
           LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
           NEXT_BUILD_NUMBER=$(($LATEST_BUILD_NUMBER + 1))
           echo "Latest build number from App Store: $LATEST_BUILD_NUMBER"
           echo "Next build number will be: $NEXT_BUILD_NUMBER"
           
-          # Directly modify Info.plist instead of using agvtool
+          # Update version in multiple locations to ensure it takes effect
+          # 1. Update Info.plist
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEXT_BUILD_NUMBER" CrownSequenceMastery/Info.plist
           
-          # Verify the update
-          echo "Updated Info.plist values:"
+          # 2. Update project.pbxproj
+          CURRENT_PROJECT_VERSION=$NEXT_BUILD_NUMBER
+          sed -i '' "s/CURRENT_PROJECT_VERSION = [0-9]*;/CURRENT_PROJECT_VERSION = $NEXT_BUILD_NUMBER;/" CrownSequenceMastery.xcodeproj/project.pbxproj
+          
+          # 3. Update build settings
+          xcrun agvtool new-version -all $NEXT_BUILD_NUMBER
+          
+          # Verify updates
+          echo "=== Verification after updates ==="
+          echo "Info.plist values:"
           plutil -p CrownSequenceMastery/Info.plist | grep CFBundle
+          echo "Project version:"
+          grep "CURRENT_PROJECT_VERSION" CrownSequenceMastery.xcodeproj/project.pbxproj
       - name: Set Info.plist values
         script: |
           #!/bin/sh
           PLIST=$CM_BUILD_DIR/$XCODE_SCHEME/Info.plist
           PLIST_BUDDY=/usr/libexec/PlistBuddy
           $PLIST_BUDDY -c "Add :ITSAppUsesNonExemptEncryption bool false" $PLIST
+      - name: Pre-build version verification
+        script: |
+          #!/bin/sh
+          cd $CM_BUILD_DIR/ios
+          echo "=== Final version verification ==="
+          echo "Info.plist:"
+          plutil -p CrownSequenceMastery/Info.plist | grep CFBundle
+          echo "Project settings:"
+          grep "CURRENT_PROJECT_VERSION" CrownSequenceMastery.xcodeproj/project.pbxproj
       - name: Build ipa for distribution
         script: |
           #!/bin/sh
-          echo "Building IPA with following version info:"
-          plutil -p $CM_BUILD_DIR/ios/CrownSequenceMastery/Info.plist | grep CFBundle
+          cd $CM_BUILD_DIR/ios
+          
+          # Force update version one last time
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
+          NEXT_BUILD_NUMBER=$(($LATEST_BUILD_NUMBER + 1))
+          xcrun agvtool new-version -all $NEXT_BUILD_NUMBER
+          
+          echo "Building IPA with version:"
+          plutil -p CrownSequenceMastery/Info.plist | grep CFBundle
           
           xcode-project build-ipa \
             --workspace "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE" \
