@@ -8,46 +8,49 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
+import MainLayout from '../../components/layout/MainLayout';
 
 const WelcomeScreen = ({navigation}) => {
   return (
-    <ImageBackground
-      source={require('../../assets/image/bg/bg.png')}
-      style={styles.container}
-      // blurRadius={100}
-    >
-      <ScrollView
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>
-          Welcome to{'\n'}Crowns Sequence{'\n'}Mastery
-        </Text>
-
-        <Text style={styles.subtitle}>Your path to mastery begins now!</Text>
-
-        <View style={styles.instructionsContainer}>
-          <Text style={styles.sectionTitle}>
-            💠 Set Goals – Break down ambitions into daily tasks and track your
-            progress.
+    <MainLayout>
+      {/* <ImageBackground
+        source={require('../../assets/image/bg/bg.png')}
+        style={styles.container}
+        // blurRadius={100}
+      > */}
+        <ScrollView
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>
+            Welcome to{'\n'}Crowns Sequence{'\n'}Mastery
           </Text>
-        </View>
 
-        <View style={styles.hintsContainer}>
-          <Text style={styles.sectionTitle}>
-            💠 Challenge Yourself – Enjoy a fun mini-game
-          </Text>
-        </View>
+          <Text style={styles.subtitle}>Your path to mastery begins now!</Text>
 
-        <View style={styles.rewardsContainer}>
-          <Text style={styles.sectionTitle}>💠 Achieve. Play. Master.</Text>
-        </View>
-      </ScrollView>
-      <TouchableOpacity
-        style={styles.nextButton}
-        onPress={() => navigation.navigate('NameScreen')}>
-        <Text style={styles.nextButtonText}>Next</Text>
-      </TouchableOpacity>
-    </ImageBackground>
+          <View style={styles.instructionsContainer}>
+            <Text style={styles.sectionTitle}>
+              💠 Set Goals – Break down ambitions into daily tasks and track
+              your progress.
+            </Text>
+          </View>
+
+          <View style={styles.hintsContainer}>
+            <Text style={styles.sectionTitle}>
+              💠 Challenge Yourself – Enjoy a fun mini-game
+            </Text>
+          </View>
+
+          <View style={styles.rewardsContainer}>
+            <Text style={styles.sectionTitle}>💠 Achieve. Play. Master.</Text>
+          </View>
+        </ScrollView>
+        <TouchableOpacity
+          style={styles.nextButton}
+          onPress={() => navigation.navigate('NameScreen')}>
+          <Text style={styles.nextButtonText}>Next</Text>
+        </TouchableOpacity>
+      {/* </ImageBackground> */}
+    </MainLayout>
   );
 };
 
@@ -56,7 +59,7 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    // backgroundColor: '#000',
   },
   content: {
     // flex: 1,

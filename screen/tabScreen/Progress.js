@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {AppContext} from '../../store/context';
 import NameHeader from '../../components/UI/NameHeader';
+import MainLayout from '../../components/layout/MainLayout';
 
 const Progress = () => {
   const {sequences, tasks} = useContext(AppContext);
@@ -68,7 +69,7 @@ const Progress = () => {
           />
 
           {/* Center Content */}
-          
+
           {/* <View style={styles.centerContent}> */}
           <TouchableOpacity
             style={styles.centerContent}
@@ -83,52 +84,52 @@ const Progress = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <NameHeader />
+    <MainLayout>
+      <SafeAreaView style={styles.container}>
+        {/* Header */}
+        <NameHeader />
 
-      {/* Progress Legend */}
-      <View style={styles.legend}>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, {backgroundColor: '#FF3B30'}]} />
-          <Text style={styles.legendText}>0%</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, {backgroundColor: '#FFCC00'}]} />
-          <Text style={styles.legendText}>25%</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, {backgroundColor: '#5856D6'}]} />
-          <Text style={styles.legendText}>50%</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, {backgroundColor: '#34C759'}]} />
-          <Text style={styles.legendText}>75%</Text>
-        </View>
-        <View style={styles.legendItem}>
-          <View style={[styles.legendDot, {backgroundColor: '#00FF00'}]} />
-          <Text style={styles.legendText}>100%</Text>
-        </View>
-      </View>
-      <ScrollView>
-      
-        {/* Tasks Section */}
-        {tasks.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Tasks</Text>
-            <View style={styles.progressGrid}>
-              {tasks.map(task => (
-                <ProgressCircle
-                  key={task.id}
-                  progress={task.progress}
-                  goal={task.title}
-                />
-              ))}
-            </View>
+        {/* Progress Legend */}
+        <View style={styles.legend}>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendDot, {backgroundColor: '#FF3B30'}]} />
+            <Text style={styles.legendText}>0%</Text>
           </View>
-        )}
-        {/* Sequences Section */}
-        {/* {sequences.length > 0 && (
+          <View style={styles.legendItem}>
+            <View style={[styles.legendDot, {backgroundColor: '#FFCC00'}]} />
+            <Text style={styles.legendText}>25%</Text>
+          </View>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendDot, {backgroundColor: '#5856D6'}]} />
+            <Text style={styles.legendText}>50%</Text>
+          </View>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendDot, {backgroundColor: '#34C759'}]} />
+            <Text style={styles.legendText}>75%</Text>
+          </View>
+          <View style={styles.legendItem}>
+            <View style={[styles.legendDot, {backgroundColor: '#00FF00'}]} />
+            <Text style={styles.legendText}>100%</Text>
+          </View>
+        </View>
+        <ScrollView>
+          {/* Tasks Section */}
+          {/* {tasks.length > 0 && (
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Tasks</Text>
+              <View style={styles.progressGrid}>
+                {tasks.map(task => (
+                  <ProgressCircle
+                    key={task.id}
+                    progress={task.progress}
+                    goal={task.title}
+                  />
+                ))}
+              </View>
+            </View>
+          )} */}
+          {/* Sequences Section */}
+          {/* {sequences.length > 0 && (
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Sequences</Text>
           <View style={styles.progressGrid}>
@@ -143,7 +144,7 @@ const Progress = () => {
         </View>
       )} */}
 
-        {/* Progress Circles
+          {/* Progress Circles
       <View style={styles.progressGrid}>
         {tasks.map(task => (
           <ProgressCircle
@@ -160,16 +161,17 @@ const Progress = () => {
           />
         ))}
       </View> */}
-      </ScrollView>
-      <View style={{height: 90}} />
-    </SafeAreaView>
+        </ScrollView>
+        <View style={{height: 90}} />
+      </SafeAreaView>
+    </MainLayout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    // backgroundColor: '#1A1A1A',
   },
 
   legend: {

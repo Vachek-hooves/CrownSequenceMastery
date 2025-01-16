@@ -71,7 +71,8 @@ const TaskItem = ({
         style={styles.claimButton}
         onPress={onClaim}>
         <LinearGradient
-          colors={['#FFEA9E', '#FCF8EA']}
+          // colors={['#FFEA9E', '#FCF8EA']}
+          colors={['#FF6B6B', '#4ECDC4']}
           style={styles.claimGradient}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}>
@@ -126,6 +127,8 @@ const styles = StyleSheet.create({
   },
   progressStepActive: {
     backgroundColor: '#FFC600', // Gold color for active steps
+    backgroundColor: '#FF9A9E', // Gold color for active steps
+
   },
   progressText: {
     color: '#FCF8EA',

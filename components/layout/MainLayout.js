@@ -6,7 +6,7 @@ const MainLayout = ({children}) => {
     <ImageBackground
       source={require('../../assets/image/bg/bg.png')}
       style={styles.container}>
-      {children}
+      <View style={styles.container}>{children}</View>
     </ImageBackground>
   );
 };
@@ -16,6 +16,10 @@ export default MainLayout;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#000',
+    backgroundColor: '#FFEA9E'+30,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: '#FFEA9E',
   },
 });

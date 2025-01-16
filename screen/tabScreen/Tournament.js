@@ -13,14 +13,18 @@ import CustomButton from '../../components/UI/CustomButton';
 import CrownIcon from '../../components/Icons/CrownIcon';
 import LampIcon from '../../components/Icons/LampIcon';
 import {useAppContext} from '../../store/context';
+import MainLayout from '../../components/layout/MainLayout';
 
 const Tournament = ({navigation}) => {
   const {totalScore} = useAppContext();
   return (
-    <ImageBackground
-      source={require('../../assets/image/bg/bg.png')}
-      style={styles.container}
-      blurRadius={80}>
+    // <ImageBackground
+    //   source={require('../../assets/image/bg/bg.png')}
+    //   style={styles.container}
+    //   blurRadius={80}>
+    <MainLayout>
+
+   
       <SafeAreaView style={styles.content}>
         {/* Header */}
         <View style={styles.header}>
@@ -66,8 +70,9 @@ const Tournament = ({navigation}) => {
           </View>
         </ScrollView>
       </SafeAreaView>
-        <View style={{height: 120}} />
-    </ImageBackground>
+         {/* <View style={{height: 120}} />  */}
+        </MainLayout>
+    // </ImageBackground>
   );
 };
 
