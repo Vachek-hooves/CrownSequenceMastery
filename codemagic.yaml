@@ -42,22 +42,6 @@ workflows:
           xcode-project build-ipa \
             --workspace "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE" \
             --scheme "$XCODE_SCHEME"
-        script: |
-          #!/bin/sh
-          cd $CM_BUILD_DIR/ios
-          
-          # Force update version one last time
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          NEXT_BUILD_NUMBER=$(($LATEST_BUILD_NUMBER + 1))
-          xcrun agvtool new-version -all $NEXT_BUILD_NUMBER
-          
-          echo "Building IPA with version:"
-          plutil -p CrownSequenceMastery/Info.plist | grep CFBundle
-          
-          xcode-project build-ipa \
-            --workspace "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME" \
-            --verbose
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
