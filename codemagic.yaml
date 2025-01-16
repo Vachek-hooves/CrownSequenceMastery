@@ -28,8 +28,21 @@ workflows:
         script: |
           #!/bin/sh
           cd $CM_BUILD_DIR/ios
+          # Print current values before increment
+          echo "Current Info.plist values:"
+          plutil -p CrownSequenceMastery/Info.plist | grep CFBundle
+          
           LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+          NEXT_BUILD_NUMBER=$(($LATEST_BUILD_NUMBER + 1))
+          echo "Latest build number from App Store: $LATEST_BUILD_NUMBER"
+          echo "Next build number will be: $NEXT_BUILD_NUMBER"
+          
+          # Directly modify Info.plist instead of using agvtool
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $NEXT_BUILD_NUMBER" CrownSequenceMastery/Info.plist
+          
+          # Verify the update
+          echo "Updated Info.plist values:"
+          plutil -p CrownSequenceMastery/Info.plist | grep CFBundle
       - name: Set Info.plist values
         script: |
           #!/bin/sh
@@ -39,9 +52,13 @@ workflows:
       - name: Build ipa for distribution
         script: |
           #!/bin/sh
+          echo "Building IPA with following version info:"
+          plutil -p $CM_BUILD_DIR/ios/CrownSequenceMastery/Info.plist | grep CFBundle
+          
           xcode-project build-ipa \
             --workspace "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME"
+            --scheme "$XCODE_SCHEME" \
+            --verbose
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
