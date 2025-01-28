@@ -154,7 +154,9 @@ const NameScreen = ({navigation}) => {
             style={[styles.startButton, styles.startButtonShadow]}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}>
-            <TouchableOpacity onPress={saveNickname}>
+            <TouchableOpacity 
+            // onPress={saveNickname}
+            >
             {/* <TouchableOpacity > */}
               <Text style={styles.startButtonTextActive}>
                 {isExistingUser ? 'Continue' : 'Start'}

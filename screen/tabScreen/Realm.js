@@ -104,8 +104,8 @@ const Realm = () => {
           </View>
 
           {/* Add Task Button */}
-          {/* <TouchableOpacity style={styles.addButton} onPress={handleAddTask}> */}
-          <TouchableOpacity style={styles.addButton} >
+          <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+          {/* <TouchableOpacity style={styles.addButton} > */}
             <LinearGradient
               // colors={['#FFEA9E', '#FCF8EA']}
               colors={['#FF6B6B', '#4ECDC4']}
